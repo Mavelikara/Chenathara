@@ -103,6 +103,68 @@ a:hover{text-decoration:underline;}
   color:rgba(255,255,255,.45); letter-spacing:.05em; white-space:nowrap;
 }
 .header-right{margin-left:auto; display:flex; gap:8px; align-items:center;}
+
+/* ── Admin lock button ── */
+.admin-lock-btn{
+  background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.22);
+  border-radius:6px; color:rgba(255,255,255,.75);
+  font-family:'Inter',sans-serif; font-size:11px; font-weight:500;
+  letter-spacing:.04em; padding:5px 10px; cursor:pointer;
+  display:flex; align-items:center; gap:5px; transition:all .15s;
+}
+.admin-lock-btn:hover{background:rgba(255,255,255,.18); color:#fff;}
+.admin-lock-btn.unlocked{
+  background:rgba(184,137,30,.25); border-color:rgba(184,137,30,.55);
+  color:var(--gold-lt,#F5E8C8);
+}
+/* Admin modal */
+#adminModal{
+  display:none; position:fixed; inset:0; z-index:500;
+  background:var(--overlay); align-items:center; justify-content:center;
+}
+#adminModal.open{display:flex;}
+.admin-modal-box{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:32px 28px; width:340px; max-width:92vw;
+  box-shadow:0 12px 48px var(--shadow2);
+}
+.admin-modal-title{
+  font-family:'Cormorant Garant',serif; font-size:22px; font-weight:600;
+  color:var(--text); margin-bottom:6px;
+}
+.admin-modal-sub{
+  font-family:'Inter',sans-serif; font-size:12px; color:var(--text3);
+  margin-bottom:22px; line-height:1.5;
+}
+.admin-modal-input{
+  width:100%; box-sizing:border-box;
+  font-family:'Inter',sans-serif; font-size:14px;
+  padding:10px 14px; border:1px solid var(--border);
+  border-radius:6px; background:var(--bg); color:var(--text);
+  outline:none; transition:border .15s;
+}
+.admin-modal-input:focus{border-color:var(--teal3);}
+.admin-modal-err{
+  font-family:'Inter',sans-serif; font-size:12px; color:var(--red);
+  margin-top:8px; min-height:16px;
+}
+.admin-modal-btns{display:flex; gap:10px; margin-top:20px;}
+.admin-modal-ok{
+  flex:1; background:var(--teal); color:#fff; border:none; border-radius:6px;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:500;
+  padding:10px; cursor:pointer; transition:background .15s;
+}
+.admin-modal-ok:hover{background:var(--teal2);}
+.admin-modal-cancel{
+  background:var(--bg2); color:var(--text2); border:1px solid var(--border);
+  border-radius:6px; font-family:'Inter',sans-serif; font-size:13px;
+  padding:10px 16px; cursor:pointer; transition:background .15s;
+}
+.admin-modal-cancel:hover{background:var(--bg3);}
+/* Admin-only elements hidden until unlocked */
+.admin-only{display:none;}
+body.admin-unlocked .admin-only{display:block;}
+body.admin-unlocked .admin-only-flex{display:flex;}
 /* NAV TABS */
 .nav-tabs{
   max-width:1200px; margin:0 auto;
@@ -616,7 +678,11 @@ a:hover{text-decoration:underline;}
       <div class="logo-text">Chenathara <em>Family</em></div>
     </a>
     <span class="header-stats">275 members · 8 generations</span>
-    <div class="header-right"></div>
+    <div class="header-right">
+      <button class="admin-lock-btn" id="adminLockBtn" onclick="openAdminModal()" title="Admin access">
+        <span id="adminLockIcon">🔒</span> <span id="adminLockLabel">Admin</span>
+      </button>
+    </div>
   </div>
   <nav class="nav-tabs" role="tablist">
     <button class="nav-tab active" onclick="showView('historyView',this)" role="tab">📖 History</button>
@@ -1006,6 +1072,7 @@ function openProfile(id) {
   const fileInput = document.createElement('input');
   fileInput.type = 'file'; fileInput.accept = 'image/*';
   fileInput.onchange = (e) => {
+    if (!isAdminUnlocked()) { e.target.value=''; openAdminModal(); return; }
     const file = e.target.files[0];
     if (!file) return;
     if (file.size > 2*1024*1024) { alert('Please use an image under 2 MB.'); return; }
@@ -1025,7 +1092,7 @@ function openProfile(id) {
     zone.appendChild(img);
     const removeLbl = document.createElement('div');
     removeLbl.style.cssText = 'margin-top:8px;font-family:Inter,sans-serif;font-size:11px;color:var(--text3);';
-    removeLbl.innerHTML = `<span style="color:var(--teal3);cursor:pointer;text-decoration:underline;" onclick="removePhotoAndRefresh(${id})">Remove photo</span>`;
+    removeLbl.innerHTML = `<span style="color:var(--teal3);cursor:pointer;text-decoration:underline;" onclick="if(!isAdminUnlocked()){openAdminModal();return;}removePhotoAndRefresh(${id})">Remove photo</span>`;
     zone.appendChild(removeLbl);
   } else {
     zone.innerHTML = `
@@ -1035,7 +1102,7 @@ function openProfile(id) {
         <path d="m21 15-5-5L5 19"/>
       </svg>
       <label class="photo-upload-label">
-        No photo yet — <span onclick="document.getElementById('photoFileInput_${id}').click()">upload one</span>
+        No photo yet — <span onclick="if(!isAdminUnlocked()){openAdminModal();return;}document.getElementById('photoFileInput_${id}').click()">upload one</span>
       </label>
     `;
   }
@@ -1086,6 +1153,7 @@ function openProfile(id) {
     spFileInput.type = 'file'; spFileInput.accept = 'image/*';
     spFileInput.id = `spousePhotoInput_${id}_${slot}`;
     spFileInput.onchange = (e) => {
+      if (!isAdminUnlocked()) { e.target.value=''; openAdminModal(); return; }
       const file = e.target.files[0];
       if (!file) return;
       if (file.size > 2*1024*1024) { alert('Please use an image under 2 MB.'); return; }
@@ -1103,7 +1171,7 @@ function openProfile(id) {
       spPhotoZone.appendChild(img);
       const removeLbl = document.createElement('div');
       removeLbl.style.cssText = 'margin-top:8px;font-family:Inter,sans-serif;font-size:11px;color:var(--text3);';
-      removeLbl.innerHTML = `<span style="color:var(--teal3);cursor:pointer;text-decoration:underline;" onclick="removeSpousePhoto(${id},'${slot}');openProfile(${id})">Remove photo</span>`;
+      removeLbl.innerHTML = `<span style="color:var(--teal3);cursor:pointer;text-decoration:underline;" onclick="if(!isAdminUnlocked()){openAdminModal();return;}removeSpousePhoto(${id},'${slot}');openProfile(${id})">Remove photo</span>`;
       spPhotoZone.appendChild(removeLbl);
     } else {
       spPhotoZone.innerHTML = `
@@ -1113,7 +1181,7 @@ function openProfile(id) {
           <path d="m21 15-5-5L5 19"/>
         </svg>
         <label class="photo-upload-label">
-          No spouse photo — <span onclick="document.getElementById('spousePhotoInput_${id}_${slot}').click()">upload one</span>
+          No spouse photo — <span onclick="if(!isAdminUnlocked()){openAdminModal();return;}document.getElementById('spousePhotoInput_${id}_${slot}').click()">upload one</span>
         </label>
       `;
     }
@@ -1544,6 +1612,20 @@ window.addEventListener('load',()=>{viewIds=getSubtreeIds(5);initialised=false;r
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>render());
 </script>
 
+<!-- ══ ADMIN MODAL ════════════════════════════════════════════════════════ -->
+<div id="adminModal" role="dialog" aria-modal="true">
+  <div class="admin-modal-box">
+    <div class="admin-modal-title" id="adminModalTitle">🔒 Admin Access</div>
+    <div class="admin-modal-sub" id="adminModalSub">Enter the admin password to enable photo uploads and edits.</div>
+    <input class="admin-modal-input" type="password" id="adminPwInput" placeholder="Password" onkeydown="if(event.key==='Enter')submitAdminPw()">
+    <div class="admin-modal-err" id="adminPwErr"></div>
+    <div class="admin-modal-btns">
+      <button class="admin-modal-cancel" onclick="closeAdminModal()">Cancel</button>
+      <button class="admin-modal-ok" onclick="submitAdminPw()">Unlock</button>
+    </div>
+  </div>
+</div>
+
 <div id="spousePopup" role="dialog" aria-modal="true">
   <button class="sp-popup-close" onclick="closeSpousePopup()" aria-label="Close">✕</button>
   <div class="sp-popup-hdr" id="spousePopupHdr"></div>
@@ -1551,6 +1633,80 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
 </div>
 
 <script>
+/* ═══ ADMIN AUTH ═══════════════════════════════════════════════════════════ */
+const ADMIN_HASH = '7151db819d77a706586c0be02f8532bc4588943f0717fda543069b8b32dd27ef';
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function isAdminUnlocked() {
+  try { return sessionStorage.getItem('chAdminUnlocked') === '1'; } catch(e){ return false; }
+}
+
+function applyAdminUI() {
+  const unlocked = isAdminUnlocked();
+  document.body.classList.toggle('admin-unlocked', unlocked);
+  const btn = document.getElementById('adminLockBtn');
+  const icon = document.getElementById('adminLockIcon');
+  const lbl = document.getElementById('adminLockLabel');
+  if (btn) btn.classList.toggle('unlocked', unlocked);
+  if (icon) icon.textContent = unlocked ? '🔓' : '🔒';
+  if (lbl) lbl.textContent = unlocked ? 'Admin ✓' : 'Admin';
+}
+
+function openAdminModal() {
+  if (isAdminUnlocked()) {
+    // Already unlocked — offer to lock
+    if (confirm('Admin mode is active. Click OK to lock it.')) {
+      try { sessionStorage.removeItem('chAdminUnlocked'); } catch(e){}
+      applyAdminUI();
+    }
+    return;
+  }
+  document.getElementById('adminPwInput').value = '';
+  document.getElementById('adminPwErr').textContent = '';
+  document.getElementById('adminModal').classList.add('open');
+  setTimeout(() => document.getElementById('adminPwInput').focus(), 80);
+}
+
+function closeAdminModal() {
+  document.getElementById('adminModal').classList.remove('open');
+}
+
+async function submitAdminPw() {
+  const pw = document.getElementById('adminPwInput').value;
+  const hash = await sha256(pw);
+  if (hash === ADMIN_HASH) {
+    try { sessionStorage.setItem('chAdminUnlocked', '1'); } catch(e){}
+    closeAdminModal();
+    applyAdminUI();
+  } else {
+    document.getElementById('adminPwErr').textContent = 'Incorrect password. Please try again.';
+    document.getElementById('adminPwInput').select();
+  }
+}
+
+function requireAdmin(callback) {
+  if (isAdminUnlocked()) { callback(); return; }
+  document.getElementById('adminPwErr').textContent = '';
+  document.getElementById('adminPwInput').value = '';
+  // Override unlock to run callback after success
+  document.getElementById('adminModal').classList.add('open');
+  setTimeout(() => document.getElementById('adminPwInput').focus(), 80);
+}
+
+// Close admin modal on overlay click
+document.getElementById('adminModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('adminModal')) closeAdminModal();
+});
+
+// Init on load
+window.addEventListener('load', applyAdminUI);
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
 function openSpousePopup(name, pet, house, town, yom, dob, dod, label, personId, slot) {
   const popup = document.getElementById('spousePopup');
   const hdr = document.getElementById('spousePopupHdr');
