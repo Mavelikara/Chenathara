@@ -825,6 +825,26 @@ function removePhoto(id) {
   } catch(e){}
 }
 
+/* ── localStorage spouse photos ──────────────────────────────────────── */
+function getSpousePhotos() {
+  try { return JSON.parse(localStorage.getItem('chSpousePhotos')||'{}'); } catch(e){return{};}
+}
+function saveSpousePhoto(personId, slot, dataUrl) {
+  // slot: 'sp1' or 'sp2'
+  try {
+    const ph = getSpousePhotos();
+    ph[personId + '_' + slot] = dataUrl;
+    localStorage.setItem('chSpousePhotos', JSON.stringify(ph));
+  } catch(e){}
+}
+function removeSpousePhoto(personId, slot) {
+  try {
+    const ph = getSpousePhotos();
+    delete ph[personId + '_' + slot];
+    localStorage.setItem('chSpousePhotos', JSON.stringify(ph));
+  } catch(e){}
+}
+
 /* ── helpers ─────────────────────────────────────────────────────────── */
 const BRANCH_NAMES = {
   0:'Trunk', 5:'C.K. Varkey', 6:'C.K. George', 7:'C.K. John',
@@ -960,12 +980,12 @@ function openProfile(id) {
     const spAttr = [p.spouse, p.spouse_pet||'', p.spouse_house||'', p.spouse_town||'', p.spouse_yom||'', p.spouse_dob||'', p.spouse_dod||''].map(s=>encodeURIComponent(s));
     let spLabel = `+ ${esc(p.spouse)}`;
     if (p.spouse_pet) spLabel += ` "${esc(p.spouse_pet)}"`;
-    htxtHtml += `<div class="profile-spouse sp-trigger" style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;" title="View spouse profile" onclick="openSpousePopup(${spAttr.map(s=>`decodeURIComponent('${s}')`).join(',')},'Spouse')">${spLabel} <span style="font-size:11px;opacity:.7">ⓘ</span></div>`;
+    htxtHtml += `<div class="profile-spouse sp-trigger" style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;" title="View spouse profile" onclick="openSpousePopup(${spAttr.map(s=>`decodeURIComponent('${s}')`).join(',')},'Spouse',${id},'sp1')">${spLabel} <span style="font-size:11px;opacity:.7">ⓘ</span></div>`;
     if (p.spouse2) {
       const sp2Attr = [p.spouse2, p.spouse2_pet||'', p.spouse2_house||'', p.spouse2_town||'', p.spouse2_yom||'', p.spouse2_dob||'', p.spouse2_dod||''].map(s=>encodeURIComponent(s));
       let sp2Label = `+ ${esc(p.spouse2)}`;
       if (p.spouse2_pet) sp2Label += ` "${esc(p.spouse2_pet)}"`;
-      htxtHtml += `<div class="profile-spouse sp-trigger" style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;" title="View spouse profile" onclick="openSpousePopup(${sp2Attr.map(s=>`decodeURIComponent('${s}')`).join(',')},'Second Spouse')">${sp2Label} <span style="font-size:11px;opacity:.7">ⓘ</span></div>`;
+      htxtHtml += `<div class="profile-spouse sp-trigger" style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;" title="View spouse profile" onclick="openSpousePopup(${sp2Attr.map(s=>`decodeURIComponent('${s}')`).join(',')},'Second Spouse',${id},'sp2')">${sp2Label} <span style="font-size:11px;opacity:.7">ⓘ</span></div>`;
     }
   }
   htxtHtml += `<div class="profile-id">ID #${p.id} · Generation ${p.gen} · ${esc(BRANCH_NAMES[p.branch]||'')}</div>`;
@@ -1049,21 +1069,68 @@ function openProfile(id) {
   detailSec.appendChild(fields);
   body.appendChild(detailSec);
 
-  // Spouse details
-  if (p.spouse) {
-    const spSec = document.createElement('div');
-    spSec.className = 'profile-section';
-    spSec.innerHTML = '<div class="profile-section-title">Spouse</div>';
+  // Helper: build a spouse section with photo upload
+  function buildSpouseSection(title, spouseData, slot) {
+    const [spName, spPet, spHouse, spTown, spYom, spDob, spDod] = spouseData;
+    if (!spName) return;
+    const sec = document.createElement('div');
+    sec.className = 'profile-section';
+    sec.innerHTML = `<div class="profile-section-title">${title}</div>`;
+
+    // Photo upload zone for spouse
+    const spPhotoKey = id + '_' + slot;
+    const spPhotos = getSpousePhotos();
+    const spPhotoZone = document.createElement('div');
+    spPhotoZone.className = 'photo-upload-zone';
+    const spFileInput = document.createElement('input');
+    spFileInput.type = 'file'; spFileInput.accept = 'image/*';
+    spFileInput.id = `spousePhotoInput_${id}_${slot}`;
+    spFileInput.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2*1024*1024) { alert('Please use an image under 2 MB.'); return; }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        saveSpousePhoto(id, slot, ev.target.result);
+        openProfile(id);
+      };
+      reader.readAsDataURL(file);
+    };
+    if (spPhotos[spPhotoKey]) {
+      const img = document.createElement('img');
+      img.src = spPhotos[spPhotoKey];
+      img.style.cssText = 'width:100%;max-height:200px;object-fit:contain;border-radius:4px;';
+      spPhotoZone.appendChild(img);
+      const removeLbl = document.createElement('div');
+      removeLbl.style.cssText = 'margin-top:8px;font-family:Inter,sans-serif;font-size:11px;color:var(--text3);';
+      removeLbl.innerHTML = `<span style="color:var(--teal3);cursor:pointer;text-decoration:underline;" onclick="removeSpousePhoto(${id},'${slot}');openProfile(${id})">Remove photo</span>`;
+      spPhotoZone.appendChild(removeLbl);
+    } else {
+      spPhotoZone.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px;height:32px;opacity:.3;display:block;margin:0 auto 6px">
+          <rect x="3" y="5" width="18" height="14" rx="2"/>
+          <circle cx="8.5" cy="10.5" r="1.5"/>
+          <path d="m21 15-5-5L5 19"/>
+        </svg>
+        <label class="photo-upload-label">
+          No spouse photo — <span onclick="document.getElementById('spousePhotoInput_${id}_${slot}').click()">upload one</span>
+        </label>
+      `;
+    }
+    spPhotoZone.appendChild(spFileInput);
+    sec.appendChild(spPhotoZone);
+
+    // Fields
     const spFields = document.createElement('div');
     spFields.className = 'profile-fields';
     const spDefs = [
-      ['Name', p.spouse],
-      ['Pet Name', p.spouse_pet],
-      ['House Name', p.spouse_house || ''],
-      ['Hometown', p.spouse_town || ''],
-      ['Year of Marriage', p.spouse_yom || ''],
-      ['Date of Birth', p.spouse_dob || ''],
-      ['Date of Death', p.spouse_dod || ''],
+      ['Name', spName],
+      ['Pet Name', spPet],
+      ['House Name', spHouse],
+      ['Hometown', spTown],
+      ['Year of Marriage', spYom],
+      ['Date of Birth', spDob],
+      ['Date of Death', spDod],
     ];
     for (const [label, val] of spDefs) {
       const fd = document.createElement('div');
@@ -1072,35 +1139,18 @@ function openProfile(id) {
         <div class="pf-value ${val?'':'empty'}">${val ? esc(val) : 'Not recorded'}</div>`;
       spFields.appendChild(fd);
     }
-    spSec.appendChild(spFields);
-    body.appendChild(spSec);
+    sec.appendChild(spFields);
+    body.appendChild(sec);
+  }
+
+  // Spouse details
+  if (p.spouse) {
+    buildSpouseSection('Spouse', [p.spouse, p.spouse_pet||'', p.spouse_house||'', p.spouse_town||'', p.spouse_yom||'', p.spouse_dob||'', p.spouse_dod||''], 'sp1');
   }
 
   // Spouse 2
   if (p.spouse2) {
-    const sp2Sec = document.createElement('div');
-    sp2Sec.className = 'profile-section';
-    sp2Sec.innerHTML = '<div class="profile-section-title">Second Spouse</div>';
-    const sp2Fields = document.createElement('div');
-    sp2Fields.className = 'profile-fields';
-    const sp2Defs = [
-      ['Name', p.spouse2],
-      ['Pet Name', p.spouse2_pet || ''],
-      ['House Name', p.spouse2_house || ''],
-      ['Hometown', p.spouse2_town || ''],
-      ['Year of Marriage', p.spouse2_yom || ''],
-      ['Date of Birth', p.spouse2_dob || ''],
-      ['Date of Death', p.spouse2_dod || ''],
-    ];
-    for (const [label, val] of sp2Defs) {
-      const fd = document.createElement('div');
-      fd.className = 'profile-field';
-      fd.innerHTML = `<div class="pf-label">${esc(label)}</div>
-        <div class="pf-value ${val?'':'empty'}">${val ? esc(val) : 'Not recorded'}</div>`;
-      sp2Fields.appendChild(fd);
-    }
-    sp2Sec.appendChild(sp2Fields);
-    body.appendChild(sp2Sec);
+    buildSpouseSection('Second Spouse', [p.spouse2, p.spouse2_pet||'', p.spouse2_house||'', p.spouse2_town||'', p.spouse2_yom||'', p.spouse2_dob||'', p.spouse2_dod||''], 'sp2');
   }
 
   // Family connections
@@ -1499,5 +1549,75 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
   <div class="sp-popup-hdr" id="spousePopupHdr"></div>
   <div class="sp-popup-body" id="spousePopupBody"></div>
 </div>
+
+<script>
+function openSpousePopup(name, pet, house, town, yom, dob, dod, label, personId, slot) {
+  const popup = document.getElementById('spousePopup');
+  const hdr = document.getElementById('spousePopupHdr');
+  const bdy = document.getElementById('spousePopupBody');
+
+  // Build initials for avatar
+  const inits = (name||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+
+  // Check for stored photo
+  const spPhotos = (() => { try { return JSON.parse(localStorage.getItem('chSpousePhotos')||'{}'); } catch(e){return{};} })();
+  const photoKey = personId + '_' + slot;
+  const photoUrl = spPhotos[photoKey] || null;
+
+  // Header
+  let avatarHtml;
+  if (photoUrl) {
+    avatarHtml = `<div class="sp-popup-avatar" style="padding:0;overflow:hidden;border:2px solid var(--border);">
+      <img src="${photoUrl}" style="width:54px;height:54px;object-fit:cover;display:block;border-radius:50%;">
+    </div>`;
+  } else {
+    avatarHtml = `<div class="sp-popup-avatar sp-f">${inits}</div>`;
+  }
+
+  hdr.innerHTML = `
+    ${avatarHtml}
+    <div class="sp-popup-title">
+      <div class="sp-popup-name">${name||''}</div>
+      ${pet ? `<div class="sp-popup-sub">"${pet}"</div>` : ''}
+      <div class="sp-popup-tag">${label||'Spouse'}</div>
+    </div>
+  `;
+
+  // Body fields
+  const fields = [
+    ['House Name', house],
+    ['Hometown', town],
+    ['Year of Marriage', yom],
+    ['Date of Birth', dob],
+    ['Date of Death', dod],
+  ];
+  bdy.innerHTML = fields.map(([lbl, val]) => `
+    <div class="sp-popup-field">
+      <span class="sp-popup-label">${lbl}</span>
+      <span class="sp-popup-val ${val?'':'empty'}">${val || 'Not recorded'}</span>
+    </div>
+  `).join('');
+
+  // Position: center of viewport
+  popup.style.left = '50%';
+  popup.style.top = '50%';
+  popup.style.transform = 'translate(-50%, -50%)';
+  popup.classList.add('open');
+}
+
+function closeSpousePopup() {
+  document.getElementById('spousePopup').classList.remove('open');
+}
+
+document.addEventListener('click', e => {
+  const popup = document.getElementById('spousePopup');
+  if (popup && popup.classList.contains('open') && !popup.contains(e.target) && !e.target.classList.contains('sp-trigger')) {
+    closeSpousePopup();
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSpousePopup();
+});
+</script>
 </body>
 </html>
