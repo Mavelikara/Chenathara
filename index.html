@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chenathara Family</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=Inter:wght@300;400;500;600&display=swap">
+<style>
+/* ═══ TOKENS ═══════════════════════════════════════════════════════════════ */
+:root {
+  --bg:        #F8F4EE;
+  --bg2:       #EDE7DB;
+  --bg3:       #E2D9CC;
+  --surface:   #FFFFFF;
+  --surface2:  #FDFAF6;
+  --teal:      #1A4A4A;
+  --teal2:     #245959;
+  --teal3:     #3A7070;
+  --teal4:     #4A8888;
+  --teal-lt:   #D0E8E8;
+  --gold:      #8B6914;
+  --gold2:     #B8891E;
+  --gold-lt:   #F5E8C8;
+  --sage:      #3A6A4A;
+  --sage-lt:   #D5EAD8;
+  --red:       #8B2020;
+  --text:      #2C2420;
+  --text2:     #5A4A3A;
+  --text3:     #8A7A6A;
+  --border:    #C8B89A;
+  --border2:   #E0D4C0;
+  --shadow:    rgba(26,74,74,0.10);
+  --shadow2:   rgba(26,74,74,0.20);
+  --overlay:   rgba(15,30,30,0.65);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0E2020; --bg2:#142828; --bg3:#1A3030; --surface:#1C3232;
+    --surface2:#182828; --teal:#3A8080; --teal2:#4A9090; --teal3:#5AA0A0;
+    --teal4:#6AB0B0; --teal-lt:#1A3535; --gold:#C49A2A; --gold2:#D8B040;
+    --gold-lt:#2A2010; --sage:#5A9A6A; --sage-lt:#182E20; --red:#C04040;
+    --text:#E8E0D0; --text2:#B0A090; --text3:#807060; --border:#3A5050;
+    --border2:#2A4040; --shadow:rgba(0,0,0,.35); --shadow2:rgba(0,0,0,.6);
+    --overlay:rgba(0,10,10,.75);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0E2020; --bg2:#142828; --bg3:#1A3030; --surface:#1C3232;
+  --surface2:#182828; --teal:#3A8080; --teal2:#4A9090; --teal3:#5AA0A0;
+  --teal4:#6AB0B0; --teal-lt:#1A3535; --gold:#C49A2A; --gold2:#D8B040;
+  --gold-lt:#2A2010; --sage:#5A9A6A; --sage-lt:#182E20; --red:#C04040;
+  --text:#E8E0D0; --text2:#B0A090; --text3:#807060; --border:#3A5050;
+  --border2:#2A4040; --shadow:rgba(0,0,0,.35); --shadow2:rgba(0,0,0,.6);
+  --overlay:rgba(0,10,10,.75);
+}
+
+/* ═══ BASE ══════════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:'Source Serif 4',Georgia,serif;
+  background:var(--bg); color:var(--text);
+  font-size:16px; line-height:1.6;
+  display:flex; flex-direction:column; min-height:100%;
+}
+button{cursor:pointer;font-family:inherit;}
+a{color:var(--teal3); text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* ═══ HEADER ════════════════════════════════════════════════════════════════ */
+.site-header{
+  background:var(--teal);
+  color:#fff;
+  position:sticky;
+  top:env(safe-area-inset-top,0);
+  z-index:90;
+  box-shadow:0 2px 16px var(--shadow2);
+}
+.header-top{
+  max-width:1200px; margin:0 auto;
+  padding:0 20px;
+  display:flex; align-items:center; gap:14px;
+  height:56px;
+}
+.logo{
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none; color:#fff; flex-shrink:0;
+}
+.logo-ring{
+  width:34px; height:34px; border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.45);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Cormorant Garant',serif; font-size:17px; font-weight:600;
+}
+.logo-text{
+  font-family:'Cormorant Garant',serif; font-size:19px; font-weight:400;
+  letter-spacing:.02em; line-height:1;
+}
+.logo-text em{font-style:italic; font-weight:300; opacity:.8;}
+.header-stats{
+  font-family:'Inter',sans-serif; font-size:11px; font-weight:300;
+  color:rgba(255,255,255,.45); letter-spacing:.05em; white-space:nowrap;
+}
+.header-right{margin-left:auto; display:flex; gap:8px; align-items:center;}
+/* NAV TABS */
+.nav-tabs{
+  max-width:1200px; margin:0 auto;
+  padding:0 20px;
+  display:flex; gap:2px;
+  border-top:1px solid rgba(255,255,255,.12);
+}
+.nav-tab{
+  background:none; border:none; color:rgba(255,255,255,.6);
+  font-family:'Inter',sans-serif; font-size:12px; font-weight:500;
+  letter-spacing:.05em; text-transform:uppercase;
+  padding:10px 16px; position:relative; transition:color .15s;
+}
+.nav-tab:hover{color:rgba(255,255,255,.9);}
+.nav-tab.active{
+  color:#fff;
+}
+.nav-tab.active::after{
+  content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+  background:var(--gold2);
+}
+
+/* ═══ VIEWS ═════════════════════════════════════════════════════════════════ */
+.view{display:none; flex:1; overflow:auto;}
+.view.active{display:block;}
+
+/* ─── TREE VIEW ─────────────────────────────────────────────────────────── */
+#treeView{
+  display:none;
+  flex-direction:column;
+}
+#treeView.active{display:flex;}
+.tree-toolbar{
+  background:var(--surface);
+  border-bottom:1px solid var(--border2);
+  padding:10px 20px;
+  display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+}
+.tbtn{
+  font-family:'Inter',sans-serif; font-size:11px; font-weight:500;
+  letter-spacing:.03em;
+  padding:5px 12px; border-radius:3px;
+  border:1px solid var(--border); background:var(--surface2); color:var(--text2);
+  transition:all .12s;
+}
+.tbtn:hover{border-color:var(--teal3); color:var(--teal);}
+.tbtn.active{background:var(--teal); color:#fff; border-color:var(--teal);}
+.tree-search-wrap{
+  margin-left:auto; position:relative;
+}
+.tree-search-wrap input{
+  font-family:'Inter',sans-serif; font-size:12px;
+  padding:6px 10px 6px 28px;
+  border:1px solid var(--border); border-radius:3px;
+  background:var(--surface2); color:var(--text); width:180px; outline:none;
+}
+.tree-search-wrap input:focus{border-color:var(--teal3);}
+.tree-search-icon{
+  position:absolute; left:8px; top:50%; transform:translateY(-50%);
+  color:var(--text3); font-size:13px; pointer-events:none;
+}
+.tree-canvas-wrap{
+  flex:1; position:relative; overflow:hidden;
+  background:var(--surface2);
+  cursor:grab; user-select:none; min-height:300px;
+}
+.tree-canvas-wrap:active{cursor:grabbing;}
+#treeCanvas{position:absolute;inset:0;width:100%;height:100%;}
+.tree-hint{
+  position:absolute; bottom:10px; right:12px;
+  font-family:'Inter',sans-serif; font-size:10px; color:var(--text3);
+  pointer-events:none;
+}
+.tree-legend{
+  background:var(--surface); border-top:1px solid var(--border2);
+  padding:8px 20px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+}
+.leg-item{
+  display:flex; align-items:center; gap:5px;
+  font-family:'Inter',sans-serif; font-size:10px; color:var(--text3);
+}
+.leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;}
+
+/* ─── DIRECTORY VIEW ─────────────────────────────────────────────────────── */
+#directoryView{
+  display:none;
+}
+#directoryView.active{display:block;}
+.dir-toolbar{
+  position:sticky; top:0; z-index:20;
+  background:var(--surface);
+  border-bottom:1px solid var(--border2);
+  padding:12px 20px;
+  display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+}
+.dir-search{
+  position:relative; flex:1; min-width:180px; max-width:320px;
+}
+.dir-search input{
+  font-family:'Inter',sans-serif; font-size:13px;
+  padding:8px 12px 8px 32px;
+  border:1px solid var(--border); border-radius:4px;
+  background:var(--surface2); color:var(--text); width:100%; outline:none;
+}
+.dir-search input:focus{border-color:var(--teal3);}
+.dir-search-icon{
+  position:absolute; left:10px; top:50%; transform:translateY(-50%);
+  color:var(--text3); font-size:14px; pointer-events:none;
+}
+.dir-filter-group{
+  display:flex; gap:6px; flex-wrap:wrap;
+}
+.filter-chip{
+  font-family:'Inter',sans-serif; font-size:11px; font-weight:500;
+  padding:4px 10px; border-radius:12px;
+  border:1px solid var(--border); background:var(--surface2); color:var(--text2);
+  transition:all .12s; white-space:nowrap;
+}
+.filter-chip:hover{border-color:var(--teal3); color:var(--teal);}
+.filter-chip.active{background:var(--teal); color:#fff; border-color:var(--teal);}
+.dir-count{
+  margin-left:auto;
+  font-family:'Inter',sans-serif; font-size:11px; color:var(--text3);
+  white-space:nowrap;
+}
+.dir-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:1px;
+  background:var(--border2);
+  padding:0;
+}
+@media(max-width:500px){.dir-grid{grid-template-columns:1fr 1fr;}}
+.dir-card{
+  background:var(--surface2);
+  padding:14px 16px;
+  display:flex; gap:12px; align-items:flex-start;
+  cursor:pointer;
+  transition:background .12s;
+}
+.dir-card:hover{background:var(--teal-lt);}
+.dir-avatar{
+  width:44px; height:44px; border-radius:50%; flex-shrink:0;
+  background:var(--bg3);
+  border:2px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  font-family:'Cormorant Garant',serif; font-size:18px; font-weight:600;
+  color:var(--text3);
+}
+.dir-avatar img{width:100%;height:100%;object-fit:cover;}
+.dir-card-info{flex:1; min-width:0;}
+.dir-card-name{
+  font-family:'Cormorant Garant',serif; font-size:16px; font-weight:600;
+  color:var(--text); line-height:1.2; white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis;
+}
+.dir-card-pet{
+  font-family:'Cormorant Garant',serif; font-style:italic;
+  font-size:12px; color:var(--gold); margin-top:1px;
+}
+.dir-card-meta{
+  font-family:'Inter',sans-serif; font-size:10px; color:var(--text3);
+  margin-top:4px; line-height:1.5;
+}
+.dir-card-gen{
+  display:inline-block;
+  font-family:'Inter',sans-serif; font-size:9px; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase;
+  padding:2px 6px; border-radius:2px;
+  background:var(--teal-lt); color:var(--teal);
+  margin-top:4px;
+}
+.dir-no-results{
+  grid-column:1/-1; padding:60px 20px; text-align:center;
+  font-family:'Cormorant Garant',serif; font-size:20px;
+  color:var(--text3); font-style:italic;
+}
+
+/* ─── ALBUM VIEW ─────────────────────────────────────────────────────────── */
+#albumView{display:none;}
+#albumView.active{display:block;}
+.album-wrap{
+  max-width:1100px; margin:0 auto; padding:40px 20px;
+}
+.album-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:16px; margin-top:28px;
+}
+.album-card{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:6px; overflow:hidden;
+  transition:transform .15s, box-shadow .15s;
+}
+.album-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--shadow2);}
+.album-img{
+  aspect-ratio:4/3; background:var(--bg3);
+  display:flex; align-items:center; justify-content:center;
+  filter:grayscale(100%);
+}
+.album-img img{width:100%;height:100%;object-fit:cover;}
+.album-img-ph{
+  display:flex; flex-direction:column; align-items:center;
+  gap:8px; opacity:.35; padding:20px; text-align:center;
+}
+.album-img-ph svg{width:34px;height:34px;}
+.album-img-ph span{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);}
+.album-caption{padding:12px 14px;}
+.album-title{font-family:'Cormorant Garant',serif;font-size:15px;font-weight:600;color:var(--text);}
+.album-sub{font-family:'Inter',sans-serif;font-size:11px;color:var(--text3);margin-top:2px;}
+.album-upload{
+  margin-top:28px; padding:20px 24px;
+  background:var(--teal-lt); border:1px dashed var(--teal3);
+  border-radius:6px; text-align:center;
+  font-family:'Inter',sans-serif; font-size:13px; color:var(--teal);
+}
+.album-upload strong{font-weight:600;}
+
+/* ─── HISTORY VIEW ──────────────────────────────────────────────────────── */
+#historyView{display:none;}
+#historyView.active{display:block;}
+.history-wrap{
+  max-width:820px; margin:0 auto; padding:48px 20px;
+}
+.history-hero{
+  background:var(--teal); color:#fff; margin:-48px -20px 48px;
+  padding:56px 40px; position:relative; overflow:hidden;
+}
+.history-hero::before{
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 80% 50%,rgba(139,105,20,.15) 0%,transparent 60%);
+  pointer-events:none;
+}
+.history-hero-title{
+  font-family:'Cormorant Garant',serif; font-size:clamp(28px,5vw,48px);
+  font-weight:300; line-height:1.1; position:relative;
+}
+.history-hero-title strong{font-weight:600;}
+.history-hero-title em{font-style:italic; color:var(--gold2);}
+.history-hero-sub{
+  font-family:'Source Serif 4',serif; font-size:17px; font-weight:300;
+  color:rgba(255,255,255,.7); margin-top:12px; max-width:520px; position:relative;
+}
+.history-stats{
+  display:flex; gap:32px; margin-top:32px; flex-wrap:wrap; position:relative;
+}
+.hstat{text-align:center;}
+.hstat-num{font-family:'Cormorant Garant',serif;font-size:40px;font-weight:300;line-height:1;}
+.hstat-lbl{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:2px;}
+.history-tl{
+  display:flex; flex-direction:column; gap:0; position:relative;
+  padding-left:28px; margin:40px 0;
+}
+.history-tl::before{
+  content:''; position:absolute; left:6px; top:8px; bottom:8px;
+  width:2px; background:var(--border); opacity:.6;
+}
+.tl-item{padding-bottom:32px; position:relative;}
+.tl-dot{
+  position:absolute; left:-22px; top:4px;
+  width:12px; height:12px; border-radius:50%;
+  background:var(--gold); border:2px solid var(--bg);
+  z-index:1;
+}
+.tl-era{
+  font-family:'Inter',sans-serif; font-size:10px; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:4px;
+}
+.tl-head{
+  font-family:'Cormorant Garant',serif; font-size:19px; font-weight:600;
+  color:var(--text); margin-bottom:6px;
+}
+.tl-body{
+  font-family:'Source Serif 4',serif; font-size:15px; font-weight:300;
+  line-height:1.75; color:var(--text2);
+}
+.history-prose p{
+  font-size:17px; font-weight:300; line-height:1.85;
+  margin:0 0 20px; color:var(--text);
+}
+.history-prose strong{font-weight:600; color:var(--teal);}
+
+/* ═══ PROFILE MODAL ══════════════════════════════════════════════════════════ */
+.modal-backdrop{
+  display:none; position:fixed; inset:0; z-index:200;
+  background:var(--overlay); backdrop-filter:blur(3px);
+  align-items:center; justify-content:center; padding:20px;
+}
+.modal-backdrop.open{display:flex;}
+.modal{
+  background:var(--surface);
+  border-radius:8px;
+  box-shadow:0 24px 60px var(--shadow2);
+  width:100%; max-width:600px;
+  max-height:90vh; overflow-y:auto;
+  position:relative;
+}
+.modal-close{
+  position:absolute; top:14px; right:14px; z-index:10;
+  background:var(--bg2); border:none; border-radius:50%;
+  width:32px; height:32px; display:flex; align-items:center; justify-content:center;
+  font-size:16px; color:var(--text3); transition:all .15s;
+}
+.modal-close:hover{background:var(--teal);color:#fff;}
+.modal-header{
+  background:var(--teal); color:#fff;
+  padding:28px 24px 24px; border-radius:8px 8px 0 0;
+  display:flex; gap:20px; align-items:flex-start;
+}
+.profile-avatar{
+  width:72px; height:72px; border-radius:50%; flex-shrink:0;
+  background:rgba(255,255,255,.15); border:2px solid rgba(255,255,255,.3);
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+  font-family:'Cormorant Garant',serif; font-size:28px; font-weight:600; color:rgba(255,255,255,.7);
+}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;}
+.profile-header-text{flex:1;}
+.profile-name{
+  font-family:'Cormorant Garant',serif; font-size:26px; font-weight:600;
+  line-height:1.15;
+}
+.profile-pet{
+  font-family:'Cormorant Garant',serif; font-style:italic;
+  font-size:16px; color:var(--gold2); margin-top:2px;
+}
+.profile-id{
+  font-family:'Inter',sans-serif; font-size:10px; font-weight:500;
+  letter-spacing:.08em; text-transform:uppercase;
+  color:rgba(255,255,255,.45); margin-top:6px;
+}
+.profile-spouse{
+  font-family:'Source Serif 4',serif; font-style:italic;
+  font-size:15px; color:rgba(255,255,255,.75); margin-top:4px;
+}
+.modal-body{padding:24px;}
+.profile-section{margin-bottom:20px;}
+.profile-section:last-child{margin-bottom:0;}
+.profile-section-title{
+  font-family:'Inter',sans-serif; font-size:10px; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--text3);
+  margin-bottom:10px; padding-bottom:6px;
+  border-bottom:1px solid var(--border2);
+}
+.profile-fields{
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+}
+@media(max-width:440px){.profile-fields{grid-template-columns:1fr;}}
+.profile-field{}
+.pf-label{font-family:'Inter',sans-serif;font-size:10px;color:var(--text3);margin-bottom:2px;}
+.pf-value{font-family:'Source Serif 4',serif;font-size:15px;color:var(--text);}
+.pf-value.empty{color:var(--text3);font-style:italic;font-size:13px;}
+/* Photo upload zone */
+.photo-upload-zone{
+  border:2px dashed var(--border); border-radius:6px;
+  padding:20px; text-align:center; margin-bottom:10px;
+  background:var(--bg2);
+}
+.photo-upload-zone svg{width:32px;height:32px;opacity:.3;margin-bottom:6px;}
+.photo-upload-label{
+  font-family:'Inter',sans-serif; font-size:12px; color:var(--text3);
+  display:block;
+}
+.photo-upload-label span{color:var(--teal3); text-decoration:underline; cursor:pointer;}
+.photo-upload-zone input[type=file]{display:none;}
+/* Family links */
+.family-links{display:flex;flex-wrap:wrap;gap:8px;}
+.flink{
+  display:flex; align-items:center; gap:6px;
+  padding:6px 10px; border-radius:4px;
+  background:var(--bg2); border:1px solid var(--border2);
+  cursor:pointer; transition:all .12s; text-decoration:none;
+}
+.flink:hover{background:var(--teal-lt); border-color:var(--teal3);}
+.flink-avatar{
+  width:26px; height:26px; border-radius:50%; background:var(--bg3);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Cormorant Garant',serif; font-size:11px; font-weight:600;
+  color:var(--text3); overflow:hidden; flex-shrink:0;
+}
+.flink-avatar img{width:100%;height:100%;object-fit:cover;}
+.flink-info{}
+.flink-name{font-family:'Cormorant Garant',serif;font-size:13px;font-weight:600;color:var(--text);line-height:1.2;}
+.flink-role{font-family:'Inter',sans-serif;font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;}
+
+/* ═══ TOOLTIP (tree) ════════════════════════════════════════════════════════ */
+.tree-tooltip{
+  position:fixed; pointer-events:none; z-index:180; display:none;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:6px; padding:10px 14px; box-shadow:0 4px 20px var(--shadow2);
+  max-width:220px;
+}
+.tt-name{font-family:'Cormorant Garant',serif;font-size:16px;font-weight:600;color:var(--text);}
+.tt-pet{font-family:'Cormorant Garant',serif;font-style:italic;font-size:12px;color:var(--gold);}
+.tt-meta{font-family:'Inter',sans-serif;font-size:10px;color:var(--text3);margin-top:4px;line-height:1.5;}
+.tt-sp{font-family:'Source Serif 4',serif;font-style:italic;font-size:12px;color:var(--sage);margin-top:3px;}
+.tt-hint{font-family:'Inter',sans-serif;font-size:9px;color:var(--teal3);margin-top:4px;}
+
+/* ═══ SECTION HEADER ════════════════════════════════════════════════════════ */
+.section-eyebrow{
+  font-family:'Inter',sans-serif; font-size:10px; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--gold);
+  margin-bottom:8px;
+}
+.section-title{
+  font-family:'Cormorant Garant',serif; font-size:clamp(24px,4vw,38px);
+  font-weight:600; line-height:1.15; margin:0 0 6px;
+}
+.section-title em{font-style:italic; color:var(--teal3);}
+
+/* ═══ RESPONSIVE ════════════════════════════════════════════════════════════ */
+@media(max-width:500px){
+  .header-stats{display:none;}
+  .nav-tab{padding:8px 10px; font-size:11px;}
+  .tree-toolbar{padding:8px 12px;}
+}
+</style>
+</head>
+<body>
+<!-- ══ HEADER ═══════════════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-top">
+    <a href="#" class="logo" onclick="return false;">
+      <div class="logo-ring">C</div>
+      <div class="logo-text">Chenathara <em>Family</em></div>
+    </a>
+    <span class="header-stats">275 members · 8 generations</span>
+    <div class="header-right"></div>
+  </div>
+  <nav class="nav-tabs" role="tablist">
+    <button class="nav-tab active" onclick="showView('historyView',this)" role="tab">📖 History</button>
+    <button class="nav-tab" onclick="showView('directoryView',this)" role="tab">📋 Directory</button>
+    <button class="nav-tab" onclick="showView('albumView',this)" role="tab">📷 Album</button>
+    <button class="nav-tab" onclick="showView('treeView',this)" role="tab">🌳 Family Tree</button>
+  </nav>
+</header>
+
+<!-- ══ TREE VIEW ════════════════════════════════════════════════════════════ -->
+<div id="treeView" class="view">
+  <div class="tree-toolbar">
+    <button class="tbtn active" onclick="focusBranch(5,this)">C. K. Varkey</button>
+    <button class="tbtn" onclick="focusBranch(6,this)">C. K. George</button>
+    <button class="tbtn" onclick="focusBranch(7,this)">C. K. John</button>
+    <button class="tbtn" onclick="focusBranch(9,this)">Aleyamma</button>
+    <button class="tbtn" onclick="focusBranch(10,this)">Annama</button>
+    <button class="tbtn" onclick="focusBranch(11,this)">Saramma</button>
+    <button class="tbtn" onclick="focusBranch(12,this)">Sociamma</button>
+    <div class="tree-search-wrap">
+      <span class="tree-search-icon">⌕</span>
+      <input id="treeSearchInput" type="text" placeholder="Search…" oninput="treeSearch(this.value)">
+    </div>
+  </div>
+  <div class="tree-canvas-wrap" id="treeWrap">
+    <canvas id="treeCanvas"></canvas>
+    <div class="tree-hint">Drag · Scroll to zoom · Click for profile</div>
+  </div>
+  <div class="tree-legend">
+    <span style="font-family:Inter,sans-serif;font-size:10px;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-right:4px;">Gen:</span>
+    <div class="leg-item"><div class="leg-dot" style="background:#1A4A4A"></div>Root (Varki)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#245959"></div>Gen 1</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#8B6914;opacity:.5"></div>Gen 2</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#3A6A4A;opacity:.5"></div>Gen 3</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#5A4A8A;opacity:.5"></div>Gen 4</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#3A5A8A;opacity:.5"></div>Gen 5+</div>
+    <div class="leg-item" style="margin-left:auto"><em style="font-family:'Cormorant Garant',serif;font-size:11px;color:var(--sage)">+ green = spouse name</em></div>
+  </div>
+</div>
+
+<!-- ══ DIRECTORY VIEW ══════════════════════════════════════════════════════ -->
+<div id="directoryView" class="view">
+  <div class="dir-toolbar">
+    <div class="dir-search">
+      <span class="dir-search-icon">⌕</span>
+      <input id="dirSearch" type="text" placeholder="Search name, pet name, spouse…" oninput="renderDirectory()">
+    </div>
+    <div class="dir-filter-group" id="branchFilters">
+      <button class="filter-chip active" data-branch="all" onclick="setBranchFilter('all',this)">All Branches</button>
+      <button class="filter-chip" data-branch="0" onclick="setBranchFilter('0',this)">Trunk</button>
+      <button class="filter-chip" data-branch="5" onclick="setBranchFilter('5',this)">C.K. Varkey</button>
+      <button class="filter-chip" data-branch="6" onclick="setBranchFilter('6',this)">C.K. George</button>
+      <button class="filter-chip" data-branch="7" onclick="setBranchFilter('7',this)">C.K. John</button>
+      <button class="filter-chip" data-branch="8" onclick="setBranchFilter('8',this)">Mary</button>
+      <button class="filter-chip" data-branch="9" onclick="setBranchFilter('9',this)">Aleyamma</button>
+      <button class="filter-chip" data-branch="10" onclick="setBranchFilter('10',this)">Annama</button>
+      <button class="filter-chip" data-branch="11" onclick="setBranchFilter('11',this)">Saramma</button>
+      <button class="filter-chip" data-branch="12" onclick="setBranchFilter('12',this)">Sociamma</button>
+    </div>
+    <span class="dir-count" id="dirCount"></span>
+  </div>
+  <div class="dir-grid" id="dirGrid"></div>
+</div>
+
+<!-- ══ ALBUM VIEW ══════════════════════════════════════════════════════════ -->
+<div id="albumView" class="view">
+  <div class="album-wrap">
+    <div class="section-eyebrow">Memories</div>
+    <h2 class="section-title">Family <em>Album</em></h2>
+    <p style="font-family:'Source Serif 4',serif;font-size:17px;font-weight:300;color:var(--text2);line-height:1.8;max-width:600px;margin:12px 0 0">
+      Old photographs tell the story that names and dates cannot — formal portraits, candid moments, the ancestral home in Central Kerala.
+    </p>
+    <div class="album-grid">
+      <div class="album-card">
+        <div class="album-img"><div class="album-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="m21 15-5-5L5 19"/></svg><span>Photograph</span></div></div>
+        <div class="album-caption"><div class="album-title">Family Portrait</div><div class="album-sub">circa 1950s · Central Kerala</div></div>
+      </div>
+      <div class="album-card">
+        <div class="album-img"><div class="album-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="m21 15-5-5L5 19"/></svg><span>Photograph</span></div></div>
+        <div class="album-caption"><div class="album-title">Koshy &amp; Achama</div><div class="album-sub">Wedding photograph</div></div>
+      </div>
+      <div class="album-card">
+        <div class="album-img"><div class="album-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="m21 15-5-5L5 19"/></svg><span>Photograph</span></div></div>
+        <div class="album-caption"><div class="album-title">The Ancestral Home</div><div class="album-sub">Central Kerala</div></div>
+      </div>
+      <div class="album-card">
+        <div class="album-img"><div class="album-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="m21 15-5-5L5 19"/></svg><span>Photograph</span></div></div>
+        <div class="album-caption"><div class="album-title">Family Gathering</div><div class="album-sub">Malabar, 1970s</div></div>
+      </div>
+    </div>
+    <div class="album-upload">
+      <strong>Have a photograph to share?</strong><br>
+      Old photographs — portraits, gatherings, the ancestral home — are invaluable. Please contact the compiler to contribute to this album.
+    </div>
+  </div>
+</div>
+
+<!-- ══ HISTORY VIEW ════════════════════════════════════════════════════════ -->
+<div id="historyView" class="view active">
+  <div class="history-wrap">
+    <div class="history-hero">
+      <div class="history-hero-title">The <em>Chenathara</em><br><strong>Family History</strong></div>
+      <p class="history-hero-sub">From Central Travancore to the foothills of Wayanad — a family who cleared forests and built a new life in Malabar.</p>
+      <div class="history-stats">
+        <div class="hstat"><div class="hstat-num">275</div><div class="hstat-lbl">Members</div></div>
+        <div class="hstat"><div class="hstat-num">8</div><div class="hstat-lbl">Generations</div></div>
+        <div class="hstat"><div class="hstat-num">7</div><div class="hstat-lbl">Main Branches</div></div>
+      </div>
+    </div>
+
+    <div class="history-tl">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Origins</div>
+        <div class="tl-head">Central Travancore</div>
+        <div class="tl-body">The Chenathara family originally belonged to Central Travancore, where they lived largely by farming. Land was limited, families were large, and what could be cultivated was simply not sufficient to provide for everyone or to offer much opportunity to the next generation.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--teal3)"></div>
+        <div class="tl-era">Late 1940s – Early 1950s</div>
+        <div class="tl-head">The Opening to Malabar</div>
+        <div class="tl-body">By the late 1940s, one branch of the family began looking northward. Malabar offered large areas still sparsely settled and heavily forested. An important opportunity arose through Mary Koshy, who was married to Chitramezhuthu K. M. Varghese — through this connection, the family was able to approach the then Diwan and obtain access to land. They were told, in effect, that they could clear and cultivate as much land as they were capable of managing.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--gold)"></div>
+        <div class="tl-era">The Migration</div>
+        <div class="tl-head">Almost the Entire Family Moved</div>
+        <div class="tl-body">The family sold what they possessed in Central Travancore, gathered their belongings and moved northwards to Malabar. Almost the entire family made the journey — the only one who remained behind was Mary Koshy, who had established her life in Mavelikara with her husband.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--sage)"></div>
+        <div class="tl-era">Settlement</div>
+        <div class="tl-head">Clearing the Forest</div>
+        <div class="tl-body">They arrived in a region that was still largely wilderness. Dense forests had to be cleared, wildlife was part of everyday life, homes had to be established, and the land itself had to be prepared before crops could be planted. What followed was a long period of hard physical labour — cutting back the forest, tilling the soil, and gradually transforming the land into productive farms. Family tradition holds that the Chenathara family eventually came to possess approximately 400 acres of land.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--teal4)"></div>
+        <div class="tl-era">Today</div>
+        <div class="tl-head">Malabar and Beyond</div>
+        <div class="tl-body">The family settled towards the foothills of Wayanad, where rice, bananas, pepper, and rubber became important sources of livelihood. The children of those first settlers grew up in Malabar, followed by their grandchildren and great-grandchildren — many of whom continue to live and farm in the region. What began as a search for land became one of the defining chapters in Chenathara family history.</div>
+      </div>
+    </div>
+
+    <div class="history-prose">
+      <p><strong>The Chenathara family</strong> — the spelling used here — originally belonged to Central Travancore. Their migration to Malabar in the late 1940s, prompted by limited land and limited means, transformed a farming family into pioneers who cleared forests and built new lives from the ground up.</p>
+      <p>This record began as a handwritten document, gradually expanded into the directory you see here. It is a work in progress: corrections, additions, and old photographs are always welcome.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROFILE MODAL ════════════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="profileModal" onclick="closeModal(event)">
+  <div class="modal" id="modalInner">
+    <button class="modal-close" onclick="closeProfileModal()">✕</button>
+    <div class="modal-header" id="modalHeader"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- Tree tooltip -->
+<div class="tree-tooltip" id="treeTooltip"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════════════════════ */
+const RAW = 
+{"people":{"1":{"id":1,"name":"Varki","pet":"","dob":"","dod":"","gen":"0","spouse":"","spouse_pet":"","parent_id":null,"branch":0},"2":{"id":2,"name":"George","pet":"","dob":"","dod":"","gen":"1","spouse":"","spouse_pet":"","parent_id":1,"branch":0},"3":{"id":3,"name":"Koshy","pet":"","dob":"08-Aug-88","dod":"02-Jun-68","gen":"1","spouse":"Achama","spouse_pet":"","parent_id":1,"branch":0},"4":{"id":4,"name":"Varghese","pet":"","dob":"","dod":"","gen":"1","spouse":"","spouse_pet":"","parent_id":1,"branch":0},"5":{"id":5,"name":"C. K. Varkey","pet":"Kunjuchan","dob":"18-Aug-16","dod":"19-Jan-90","gen":"3","spouse":"Sosamma","spouse_pet":"Thangamma","parent_id":3,"branch":5},"6":{"id":6,"name":"C. K. George","pet":"Kuttichan","dob":"29-Aug-18","dod":"22-Sep-75","gen":"3","spouse":"Mary Mathew","spouse_pet":"","parent_id":3,"branch":6},"7":{"id":7,"name":"C. K. John","pet":"Johnychan","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":3,"branch":7},"8":{"id":8,"name":"Mary","pet":"Kunjamma","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":3,"branch":8},"9":{"id":9,"name":"Aleyamma","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":3,"branch":9},"10":{"id":10,"name":"Annama (Varghese)","pet":"Pennamma","dob":"","dod":"20-Feb-98","gen":"3","spouse":"V. M. Varghese","spouse_pet":"","parent_id":3,"branch":10},"11":{"id":11,"name":"Saramma","pet":"Thangamma","dob":"","dod":"","gen":"3","spouse":"John","spouse_pet":"","parent_id":3,"branch":11},"12":{"id":12,"name":"Sociamma","pet":"Amini (Kunjayi)","dob":"","dod":"","gen":"3","spouse":"M. P. Varghese","spouse_pet":"","parent_id":3,"branch":12},"13":{"id":13,"name":"Koshy Varkey","pet":"Achankunju","dob":"05-May-43","dod":"02-Aug-91","gen":"4","spouse":"Jessy","spouse_pet":"Victoria","parent_id":5,"branch":5},"14":{"id":14,"name":"C. V. Ninan","pet":"Papachan","dob":"23-Aug-47","dod":"11-Jan-05","gen":"4","spouse":"Leelama","spouse_pet":"","parent_id":5,"branch":5},"15":{"id":15,"name":"Mary","pet":"Kuttichi","dob":"15-Aug-45","dod":"","gen":"4","spouse":"T. C. Jacob","spouse_pet":"Raju","parent_id":5,"branch":5},"16":{"id":16,"name":"C. V. George","pet":"Lalan","dob":"26-Apr-60","dod":"","gen":"4","spouse":"Betty","spouse_pet":"","parent_id":5,"branch":5},"17":{"id":17,"name":"C. K. Shine (Rev)","pet":"","dob":"24-Nov-74","dod":"","gen":"5","spouse":"Juby","spouse_pet":"","parent_id":13,"branch":5},"18":{"id":18,"name":"C. K. Sherin","pet":"","dob":"22-May-77","dod":"","gen":"5","spouse":"Annie","spouse_pet":"","parent_id":13,"branch":5},"19":{"id":19,"name":"Derish","pet":"","dob":"30-Oct-71","dod":"","gen":"5","spouse":"Princy","spouse_pet":"","parent_id":14,"branch":5},"20":{"id":20,"name":"Daisen","pet":"","dob":"28-Sep-75","dod":"","gen":"5","spouse":"Simi Mathew","spouse_pet":"","parent_id":14,"branch":5},"21":{"id":21,"name":"Doncy","pet":"","dob":"18-Jan-78","dod":"","gen":"5","spouse":"Joshy Anthony","spouse_pet":"","parent_id":14,"branch":5},"22":{"id":22,"name":"Denny","pet":"","dob":"09-Feb-73","dod":"","gen":"5","spouse":"Laly","spouse_pet":"","parent_id":15,"branch":5},"23":{"id":23,"name":"Dimple","pet":"","dob":"23-May-75","dod":"","gen":"5","spouse":"Joyce","spouse_pet":"","parent_id":15,"branch":5},"24":{"id":24,"name":"Deepa","pet":"","dob":"31-May-79","dod":"","gen":"5","spouse":"Sam Abraham","spouse_pet":"","parent_id":15,"branch":5},"25":{"id":25,"name":"George Koshy","pet":"Kunjumon","dob":"20-Oct-46","dod":"","gen":"4","spouse":"Eliyamma","spouse_pet":"","parent_id":6,"branch":6},"26":{"id":26,"name":"George Mathew","pet":"Moni","dob":"10-Mar-51","dod":"","gen":"4","spouse":"Suseela","spouse_pet":"","parent_id":6,"branch":6},"27":{"id":27,"name":"Jacob (1st Marriage)","pet":"Papachan","dob":"","dod":"","gen":"4","spouse":"Omana","spouse_pet":"","parent_id":8,"branch":8},"28":{"id":28,"name":"John Varghese","pet":"Babuchan","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":8,"branch":8},"29":{"id":29,"name":"Varghese","pet":"Shanthan","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":8,"branch":8},"30":{"id":30,"name":"Saramma","pet":"Omana","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":8,"branch":8},"31":{"id":31,"name":"Thomas Varghese","pet":"Roy","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":8,"branch":8},"32":{"id":32,"name":"Koshy","pet":"Kunjuroa","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":8,"branch":8},"33":{"id":33,"name":"Susanama","pet":"Kujumini","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":8,"branch":8},"34":{"id":34,"name":"Dangli","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":27,"branch":8},"35":{"id":35,"name":"Sophi","pet":"","dob":"","dod":"","gen":"5","spouse":"Rani","spouse_pet":"","parent_id":27,"branch":8},"36":{"id":36,"name":"Saji","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":27,"branch":8},"37":{"id":37,"name":"Elizabeth Oommen","pet":"Loucy","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":30,"branch":8},"38":{"id":38,"name":"Jacob Oommen","pet":"Legy","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":30,"branch":8},"39":{"id":39,"name":"Varghese Oommen","pet":"Lerrish","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":30,"branch":8},"40":{"id":40,"name":"John Varghese","pet":"Blesson","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":28,"branch":8},"41":{"id":41,"name":"Mary Varghese","pet":"Beena","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":28,"branch":8},"42":{"id":42,"name":"Mathew Varghese","pet":"Benny","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":28,"branch":8},"43":{"id":43,"name":"Robin Varghese","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":29,"branch":8},"44":{"id":44,"name":"Linda Varghese","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":29,"branch":8},"45":{"id":45,"name":"Reena Varghese","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":31,"branch":8},"46":{"id":46,"name":"Roshan Mathew Varghese","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":31,"branch":8},"47":{"id":47,"name":"Reeba Mary Varghese","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":31,"branch":8},"48":{"id":48,"name":"Rajini","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":32,"branch":8},"49":{"id":49,"name":"Ranjan","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":32,"branch":8},"50":{"id":50,"name":"Julie Avarachen","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":33,"branch":8},"51":{"id":51,"name":"Jessie Avarachen","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":33,"branch":8},"52":{"id":52,"name":"Nishy Avarachen","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":33,"branch":8},"53":{"id":53,"name":"Vijay Avarachen","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":33,"branch":8},"54":{"id":54,"name":"Anuskha John","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":40,"branch":8},"55":{"id":55,"name":"Angel John","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":40,"branch":8},"56":{"id":56,"name":"Donia Scaria","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":41,"branch":8},"57":{"id":57,"name":"Danuja Scaria","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":41,"branch":8},"58":{"id":58,"name":"Joel Varghese","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":42,"branch":8},"59":{"id":59,"name":"Johanna Varghese","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":42,"branch":8},"60":{"id":60,"name":"Leela","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":44,"branch":8},"61":{"id":61,"name":"David Daniel","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":37,"branch":8},"62":{"id":62,"name":"Joshua Daniel","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":37,"branch":8},"63":{"id":63,"name":"Jeremy Daniel","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":37,"branch":8},"64":{"id":64,"name":"Hannah Varghese","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":39,"branch":8},"65":{"id":65,"name":"Samuel Varghese","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":39,"branch":8},"66":{"id":66,"name":"Ruben Joseph","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":45,"branch":8},"67":{"id":67,"name":"Rhea Joseph","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":45,"branch":8},"68":{"id":68,"name":"Ryan Joseph","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":45,"branch":8},"69":{"id":69,"name":"Joshua Thomas","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":46,"branch":8},"70":{"id":70,"name":"Amy","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":47,"branch":8},"71":{"id":71,"name":"Steeve","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":49,"branch":8},"72":{"id":72,"name":"Racheal Reynolds","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":50,"branch":8},"73":{"id":73,"name":"Amanda Reynolds","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":50,"branch":8},"74":{"id":74,"name":"Aaron Reynolds","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":50,"branch":8},"75":{"id":75,"name":"Ethan Sam","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":51,"branch":8},"76":{"id":76,"name":"Caleb Sam","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":51,"branch":8},"77":{"id":77,"name":"Zakaria Ellla","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":52,"branch":8},"78":{"id":78,"name":"Zahra Ella","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":52,"branch":8},"79":{"id":79,"name":"Audrey Avarachen","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":53,"branch":8},"80":{"id":80,"name":"Katlyn Avarachen","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":53,"branch":8},"81":{"id":81,"name":"Thanghan","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":null,"branch":0},"82":{"id":82,"name":"Kunjumol","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":null,"branch":0},"83":{"id":83,"name":"Podichan","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":null,"branch":0},"84":{"id":84,"name":"Biju","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":null,"branch":0},"85":{"id":85,"name":"Unni","pet":"","dob":"","dod":"","gen":"2","spouse":"","spouse_pet":"","parent_id":2,"branch":0},"86":{"id":86,"name":"Papi","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":85,"branch":0},"87":{"id":87,"name":"Baby","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":85,"branch":0},"88":{"id":88,"name":"Kunjumon","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":85,"branch":0},"89":{"id":89,"name":"Amani","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":85,"branch":0},"90":{"id":90,"name":"Soju","pet":"","dob":"19-Apr-88","dod":"","gen":"5","spouse":"Nimmi Einstien","spouse_pet":"","parent_id":16,"branch":5},"91":{"id":91,"name":"Simsy","pet":"","dob":"04-Apr-91","dod":"","gen":"5","spouse":"Rijo C. M","spouse_pet":"","parent_id":16,"branch":5},"92":{"id":92,"name":"Simjo","pet":"","dob":"11-Apr-95","dod":"","gen":"5","spouse":"Anusha Wilson","spouse_pet":"","parent_id":16,"branch":5},"93":{"id":93,"name":"Rosemin","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":18,"branch":5},"94":{"id":94,"name":"Angeline","pet":"","dob":"14-Aug-10","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":18,"branch":5},"95":{"id":95,"name":"Edsel","pet":"","dob":"28-Sep-04","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":19,"branch":5},"96":{"id":96,"name":"Erlene","pet":"","dob":"22-Apr-09","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":19,"branch":5},"97":{"id":97,"name":"Felisha","pet":"Achu","dob":"17-Jul-05","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":20,"branch":5},"98":{"id":98,"name":"Fensha","pet":"Allu","dob":"02-Dec-08","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":20,"branch":5},"99":{"id":99,"name":"Fiona","pet":"Ammu","dob":"07-Sep-19","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":20,"branch":5},"100":{"id":100,"name":"Johan Anthony","pet":"","dob":"27-Mar-11","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":21,"branch":5},"101":{"id":101,"name":"Joel","pet":"","dob":"01-Mar-01","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":23,"branch":5},"102":{"id":102,"name":"Noel","pet":"","dob":"22-Nov-03","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":23,"branch":5},"103":{"id":103,"name":"Jovita","pet":"","dob":"12-Feb-19","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":90,"branch":5},"104":{"id":104,"name":"Julia","pet":"","dob":"10-Oct-23","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":90,"branch":5},"105":{"id":105,"name":"Penamma","pet":"","dob":"","dod":"","gen":"2","spouse":"","spouse_pet":"","parent_id":2,"branch":0},"106":{"id":106,"name":"Mercy","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"107":{"id":107,"name":"Sajan","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"108":{"id":108,"name":"Joy","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"109":{"id":109,"name":"Mary","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"110":{"id":110,"name":"George","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"111":{"id":111,"name":"Raju","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"112":{"id":112,"name":"Reji","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"113":{"id":113,"name":"Rosemin","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":17,"branch":5},"114":{"id":114,"name":"Omana","pet":"","dob":"","dod":"","gen":"5","spouse":"Col. Babu","spouse_pet":"","parent_id":144,"branch":10},"115":{"id":115,"name":"Saji","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":144,"branch":10},"116":{"id":116,"name":"Daughter I","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":114,"branch":10},"117":{"id":117,"name":"Daughter II","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":114,"branch":10},"118":{"id":118,"name":"George","pet":"Aniyan","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"119":{"id":119,"name":"Joy","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"120":{"id":120,"name":"Raju","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"121":{"id":121,"name":"Mary","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"122":{"id":122,"name":"Reji","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":105,"branch":0},"123":{"id":123,"name":"Son","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":121,"branch":0},"124":{"id":124,"name":"Daughter","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":121,"branch":0},"125":{"id":125,"name":"Samuel","pet":"Sam","dob":"26-Sep-74","dod":"","gen":"4","spouse":"Jolly","spouse_pet":"","parent_id":12,"branch":12},"126":{"id":126,"name":"Daughter I","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":118,"branch":0},"127":{"id":127,"name":"Rijo","pet":"","dob":"30-Apr-86","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":92,"branch":5},"128":{"id":128,"name":"Iyrin","pet":"","dob":"28-Oct-16","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":92,"branch":5},"129":{"id":129,"name":"Rajan","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":11,"branch":11},"130":{"id":130,"name":"Kunjumon","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":11,"branch":11},"131":{"id":131,"name":"Podi","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":11,"branch":11},"132":{"id":132,"name":"Penamma","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":11,"branch":11},"133":{"id":133,"name":"Thangama","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":11,"branch":11},"134":{"id":134,"name":"Benny","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":129,"branch":11},"135":{"id":135,"name":"Betty","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":129,"branch":11},"136":{"id":136,"name":"Vinu","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":135,"branch":11},"137":{"id":137,"name":"Nisha","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":130,"branch":11},"138":{"id":138,"name":"Jenish","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":130,"branch":11},"139":{"id":139,"name":"Saju","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":131,"branch":11},"140":{"id":140,"name":"Lali","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":132,"branch":11},"141":{"id":141,"name":"Jessy","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":132,"branch":11},"142":{"id":142,"name":"Elsi","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":132,"branch":11},"143":{"id":143,"name":"Kunjumon","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":10,"branch":10},"144":{"id":144,"name":"Kunjama","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":10,"branch":10},"145":{"id":145,"name":"Thangama","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":9,"branch":9},"146":{"id":146,"name":"Chinamma","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":9,"branch":9},"147":{"id":147,"name":"Moly","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":9,"branch":9},"148":{"id":148,"name":"Joy","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":9,"branch":9},"149":{"id":149,"name":"George Koshy","pet":"Thangachan","dob":"","dod":"","gen":"5","spouse":"Leela Paulose","spouse_pet":"Lellama","parent_id":145,"branch":9},"150":{"id":150,"name":"Sunny","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":145,"branch":9},"151":{"id":151,"name":"Jessy","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":145,"branch":9},"152":{"id":152,"name":"Benny","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":145,"branch":9},"153":{"id":153,"name":"Sissy","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":145,"branch":9},"154":{"id":154,"name":"Sam","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":145,"branch":9},"155":{"id":155,"name":"Alice","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":146,"branch":9},"156":{"id":156,"name":"Anuskha John","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":146,"branch":9},"157":{"id":157,"name":"Alathon (ELDO)","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":146,"branch":9},"158":{"id":158,"name":"Viju","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":146,"branch":9},"159":{"id":159,"name":"Shaji","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":147,"branch":9},"160":{"id":160,"name":"Dangli","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":159,"branch":9},"161":{"id":161,"name":"Sephi","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":159,"branch":9},"162":{"id":162,"name":"Vijayan","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":148,"branch":9},"163":{"id":163,"name":"Kurian","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":148,"branch":9},"164":{"id":164,"name":"Baby (First Marriage)","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":7,"branch":7},"165":{"id":165,"name":"Ponamma (First Marriage)","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":7,"branch":7},"166":{"id":166,"name":"Lizzie","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":7,"branch":7},"167":{"id":167,"name":"Lovely","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":7,"branch":7},"168":{"id":168,"name":"Lalan","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":7,"branch":7},"169":{"id":169,"name":"Lilu","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":7,"branch":7},"170":{"id":170,"name":"Lalu","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":7,"branch":7},"171":{"id":171,"name":"Suji","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":166,"branch":7},"172":{"id":172,"name":"Johnson","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":164,"branch":7},"173":{"id":173,"name":"Blesson","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":164,"branch":7},"174":{"id":174,"name":"Shiny","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":164,"branch":7},"175":{"id":175,"name":"George Varghese","pet":"Raju","dob":"14-Jan-61","dod":"","gen":"4","spouse":"Sherly","spouse_pet":"","parent_id":6,"branch":6},"176":{"id":176,"name":"Santosh","pet":"","dob":"13-Mar-71","dod":"","gen":"5","spouse":"Sindhu","spouse_pet":"","parent_id":25,"branch":6},"177":{"id":177,"name":"Denny","pet":"","dob":"13-May-74","dod":"","gen":"5","spouse":"Roselyn","spouse_pet":"","parent_id":25,"branch":6},"178":{"id":178,"name":"Subin","pet":"","dob":"05-Aug-79","dod":"","gen":"5","spouse":"Jaincy Joseph","spouse_pet":"","parent_id":25,"branch":6},"179":{"id":179,"name":"Mary","pet":"Abi","dob":"05-Apr-75","dod":"","gen":"5","spouse":"Babu Thomas","spouse_pet":"","parent_id":26,"branch":6},"180":{"id":180,"name":"Boby","pet":"","dob":"28-Jun-76","dod":"","gen":"5","spouse":"Sindhy Baby","spouse_pet":"","parent_id":26,"branch":6},"181":{"id":181,"name":"Siby","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":26,"branch":6},"182":{"id":182,"name":"Angel Victoria","pet":"","dob":"29-Aug-05","dod":"29-Apr-06","gen":"6","spouse":"","spouse_pet":"","parent_id":18,"branch":5},"183":{"id":183,"name":"Aim Koshy","pet":"","dob":"02-Jul-06","dod":"25-Jul-06","gen":"6","spouse":"","spouse_pet":"","parent_id":18,"branch":5},"185":{"id":185,"name":"Kunjeli","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":null,"branch":0},"186":{"id":186,"name":"Olvia Mary","pet":"","dob":"19-Dec-11","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":22,"branch":5},"187":{"id":187,"name":"Shervin","pet":"","dob":"10-Jun-05","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":24,"branch":5},"188":{"id":188,"name":"Juanna","pet":"","dob":"08-Mar-09","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":24,"branch":5},"189":{"id":189,"name":"Juanna","pet":"","dob":"08-Mar-09","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":24,"branch":5},"190":{"id":190,"name":"Achama George","pet":"Kunjamma","dob":"","dod":"","gen":"4","spouse":"K. V. Chacko","spouse_pet":"","parent_id":6,"branch":6},"191":{"id":191,"name":"Calvin","pet":"","dob":"09-Apr-08","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":178,"branch":6},"192":{"id":192,"name":"Kevin","pet":"","dob":"19-Jan-11","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":178,"branch":6},"193":{"id":193,"name":"Aleena","pet":"","dob":"17-Aug-01","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":177,"branch":6},"194":{"id":194,"name":"Aron","pet":"","dob":"18-Apr-08","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":177,"branch":6},"195":{"id":195,"name":"Alen Baby","pet":"","dob":"22-Nov-04","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":180,"branch":6},"196":{"id":196,"name":"Abin Baby","pet":"","dob":"11-Oct-13","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":180,"branch":6},"197":{"id":197,"name":"Amaya","pet":"","dob":"15-Jan-11","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":181,"branch":6},"198":{"id":198,"name":"Amanta","pet":"","dob":"02-Apr-13","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":181,"branch":6},"199":{"id":199,"name":"Liyon","pet":"","dob":"16-Jul-26","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":179,"branch":6},"200":{"id":200,"name":"Linet","pet":"","dob":"16-Jul-00","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":179,"branch":6},"201":{"id":201,"name":"Joju","pet":"","dob":"16-Feb-86","dod":"","gen":"6","spouse":"Anju","spouse_pet":"","parent_id":175,"branch":6},"202":{"id":202,"name":"Jijo","pet":"","dob":"15-Mar-89","dod":"","gen":"6","spouse":"Sara George (Dr)","spouse_pet":"","parent_id":175,"branch":6},"203":{"id":203,"name":"Seraphina","pet":"","dob":"28-May-23","dod":"","gen":"7","spouse":"","spouse_pet":"","parent_id":202,"branch":6},"204":{"id":204,"name":"John Koshy","pet":"Rajan","dob":"20-Apr-44","dod":"10-Jul-20","gen":"4","spouse":"Mariyamma","spouse_pet":"","parent_id":null,"branch":0},"205":{"id":205,"name":"Thomas John","pet":"Podi","dob":"08-Feb-58","dod":"","gen":"4","spouse":"Rachael","spouse_pet":"","parent_id":null,"branch":0},"206":{"id":206,"name":"John Mathew","pet":"Kunjumon","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":null,"branch":0},"207":{"id":207,"name":"Leelama","pet":"","dob":"","dod":"","gen":"4","spouse":"P. C. Varghese","spouse_pet":"","parent_id":null,"branch":0},"208":{"id":208,"name":"Koshy John","pet":"Benoy","dob":"10-May-71","dod":"","gen":"5","spouse":"Suni Varghese","spouse_pet":"","parent_id":204,"branch":0},"209":{"id":209,"name":"Aniska","pet":"","dob":"24-Jun-03","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":204,"branch":0},"210":{"id":210,"name":"Alwin","pet":"","dob":"07-Mar-05","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":204,"branch":0},"211":{"id":211,"name":"Binu","pet":"","dob":"24-Apr-76","dod":"","gen":"6","spouse":"","spouse_pet":"Sheena","parent_id":null,"branch":0},"212":{"id":212,"name":"Jeron","pet":"","dob":"18-Jul-08","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":211,"branch":0},"213":{"id":213,"name":"Edhal","pet":"","dob":"28-Oct-11","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":211,"branch":0},"214":{"id":214,"name":"Betty","pet":"","dob":"26-Aug-73","dod":"","gen":"5","spouse":"","spouse_pet":"Kuriakose","parent_id":204,"branch":0},"215":{"id":215,"name":"Joel","pet":"","dob":"01-Dec-99","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":214,"branch":0},"216":{"id":216,"name":"Leya","pet":"","dob":"25-Feb-02","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":214,"branch":0},"217":{"id":217,"name":"Saju","pet":"","dob":"05-Jul-80","dod":"","gen":"5","spouse":"Rachael","spouse_pet":"Reena","parent_id":205,"branch":0},"218":{"id":218,"name":"Riju","pet":"","dob":"14-Sep-85","dod":"","gen":"5","spouse":"Roji Riju","spouse_pet":"","parent_id":205,"branch":0},"219":{"id":219,"name":"Mariyam","pet":"","dob":"29-Mar-20","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":218,"branch":0},"220":{"id":220,"name":"Anaya","pet":"","dob":"28-Oct-21","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":218,"branch":0},"221":{"id":221,"name":"Achsaba","pet":"","dob":"14-Oct-10","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":217,"branch":0},"222":{"id":222,"name":"Adonsaju","pet":"","dob":"03-Aug-15","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":217,"branch":0},"223":{"id":223,"name":"Baiju","pet":"","dob":"14-Dec-88","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":205,"branch":0},"224":{"id":224,"name":"Midhu","pet":"","dob":"20-Feb-92","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":205,"branch":0},"225":{"id":225,"name":"Rebecca Thomas","pet":"","dob":"17-Apr-21","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":223,"branch":0},"226":{"id":226,"name":"Faith Thomas","pet":"","dob":"27-Feb-25","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":223,"branch":0},"227":{"id":227,"name":"Jesi","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":207,"branch":0},"228":{"id":228,"name":"Elsy","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":207,"branch":0},"229":{"id":229,"name":"Laly","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":207,"branch":0},"230":{"id":230,"name":"V. V. Cherian","pet":"Kunjumon","dob":"05-May-01","dod":"","gen":"4","spouse":"Mariyamma Mathew","spouse_pet":"","parent_id":10,"branch":10},"232":{"id":232,"name":"Jiji Cherian","pet":"","dob":"","dod":"","gen":"5","spouse":"Sini","spouse_pet":"","parent_id":230,"branch":10},"233":{"id":233,"name":"Santosh V. Jacob","pet":"","dob":"","dod":"","gen":"5","spouse":"Shynee","spouse_pet":"","parent_id":230,"branch":10},"234":{"id":234,"name":"Riya","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":232,"branch":10},"235":{"id":235,"name":"Ribu","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":232,"branch":10},"236":{"id":236,"name":"Shana Mariam","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":233,"branch":10},"237":{"id":237,"name":"Sara Elizabeth","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":233,"branch":10},"238":{"id":238,"name":"Mariyamma","pet":"","dob":"","dod":"","gen":"4","spouse":"A. M. Mathew","spouse_pet":"","parent_id":10,"branch":10},"239":{"id":239,"name":"Saji","pet":"","dob":"03-Mar-65","dod":"","gen":"5","spouse":"Shyla","spouse_pet":"","parent_id":238,"branch":10},"240":{"id":240,"name":"Sunu","pet":"","dob":"","dod":"","gen":"5","spouse":"Suni","spouse_pet":"","parent_id":238,"branch":10},"241":{"id":241,"name":"Omana","pet":"","dob":"","dod":"","gen":"5","spouse":"Babu Abraham (Col.)","spouse_pet":"","parent_id":238,"branch":10},"242":{"id":242,"name":"Ansha","pet":"","dob":"22-Nov-95","dod":"","gen":"6","spouse":"Deny Alex","spouse_pet":"","parent_id":239,"branch":10},"243":{"id":243,"name":"Alvin","pet":"","dob":"20-Oct-02","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":239,"branch":10},"244":{"id":244,"name":"Vijay","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":241,"branch":10},"245":{"id":245,"name":"Manusha","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","parent_id":241,"branch":10},"246":{"id":246,"name":"Sumen Varghese","pet":"","dob":"22-Nov-95","dod":"","gen":"5","spouse":"Blessy","spouse_pet":"","parent_id":125,"branch":12},"247":{"id":247,"name":"Subin Varghese","pet":"","dob":"14-Jul-00","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":125,"branch":12},"248":{"id":248,"name":"Regi","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":148,"branch":9},"249":{"id":249,"name":"Reni","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":148,"branch":9},"250":{"id":250,"name":"Penamma","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":9,"branch":9},"251":{"id":251,"name":"Vijayan","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":147,"branch":9},"252":{"id":252,"name":"Kurian","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":147,"branch":9},"253":{"id":253,"name":"Kunjumol","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":147,"branch":9},"254":{"id":254,"name":"Son","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":120,"branch":0},"255":{"id":255,"name":"Daughter","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":120,"branch":0},"256":{"id":256,"name":"Daughter I","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":119,"branch":0},"257":{"id":257,"name":"Daughter II","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":119,"branch":0},"258":{"id":258,"name":"Daughter III","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":119,"branch":0},"259":{"id":259,"name":"Anu","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":118,"branch":0},"260":{"id":260,"name":"Daughter I","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","parent_id":118,"branch":0},"261":{"id":261,"name":"Koshy","pet":"Kunjunchu","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":2,"branch":0},"262":{"id":262,"name":"Mercy","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":261,"branch":0},"263":{"id":263,"name":"Sajan","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":261,"branch":0},"264":{"id":264,"name":"Daughter I","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":261,"branch":0},"265":{"id":265,"name":"Daughter II","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":261,"branch":0},"266":{"id":266,"name":"Daughter III","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":261,"branch":0},"267":{"id":267,"name":"Papi","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":2,"branch":0},"268":{"id":268,"name":"Uninnini","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","parent_id":2,"branch":0},"269":{"id":269,"name":"Baby","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":268,"branch":0},"270":{"id":270,"name":"Kunjumon","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":268,"branch":0},"271":{"id":271,"name":"Amini","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","parent_id":268,"branch":0},"272":{"id":272,"name":"Jiji","pet":"","dob":"","dod":"","gen":"6","spouse":"Roy","spouse_pet":"Thambi","parent_id":149,"branch":9},"273":{"id":273,"name":"Jibi","pet":"","dob":"","dod":"","gen":"6","spouse":"Sojo Johnny","spouse_pet":"","parent_id":149,"branch":9},"274":{"id":274,"name":"Edwin","pet":"","dob":"","dod":"","gen":"7","spouse":"","spouse_pet":"","parent_id":272,"branch":9},"275":{"id":275,"name":"Evona","pet":"","dob":"","dod":"","gen":"7","spouse":"","spouse_pet":"","parent_id":272,"branch":9},"276":{"id":276,"name":"Ann Maria","pet":"","dob":"","dod":"","gen":"7","spouse":"","spouse_pet":"","parent_id":273,"branch":9},"277":{"id":277,"name":"Alwin","pet":"","dob":"","dod":"","gen":"7","spouse":"","spouse_pet":"","parent_id":273,"branch":9}},"children":{"1":[2,3,4],"3":[5,6,7,8,9,10,11,12],"5":[13,14,15,16],"13":[17,18],"14":[19,20,21],"15":[22,23,24],"6":[25,26,175,190],"8":[27,28,29,30,31,32,33],"27":[34,35,36],"30":[37,38,39],"28":[40,41,42],"29":[43,44],"31":[45,46,47],"32":[48,49],"33":[50,51,52,53],"40":[54,55],"41":[56,57],"42":[58,59],"44":[60],"37":[61,62,63],"39":[64,65],"45":[66,67,68],"46":[69],"47":[70],"49":[71],"50":[72,73,74],"51":[75,76],"52":[77,78],"53":[79,80],"2":[85,105,261,267,268],"85":[86,87,88,89],"16":[90,91,92],"18":[93,94,182,183],"19":[95,96],"20":[97,98,99],"21":[100],"23":[101,102],"90":[103,104],"105":[106,107,108,109,110,111,112,118,119,120,121,122],"17":[113],"144":[114,115],"114":[116,117],"121":[123,124],"12":[125],"118":[126,259,260],"92":[127,128],"11":[129,130,131,132,133],"129":[134,135],"135":[136],"130":[137,138],"131":[139],"132":[140,141,142],"10":[143,144,230,238],"9":[145,146,147,148,250],"145":[149,150,151,152,153,154],"146":[155,156,157,158],"147":[159,251,252,253],"159":[160,161],"148":[162,163,248,249],"7":[164,165,166,167,168,169,170],"166":[171],"164":[172,173,174],"25":[176,177,178],"26":[179,180,181],"22":[186],"24":[187,188,189],"178":[191,192],"177":[193,194],"180":[195,196],"181":[197,198],"179":[199,200],"175":[201,202],"202":[203],"204":[208,209,210,214],"211":[212,213],"214":[215,216],"205":[217,218,223,224],"218":[219,220],"217":[221,222],"223":[225,226],"207":[227,228,229],"230":[232,233],"232":[234,235],"233":[236,237],"238":[239,240,241],"239":[242,243],"241":[244,245],"125":[246,247],"120":[254,255],"119":[256,257,258],"261":[262,263,264,265,266],"268":[269,270,271],"149":[272,273],"272":[274,275],"273":[276,277]}}
+;
+const people = RAW.people;       // {id_str: person}
+const childrenOf = RAW.children; // {id_str: [child_ids]}
+
+/* ── localStorage photos ─────────────────────────────────────────────── */
+function getPhotos() {
+  try { return JSON.parse(localStorage.getItem('chPhotos')||'{}'); } catch(e){return{};}
+}
+function savePhoto(id, dataUrl) {
+  try {
+    const ph = getPhotos();
+    ph[id] = dataUrl;
+    localStorage.setItem('chPhotos', JSON.stringify(ph));
+  } catch(e){}
+}
+function removePhoto(id) {
+  try {
+    const ph = getPhotos();
+    delete ph[id];
+    localStorage.setItem('chPhotos', JSON.stringify(ph));
+  } catch(e){}
+}
+
+/* ── helpers ─────────────────────────────────────────────────────────── */
+const BRANCH_NAMES = {
+  0:'Trunk', 5:'C.K. Varkey', 6:'C.K. George', 7:'C.K. John',
+  8:'Mary', 9:'Aleyamma', 10:'Annama', 11:'Saramma', 12:'Sociamma'
+};
+function initials(name) {
+  return name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+}
+function personById(id) { return people[String(id)]; }
+
+/* ── avatar builder ──────────────────────────────────────────────────── */
+function makeAvatarEl(id, size=44, cls='') {
+  const el = document.createElement('div');
+  el.className = cls || 'dir-avatar';
+  el.style.width = size+'px'; el.style.height = size+'px';
+  const ph = getPhotos();
+  if (ph[id]) {
+    const img = document.createElement('img');
+    img.src = ph[id]; img.alt = '';
+    el.appendChild(img);
+  } else {
+    const p = personById(id);
+    el.textContent = p ? initials(p.name) : '?';
+  }
+  return el;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   VIEW SWITCHING
+═══════════════════════════════════════════════════════════════════════ */
+function showView(viewId, btn) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(viewId).classList.add('active');
+  btn.classList.add('active');
+  if (viewId==='treeView') { setTimeout(()=>render(),50); }
+  if (viewId==='directoryView') { renderDirectory(); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   DIRECTORY
+═══════════════════════════════════════════════════════════════════════ */
+let branchFilter = 'all';
+
+function setBranchFilter(branch, btn) {
+  branchFilter = branch;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  renderDirectory();
+}
+
+function renderDirectory() {
+  const q = (document.getElementById('dirSearch').value||'').toLowerCase().trim();
+  const grid = document.getElementById('dirGrid');
+  const photos = getPhotos();
+
+  const filtered = Object.values(people).filter(p => {
+    if (branchFilter !== 'all' && String(p.branch) !== branchFilter) return false;
+    if (!q) return true;
+    return (
+      p.name.toLowerCase().includes(q) ||
+      (p.pet && p.pet.toLowerCase().includes(q)) ||
+      (p.spouse && p.spouse.toLowerCase().includes(q)) ||
+      (p.spouse_pet && p.spouse_pet.toLowerCase().includes(q)) ||
+      String(p.id).includes(q)
+    );
+  });
+
+  // Sort: by gen, then by id
+  filtered.sort((a,b)=> (+a.gen||0)-(+b.gen||0) || a.id-b.id);
+
+  document.getElementById('dirCount').textContent = `${filtered.length} member${filtered.length!==1?'s':''}`;
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="dir-no-results">No members match your search.</div>';
+    return;
+  }
+
+  grid.innerHTML = '';
+  for (const p of filtered) {
+    const card = document.createElement('div');
+    card.className = 'dir-card';
+    card.onclick = () => openProfile(p.id);
+
+    const av = makeAvatarEl(p.id, 44, 'dir-avatar');
+
+    const info = document.createElement('div');
+    info.className = 'dir-card-info';
+
+    const nameLine = `<div class="dir-card-name">${esc(p.name)}</div>`;
+    const petLine = p.pet ? `<div class="dir-card-pet">"${esc(p.pet)}"</div>` : '';
+    const metaParts = [];
+    if (p.dob) metaParts.push(`b. ${esc(p.dob)}`);
+    if (p.dod) metaParts.push(`d. ${esc(p.dod)}`);
+    if (p.spouse) metaParts.push(`+ ${esc(p.spouse)}`);
+    const metaLine = metaParts.length ? `<div class="dir-card-meta">${metaParts.join(' · ')}</div>` : '';
+    const genLine = `<div class="dir-card-gen">Gen ${p.gen} · ${esc(BRANCH_NAMES[p.branch]||'Unknown')}</div>`;
+
+    info.innerHTML = nameLine + petLine + metaLine + genLine;
+    card.appendChild(av);
+    card.appendChild(info);
+    grid.appendChild(card);
+  }
+}
+
+function esc(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PROFILE MODAL
+═══════════════════════════════════════════════════════════════════════ */
+let currentProfileId = null;
+
+function openProfile(id) {
+  const p = personById(id);
+  if (!p) return;
+  currentProfileId = id;
+  const photos = getPhotos();
+
+  // ── Header ──
+  const av = makeAvatarEl(id, 72, 'profile-avatar');
+  const hdr = document.getElementById('modalHeader');
+  hdr.innerHTML = '';
+  hdr.appendChild(av);
+
+  const htxt = document.createElement('div');
+  htxt.className = 'profile-header-text';
+  let htxtHtml = `<div class="profile-name">${esc(p.name)}</div>`;
+  if (p.pet) htxtHtml += `<div class="profile-pet">"${esc(p.pet)}"</div>`;
+  if (p.spouse) {
+    let sp = `+ ${esc(p.spouse)}`;
+    if (p.spouse_pet) sp += ` "${esc(p.spouse_pet)}"`;
+    htxtHtml += `<div class="profile-spouse">${sp}</div>`;
+  }
+  htxtHtml += `<div class="profile-id">ID #${p.id} · Generation ${p.gen} · ${esc(BRANCH_NAMES[p.branch]||'')}</div>`;
+  htxt.innerHTML = htxtHtml;
+  hdr.appendChild(htxt);
+
+  // ── Body ──
+  const body = document.getElementById('modalBody');
+  body.innerHTML = '';
+
+  // Photo section
+  const photoSec = document.createElement('div');
+  photoSec.className = 'profile-section';
+  photoSec.innerHTML = '<div class="profile-section-title">Photograph</div>';
+
+  const zone = document.createElement('div');
+  zone.className = 'photo-upload-zone';
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file'; fileInput.accept = 'image/*';
+  fileInput.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 2*1024*1024) { alert('Please use an image under 2 MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      savePhoto(id, ev.target.result);
+      openProfile(id); // re-render
+      renderDirectory();
+    };
+    reader.readAsDataURL(file);
+  };
+
+  if (photos[id]) {
+    const img = document.createElement('img');
+    img.src = photos[id];
+    img.style.cssText = 'width:100%;max-height:240px;object-fit:contain;border-radius:4px;';
+    zone.appendChild(img);
+    const removeLbl = document.createElement('div');
+    removeLbl.style.cssText = 'margin-top:8px;font-family:Inter,sans-serif;font-size:11px;color:var(--text3);';
+    removeLbl.innerHTML = `<span style="color:var(--teal3);cursor:pointer;text-decoration:underline;" onclick="removePhotoAndRefresh(${id})">Remove photo</span>`;
+    zone.appendChild(removeLbl);
+  } else {
+    zone.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px;height:32px;opacity:.3;display:block;margin:0 auto 6px">
+        <rect x="3" y="5" width="18" height="14" rx="2"/>
+        <circle cx="8.5" cy="10.5" r="1.5"/>
+        <path d="m21 15-5-5L5 19"/>
+      </svg>
+      <label class="photo-upload-label">
+        No photo yet — <span onclick="document.getElementById('photoFileInput_${id}').click()">upload one</span>
+      </label>
+    `;
+  }
+  zone.appendChild(fileInput);
+  fileInput.id = `photoFileInput_${id}`;
+  photoSec.appendChild(zone);
+  body.appendChild(photoSec);
+
+  // Personal details
+  const detailSec = document.createElement('div');
+  detailSec.className = 'profile-section';
+  detailSec.innerHTML = '<div class="profile-section-title">Personal Details</div>';
+  const fields = document.createElement('div');
+  fields.className = 'profile-fields';
+  const fieldDefs = [
+    ['Full Name', p.name],
+    ['Pet Name', p.pet],
+    ['Date of Birth', p.dob],
+    ['Date of Death', p.dod],
+    ['Generation', `Generation ${p.gen}`],
+    ['Branch', BRANCH_NAMES[p.branch] || 'Unknown'],
+    ['Record ID', `#${p.id}`],
+  ];
+  for (const [label, val] of fieldDefs) {
+    const fd = document.createElement('div');
+    fd.className = 'profile-field';
+    fd.innerHTML = `<div class="pf-label">${esc(label)}</div>
+      <div class="pf-value ${val?'':'empty'}">${val ? esc(val) : 'Not recorded'}</div>`;
+    fields.appendChild(fd);
+  }
+  detailSec.appendChild(fields);
+  body.appendChild(detailSec);
+
+  // Spouse details
+  if (p.spouse) {
+    const spSec = document.createElement('div');
+    spSec.className = 'profile-section';
+    spSec.innerHTML = '<div class="profile-section-title">Spouse</div>';
+    const spFields = document.createElement('div');
+    spFields.className = 'profile-fields';
+    const spDefs = [
+      ['Spouse Name', p.spouse],
+      ['Spouse Pet Name', p.spouse_pet],
+      ['Spouse Date of Birth', p.spouse_dob || ''],
+    ];
+    for (const [label, val] of spDefs) {
+      const fd = document.createElement('div');
+      fd.className = 'profile-field';
+      fd.innerHTML = `<div class="pf-label">${esc(label)}</div>
+        <div class="pf-value ${val?'':'empty'}">${val ? esc(val) : 'Not recorded'}</div>`;
+      spFields.appendChild(fd);
+    }
+    spSec.appendChild(spFields);
+    body.appendChild(spSec);
+  }
+
+  // Family connections
+  const famSec = document.createElement('div');
+  famSec.className = 'profile-section';
+  famSec.innerHTML = '<div class="profile-section-title">Family</div>';
+  const famLinks = document.createElement('div');
+  famLinks.className = 'family-links';
+
+  // Parent
+  if (p.parent_id) {
+    const par = personById(p.parent_id);
+    if (par) famLinks.appendChild(makeFLink(par.id, par.name, 'Parent'));
+  }
+  // Children
+  const chIds = childrenOf[String(p.id)] || [];
+  for (const chId of chIds) {
+    const ch = personById(chId);
+    if (ch) famLinks.appendChild(makeFLink(ch.id, ch.name, 'Child'));
+  }
+  if (!p.parent_id && chIds.length === 0) {
+    famLinks.innerHTML = '<span style="font-family:Inter,sans-serif;font-size:12px;color:var(--text3);">No linked family records.</span>';
+  }
+  famSec.appendChild(famLinks);
+  body.appendChild(famSec);
+
+  document.getElementById('profileModal').classList.add('open');
+}
+
+function makeFLink(id, name, role) {
+  const el = document.createElement('div');
+  el.className = 'flink';
+  el.onclick = () => openProfile(id);
+  const av = makeAvatarEl(id, 26, 'flink-avatar');
+  const info = document.createElement('div');
+  info.className = 'flink-info';
+  info.innerHTML = `<div class="flink-name">${esc(name)}</div><div class="flink-role">${esc(role)}</div>`;
+  el.appendChild(av);
+  el.appendChild(info);
+  return el;
+}
+
+function removePhotoAndRefresh(id) {
+  removePhoto(id);
+  openProfile(id);
+  renderDirectory();
+  render(); // refresh tree
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('profileModal')) closeProfileModal();
+}
+function closeProfileModal() {
+  document.getElementById('profileModal').classList.remove('open');
+  currentProfileId = null;
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeProfileModal();
+});
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TREE (Canvas)
+═══════════════════════════════════════════════════════════════════════ */
+const GEN_FILLS_L = ['#1A4A4A','#245959','#FFF0E0','#EDF5ED','#F0EAF8','#EAF0F8','#F8EAF0','#F5F5EA','#EAF5F5'];
+const GEN_FILLS_D = ['#2E7070','#3A8080','#1E3020','#1E2040','#281E3E','#1E2838','#2E1E28','#28281E','#1E2E2E'];
+const GEN_BORDS_L = ['#FFFFFF','rgba(255,255,255,.6)','#C4896A','#4A7A5A','#7A5A9A','#4A7A9A','#9A5A7A','#7A7A4A','#4A9A9A'];
+const GEN_BORDS_D = ['rgba(255,255,255,.7)','rgba(255,255,255,.5)','#7A5030','#3A6040','#5A3A7A','#3A5A7A','#7A3A5A','#5A5A30','#3A7A7A'];
+const GEN_TEXT_L  = ['#FFFFFF','#FFFFFF','#2A1505','#0A1F0A','#1A0A2A','#0A1A2A','#2A0A1A','#1A1A0A','#0A2A2A'];
+const GEN_TEXT_D  = ['#FFFFFF','#FFFFFF','#D0C8B0','#B8D0B8','#C8B8D8','#B8C8D8','#D8B8C8','#C8C8B0','#B8D0D0'];
+
+function isDark() {
+  const dt = document.documentElement.getAttribute('data-theme');
+  if (dt==='dark') return true; if (dt==='light') return false;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+let rootId = 5, viewIds = null, highlighted = null;
+let pan = {x:0,y:0}, scale = 1;
+let dragging = false, dragStart={x:0,y:0}, panStart={x:0,y:0};
+let nodeRects = [];
+let initialised = false;
+
+const canvas = document.getElementById('treeCanvas');
+const ctx = canvas.getContext('2d');
+const wrap = document.getElementById('treeWrap');
+const tooltip = document.getElementById('treeTooltip');
+
+const CARD_H=52, HGAP=4, VGAP=26, CARD_MIN_W=88, CARD_MAX_W=200;
+
+function getGenerations(root) {
+  const levels=[]; let cur=[root];
+  while(cur.length){
+    levels.push(cur.slice());
+    let nxt=[];
+    for(const id of cur){
+      const ch=(childrenOf[String(id)]||[]);
+      nxt=nxt.concat(viewIds?ch.filter(c=>viewIds.has(c)):ch);
+    }
+    cur=nxt;
+  }
+  return levels;
+}
+
+function getSubtreeIds(root) {
+  const ids=new Set(); const q=[root];
+  while(q.length){const id=q.shift();ids.add(id);for(const c of childrenOf[String(id)]||[])q.push(c);}
+  return ids;
+}
+
+function drawRR(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.closePath();
+}
+
+function fitTxt(text, font, maxW){
+  ctx.font=font;
+  if(ctx.measureText(text).width<=maxW) return text;
+  while(text.length>3 && ctx.measureText(text+'…').width>maxW) text=text.slice(0,-1);
+  return text+'…';
+}
+
+function render(){
+  const dpr=window.devicePixelRatio||1;
+  const W=wrap.clientWidth, H=wrap.clientHeight;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  const dark=isDark();
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=dark?'#0E2020':'#FDFAF6';
+  ctx.fillRect(0,0,W,H);
+
+  const gens=getGenerations(rootId);
+  if(!gens.length) return;
+  nodeRects=[];
+
+  const drawW=W-40;
+
+  // Auto-fit
+  if(!initialised){
+    const maxN=Math.max(...gens.map(g=>g.length));
+    const neededW=maxN*(CARD_MIN_W+HGAP);
+    const neededH=gens.length*CARD_H+(gens.length-1)*VGAP;
+    const sx=drawW/Math.max(neededW,drawW);
+    const sy=(H-40)/Math.max(neededH,H-40);
+    scale=Math.min(sx,sy,1);
+    pan.x=(W-(neededW*scale))/2;
+    pan.y=20;
+    initialised=true;
+  }
+
+  ctx.save();
+  ctx.translate(pan.x,pan.y);
+  ctx.scale(scale,scale);
+
+  const cardPos={};
+  for(let gi=0;gi<gens.length;gi++){
+    const gen=gens[gi], n=gen.length;
+    const avW=drawW/scale;
+    const cw=Math.min(CARD_MAX_W,Math.max(CARD_MIN_W,(avW-HGAP*(n-1))/n));
+    const rowW=n*cw+(n-1)*HGAP;
+    const startX=(avW-rowW)/2;
+    const rowTop=gi*(CARD_H+VGAP);
+    for(let ni=0;ni<n;ni++){
+      cardPos[gen[ni]]={x:startX+ni*(cw+HGAP),y:rowTop,w:cw,h:CARD_H};
+    }
+  }
+
+  // Lines
+  const lineCol=dark?'#3A6060':'#B8976A';
+  ctx.strokeStyle=lineCol; ctx.lineWidth=0.8/scale;
+  for(let gi=0;gi<gens.length-1;gi++){
+    const chGen=gens[gi+1];
+    const p2c={};
+    for(const cid of chGen){
+      const pp=personById(cid);
+      if(pp&&pp.parent_id&&cardPos[pp.parent_id]){
+        if(!p2c[pp.parent_id])p2c[pp.parent_id]=[];
+        p2c[pp.parent_id].push(cid);
+      }
+    }
+    for(const[pid,chIds] of Object.entries(p2c)){
+      const pp=cardPos[pid]; if(!pp) continue;
+      const pcx=pp.x+pp.w/2, pBot=pp.y+pp.h, midY=pBot+VGAP/2;
+      const chCxs=chIds.map(c=>cardPos[c]?cardPos[c].x+cardPos[c].w/2:null).filter(x=>x!==null);
+      if(!chCxs.length) continue;
+      ctx.beginPath();ctx.moveTo(pcx,pBot);ctx.lineTo(pcx,midY);ctx.stroke();
+      if(chCxs.length===1){
+        ctx.beginPath();ctx.moveTo(pcx,midY);ctx.lineTo(chCxs[0],midY);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(chCxs[0],midY);ctx.lineTo(chCxs[0],cardPos[chIds[0]].y);ctx.stroke();
+      } else {
+        ctx.beginPath();ctx.moveTo(Math.min(...chCxs),midY);ctx.lineTo(Math.max(...chCxs),midY);ctx.stroke();
+        chIds.forEach((cid,i)=>{
+          const cp=cardPos[cid];if(!cp)return;
+          ctx.beginPath();ctx.moveTo(chCxs[i],midY);ctx.lineTo(chCxs[i],cp.y);ctx.stroke();
+        });
+      }
+    }
+  }
+
+  // Cards
+  const photos=getPhotos();
+  const fills=dark?GEN_FILLS_D:GEN_FILLS_L;
+  const bords=dark?GEN_BORDS_D:GEN_BORDS_L;
+  const texts=dark?GEN_TEXT_D:GEN_TEXT_L;
+
+  for(let gi=0;gi<gens.length;gi++){
+    for(const id of gens[gi]){
+      const pos=cardPos[id]; if(!pos) continue;
+      const p=personById(id); if(!p) continue;
+      const {x,y,w,h}=pos;
+      const gi_c=Math.min(gi,fills.length-1);
+
+      const isHi=highlighted&&highlighted.has(id);
+      const dimmed=highlighted&&!isHi;
+
+      ctx.globalAlpha=dimmed?0.2:1;
+      drawRR(x,y,w,h,4);
+      ctx.fillStyle=fills[gi_c]; ctx.fill();
+      ctx.strokeStyle=isHi?(dark?'#C49A2A':'#8B6914'):bords[gi_c];
+      ctx.lineWidth=(isHi?2:0.8)/scale;
+      ctx.stroke();
+      ctx.globalAlpha=1;
+
+      // ID badge
+      const bdW=18;
+      drawRR(x+w-bdW-2,y+2,bdW,11,2);
+      ctx.fillStyle=bords[gi_c]; ctx.fill();
+      ctx.fillStyle=gi<=1?'rgba(255,255,255,.9)':'rgba(255,255,255,.65)';
+      ctx.font=`${Math.max(4,5/scale<6?5:5)}px Inter,sans-serif`;
+      ctx.textAlign='center';
+      if(dimmed) ctx.globalAlpha=0.2;
+      ctx.fillText(`#${id}`,x+w-bdW/2-2,y+11);
+      ctx.globalAlpha=1;
+
+      ctx.textAlign='left';
+      const padX=3, usW=w-2*padX-bdW-4;
+      let nSz=Math.max(6,Math.min(9,w/10));
+      if(dimmed) ctx.globalAlpha=0.2;
+
+      // Name
+      ctx.fillStyle=texts[gi_c];
+      const nFont=`600 ${nSz}px Cormorant Garant,Georgia,serif`;
+      const nm=fitTxt(p.name,nFont,usW);
+      ctx.font=nFont; ctx.fillText(nm,x+padX,y+nSz+4);
+      let ty=y+nSz+4+nSz*0.75;
+
+      // Pet
+      if(p.pet&&ty<y+h-4){
+        const pSz=Math.max(5,nSz-1.5);
+        ctx.font=`italic ${pSz}px Cormorant Garant,Georgia,serif`;
+        ctx.fillStyle=dark?'#C49A2A':'#8B6914';
+        ctx.fillText(fitTxt(`"${p.pet}"`,`italic ${pSz}px Cormorant Garant,Georgia,serif`,usW+bdW),x+padX,ty);
+        ty+=pSz+1;
+      }
+      // Dates
+      if((p.dob||p.dod)&&ty<y+h-4){
+        const dSz=Math.max(4.5,nSz-2.5);
+        ctx.font=`${dSz}px Inter,sans-serif`;
+        ctx.fillStyle=dark?'#808070':'#7A6A5A';
+        const dates=[p.dob?`b.${p.dob}`:'',p.dod?`d.${p.dod}`:''].filter(Boolean).join(' ');
+        ctx.fillText(fitTxt(dates,`${dSz}px Inter,sans-serif`,w-2*padX),x+padX,ty);
+        ty+=dSz+1;
+      }
+      // Spouse
+      if(p.spouse&&ty<y+h-3){
+        const sSz=Math.max(4.5,nSz-2.5);
+        ctx.font=`italic ${sSz}px Cormorant Garant,Georgia,serif`;
+        ctx.fillStyle=dark?'#5A9A6A':'#3A6A4A';
+        const sp=`+ ${p.spouse}${p.spouse_pet?` "${p.spouse_pet}"`:''}`;
+        ctx.fillText(fitTxt(sp,`italic ${sSz}px Cormorant Garant,Georgia,serif`,w-2*padX),x+padX,ty);
+      }
+      // Photo indicator
+      if(photos[id]){
+        ctx.fillStyle=dark?'rgba(90,154,106,.8)':'rgba(58,106,74,.7)';
+        drawRR(x+2,y+h-7,4,4,2); ctx.fill();
+      }
+
+      ctx.globalAlpha=1;
+      nodeRects.push({id,x,y,w,h});
+    }
+  }
+  ctx.restore();
+}
+
+/* ── Interaction ─── */
+function getNode(mx,my){
+  const wx=(mx-pan.x)/scale, wy=(my-pan.y)/scale;
+  for(const r of nodeRects)
+    if(wx>=r.x&&wx<=r.x+r.w&&wy>=r.y&&wy<=r.y+r.h) return r.id;
+  return null;
+}
+
+wrap.addEventListener('mousedown',e=>{
+  dragging=true; dragStart={x:e.clientX,y:e.clientY}; panStart={x:pan.x,y:pan.y};
+});
+window.addEventListener('mousemove',e=>{
+  if(dragging){
+    pan.x=panStart.x+e.clientX-dragStart.x;
+    pan.y=panStart.y+e.clientY-dragStart.y;
+    render(); tooltip.style.display='none'; return;
+  }
+  const rect=wrap.getBoundingClientRect();
+  const id=getNode(e.clientX-rect.left,e.clientY-rect.top);
+  if(id){showTreeTooltip(id,e.clientX,e.clientY);}else{tooltip.style.display='none';}
+});
+window.addEventListener('mouseup',()=>{dragging=false;});
+wrap.addEventListener('click',e=>{
+  const rect=wrap.getBoundingClientRect();
+  const id=getNode(e.clientX-rect.left,e.clientY-rect.top);
+  if(id) openProfile(id);
+});
+wrap.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const rect=wrap.getBoundingClientRect();
+  const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+  const d=e.deltaY>0?0.9:1.1;
+  const ns=Math.max(0.15,Math.min(5,scale*d));
+  pan.x=mx-(mx-pan.x)*(ns/scale);
+  pan.y=my-(my-pan.y)*(ns/scale);
+  scale=ns; render();
+},{passive:false});
+
+// Touch
+let lastTD=null;
+wrap.addEventListener('touchstart',e=>{
+  if(e.touches.length===1){dragging=true;dragStart={x:e.touches[0].clientX,y:e.touches[0].clientY};panStart={x:pan.x,y:pan.y};}
+  else if(e.touches.length===2) lastTD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+  e.preventDefault();
+},{passive:false});
+wrap.addEventListener('touchmove',e=>{
+  if(e.touches.length===1&&dragging){pan.x=panStart.x+e.touches[0].clientX-dragStart.x;pan.y=panStart.y+e.touches[0].clientY-dragStart.y;render();}
+  else if(e.touches.length===2&&lastTD){const nd=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);scale=Math.max(0.15,Math.min(5,scale*nd/lastTD));lastTD=nd;render();}
+  e.preventDefault();
+},{passive:false});
+wrap.addEventListener('touchend',()=>{dragging=false;lastTD=null;});
+
+function showTreeTooltip(id,cx,cy){
+  const p=personById(id);if(!p)return;
+  const ph=getPhotos();
+  let html=`<div class="tt-name">${esc(p.name)}</div>`;
+  if(p.pet) html+=`<div class="tt-pet">"${esc(p.pet)}"</div>`;
+  const d=[p.dob?`b. ${esc(p.dob)}`:'',p.dod?`d. ${esc(p.dod)}`:''].filter(Boolean).join(' · ');
+  if(d) html+=`<div class="tt-meta">${d}</div>`;
+  if(p.spouse) html+=`<div class="tt-sp">+ ${esc(p.spouse)}${p.spouse_pet?` "${esc(p.spouse_pet)}"`:''}`;
+  html+=`<div class="tt-meta">ID #${p.id} · Gen ${p.gen} · ${esc(BRANCH_NAMES[p.branch]||'')}</div>`;
+  html+=`<div class="tt-hint">Click for profile ›</div>`;
+  tooltip.innerHTML=html;
+  tooltip.style.display='block';
+  const tw=tooltip.offsetWidth,th=tooltip.offsetHeight;
+  let tx=cx+14,ty=cy-th/2;
+  if(tx+tw>window.innerWidth-10)tx=cx-tw-14;
+  if(ty<10)ty=10; if(ty+th>window.innerHeight-10)ty=window.innerHeight-th-10;
+  tooltip.style.left=tx+'px'; tooltip.style.top=ty+'px';
+}
+
+function showAll(btn){
+  rootId=1;viewIds=null;scale=1;pan={x:0,y:0};highlighted=null;initialised=false;
+  document.getElementById('treeSearchInput').value='';
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+  render();
+}
+function focusBranch(id,btn){
+  rootId=id;viewIds=getSubtreeIds(id);scale=1;pan={x:0,y:0};highlighted=null;initialised=false;
+  document.getElementById('treeSearchInput').value='';
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+  render();
+}
+function treeSearch(q){
+  if(!q.trim()){highlighted=null;render();return;}
+  const lq=q.toLowerCase();
+  highlighted=new Set();
+  for(const[id,p] of Object.entries(people)){
+    if(p.name.toLowerCase().includes(lq)||(p.pet&&p.pet.toLowerCase().includes(lq))||(p.spouse&&p.spouse.toLowerCase().includes(lq)))
+      highlighted.add(Number(id));
+  }
+  render();
+}
+
+/* ── Resize + init ─── */
+const ro=new ResizeObserver(()=>{render();});
+ro.observe(wrap);
+window.addEventListener('load',()=>{viewIds=getSubtreeIds(5);initialised=false;render();renderDirectory();});
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>render());
+</script>
+
+</body>
+</html>
