@@ -2204,32 +2204,9 @@ function saveImgBBKey() {
     document.getElementById('syncSection').style.display = 'none';
     return;
   }
-  status.style.color = 'var(--text3)';
-  status.textContent = 'Testing key…';
-  // Upload a minimal 1×1 JPEG to verify the key works
-  const testB64 = '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoH' +
-    'BwYIDAoMCwsKCwsNCxAQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/wAALCAAB' +
-    'AAEBAREAAP/EABQAAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oACAEB' +
-    'AAA/AFX/2Q==';
-  const form = new FormData();
-  form.append('key', key);
-  form.append('image', testB64);
-  fetch('https://api.imgbb.com/1/upload', {method:'POST', body:form})
-    .then(r => r.json())
-    .then(j => {
-      if (j.success) {
-        status.style.color = 'var(--sage)';
-        status.textContent = '✓ Key valid — new photos will be visible on all devices';
-        document.getElementById('syncSection').style.display = '';
-      } else {
-        status.style.color = 'var(--red)';
-        status.textContent = '✗ Key rejected by ImgBB — please check and try again';
-      }
-    })
-    .catch(() => {
-      status.style.color = 'var(--red)';
-      status.textContent = '✗ Could not reach ImgBB — check your internet connection';
-    });
+  status.style.color = 'var(--sage)';
+  status.textContent = '✓ Key saved — new photos will be uploaded to the cloud';
+  document.getElementById('syncSection').style.display = '';
 }
 async function syncPhotosToCloud() {
   if (!getImgBBKey()) return;
