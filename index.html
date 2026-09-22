@@ -741,8 +741,8 @@ body.admin-unlocked .album-add-btn{display:flex;}
   <nav class="nav-tabs" role="tablist">
     <button class="nav-tab active" onclick="showView('historyView',this)" role="tab">📖 History</button>
     <button class="nav-tab" onclick="showView('directoryView',this)" role="tab">📋 Directory</button>
-    <button class="nav-tab" onclick="showView('albumView',this)" role="tab">📷 Album</button>
     <button class="nav-tab" onclick="showView('treeView',this)" role="tab">🌳 Family Tree</button>
+    <button class="nav-tab" onclick="showView('albumView',this)" role="tab">📷 Album</button>
   </nav>
 </header>
 
@@ -903,48 +903,135 @@ const RAW =
 {"people":{"1":{"id":1,"name":"Varki","pet":"","dob":"","dod":"","gen":"0","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":null,"branch":0,"gender":"M"},"2":{"id":2,"name":"George","pet":"","dob":"","dod":"","gen":"1","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":1,"branch":0,"gender":"M"},"3":{"id":3,"name":"Koshy","pet":"","dob":"8-Aug-1988","dod":"","gen":"1","spouse":"Achama","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":1,"branch":0,"gender":"M"},"4":{"id":4,"name":"Varghese","pet":"","dob":"","dod":"","gen":"1","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":1,"branch":0,"gender":"M"},"5":{"id":5,"name":"C. K. Varkey","pet":"Kunjuchan","dob":"18-Aug-1916","dod":"","gen":"3","spouse":"Sosamma","spouse_pet":"Thangamma","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"26-Sep-1921","spouse_dod":"5-Sep-1999","parent_id":3,"branch":5,"gender":"M"},"6":{"id":6,"name":"C. K. George","pet":"Kuttichan","dob":"29-Aug-1918","dod":"","gen":"3","spouse":"Mary Mathew","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"18-Oct-1928","spouse_dod":"15-May-2001","parent_id":3,"branch":6,"gender":"M"},"7":{"id":7,"name":"C. K. John","pet":"Johnychan","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":3,"branch":7,"gender":"M"},"8":{"id":8,"name":"Mary","pet":"Kunjamma","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":3,"branch":8,"gender":"F"},"9":{"id":9,"name":"Aleyamma","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":3,"branch":9,"gender":"F"},"10":{"id":10,"name":"Annama (Varghese)","pet":"Pennamma","dob":"","dod":"","gen":"3","spouse":"V. M. Varghese","spouse_pet":"","spouse_house":"Vattamparambil","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"19-May-1998","parent_id":3,"branch":10,"gender":"F"},"11":{"id":11,"name":"Saramma","pet":"Thangamma","dob":"","dod":"","gen":"3","spouse":"John","spouse_pet":"","spouse_house":"Kochethu","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":3,"branch":11,"gender":"F"},"12":{"id":12,"name":"Sociamma","pet":"Amini (Kunjayi)","dob":"","dod":"","gen":"3","spouse":"M. P. Varghese","spouse_pet":"","spouse_house":"Mattathil","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":3,"branch":12,"gender":"F"},"13":{"id":13,"name":"Koshy Varkey","pet":"Achankunju","dob":"5-May-1943","dod":"","gen":"4","spouse":"Jessy","spouse_pet":"Victoria","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"28-Apr-1948","spouse_dod":"","parent_id":5,"branch":5,"gender":"M"},"14":{"id":14,"name":"C. V. Ninan","pet":"Papachan","dob":"23-Aug-1947","dod":"","gen":"4","spouse":"Leelama","spouse_pet":"","spouse_house":"Puthenpurakkal","spouse_town":"","spouse_yom":"","spouse_dob":"7-Feb-1949","spouse_dod":"","parent_id":5,"branch":5,"gender":"M"},"15":{"id":15,"name":"Mary","pet":"Kuttichi","dob":"15-Aug-1945","dod":"","gen":"4","spouse":"T. C. Jacob","spouse_pet":"Raju","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"30-Oct-1942","spouse_dod":"","parent_id":5,"branch":5,"gender":"F"},"16":{"id":16,"name":"C. V. George","pet":"Lalan","dob":"26-Apr-1960","dod":"","gen":"4","spouse":"Betty","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"13-Jul-1964","spouse_dod":"14-Aug-2012","parent_id":5,"branch":5,"gender":"M"},"17":{"id":17,"name":"C. K. Shine (Rev)","pet":"","dob":"24-Nov-1974","dod":"","gen":"5","spouse":"Juby","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"15-May-1979","spouse_dod":"","parent_id":13,"branch":5,"gender":"M"},"18":{"id":18,"name":"C. K. Sherin","pet":"","dob":"22-May-1977","dod":"","gen":"5","spouse":"Annie","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"10-Sep-1979","spouse_dod":"","parent_id":13,"branch":5,"gender":"M"},"19":{"id":19,"name":"Derish","pet":"","dob":"30-Oct-1971","dod":"","gen":"5","spouse":"Princy","spouse_pet":"","spouse_house":"Mattahil","spouse_town":"","spouse_yom":"","spouse_dob":"8-Nov-1974","spouse_dod":"","parent_id":14,"branch":5,"gender":"M"},"20":{"id":20,"name":"Daisen","pet":"","dob":"28-Sep-1975","dod":"","gen":"5","spouse":"Simi Mathew","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"13-Sep-1981","spouse_dod":"","parent_id":14,"branch":5,"gender":"M"},"21":{"id":21,"name":"Doncy","pet":"","dob":"18-Jan-1978","dod":"","gen":"5","spouse":"Joshy Anthony","spouse_pet":"","spouse_house":"Maliyekkal Kooliyadan","spouse_town":"","spouse_yom":"","spouse_dob":"16-Feb-1976","spouse_dod":"","parent_id":14,"branch":5,"gender":"F"},"22":{"id":22,"name":"Denny","pet":"","dob":"9-Feb-1973","dod":"","gen":"5","spouse":"Laly","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":15,"branch":5,"gender":"M"},"23":{"id":23,"name":"Dimple","pet":"","dob":"23-May-1975","dod":"","gen":"5","spouse":"Joyce","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"19-Jan-1973","spouse_dod":"","parent_id":15,"branch":5,"gender":"F"},"24":{"id":24,"name":"Deepa","pet":"","dob":"31-May-1979","dod":"","gen":"5","spouse":"Sam Abraham","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"13-Oct-1973","spouse_dod":"","parent_id":15,"branch":5,"gender":"F"},"25":{"id":25,"name":"George Koshy","pet":"Kunjumon","dob":"20-Oct-1946","dod":"","gen":"4","spouse":"Eliyamma","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"7-Dec-1951","spouse_dod":"","parent_id":6,"branch":6,"gender":"M"},"26":{"id":26,"name":"George Mathew","pet":"Moni","dob":"10-Mar-1951","dod":"","gen":"4","spouse":"Suseela","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"12-Dec-1955","spouse_dod":"","parent_id":6,"branch":6,"gender":"M"},"27":{"id":27,"name":"Jacob (1st Marriage)","pet":"Papachan","dob":"","dod":"","gen":"4","spouse":"Omana","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":8,"branch":8,"gender":"M"},"28":{"id":28,"name":"John Varghese","pet":"Babuchan","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":8,"branch":8,"gender":"M"},"29":{"id":29,"name":"Varghese","pet":"Shanthan","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":8,"branch":8,"gender":"M"},"30":{"id":30,"name":"Saramma","pet":"Omana","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":8,"branch":8,"gender":"F"},"31":{"id":31,"name":"Thomas Varghese","pet":"Roy","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":8,"branch":8,"gender":"M"},"32":{"id":32,"name":"Koshy","pet":"Kunjuroa","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":8,"branch":8,"gender":"M"},"33":{"id":33,"name":"Susanama","pet":"Kujumini","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":8,"branch":8,"gender":"F"},"34":{"id":34,"name":"Dangli","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":27,"branch":8,"gender":"F"},"35":{"id":35,"name":"Sophi","pet":"","dob":"","dod":"","gen":"5","spouse":"Rani","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":27,"branch":8,"gender":"F"},"36":{"id":36,"name":"Saji","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":27,"branch":8,"gender":"F"},"37":{"id":37,"name":"Elizabeth Oommen","pet":"Loucy","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":30,"branch":8,"gender":"F"},"38":{"id":38,"name":"Jacob Oommen","pet":"Legy","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":30,"branch":8,"gender":"M"},"39":{"id":39,"name":"Varghese Oommen","pet":"Lerrish","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":30,"branch":8,"gender":"M"},"40":{"id":40,"name":"John Varghese","pet":"Blesson","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":28,"branch":8,"gender":"M"},"41":{"id":41,"name":"Mary Varghese","pet":"Beena","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":28,"branch":8,"gender":"F"},"42":{"id":42,"name":"Mathew Varghese","pet":"Benny","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":28,"branch":8,"gender":"M"},"43":{"id":43,"name":"Robin Varghese","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":29,"branch":8,"gender":"M"},"44":{"id":44,"name":"Linda Varghese","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":29,"branch":8,"gender":"M"},"45":{"id":45,"name":"Reena Varghese","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":31,"branch":8,"gender":"F"},"46":{"id":46,"name":"Roshan Mathew Varghese","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":31,"branch":8,"gender":"M"},"47":{"id":47,"name":"Reeba Mary Varghese","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":31,"branch":8,"gender":"F"},"48":{"id":48,"name":"Rajini","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":32,"branch":8,"gender":"F"},"49":{"id":49,"name":"Ranjan","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":32,"branch":8,"gender":"M"},"50":{"id":50,"name":"Julie Avarachen","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":33,"branch":8,"gender":"F"},"51":{"id":51,"name":"Jessie Avarachen","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":33,"branch":8,"gender":"F"},"52":{"id":52,"name":"Nishy Avarachen","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":33,"branch":8,"gender":"F"},"53":{"id":53,"name":"Vijay Avarachen","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":33,"branch":8,"gender":"M"},"54":{"id":54,"name":"Anuskha John","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":40,"branch":8,"gender":"F"},"55":{"id":55,"name":"Angel John","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":40,"branch":8,"gender":"F"},"56":{"id":56,"name":"Donia Scaria","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":41,"branch":8,"gender":"F"},"57":{"id":57,"name":"Danuja Scaria","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":41,"branch":8,"gender":"F"},"58":{"id":58,"name":"Joel Varghese","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":42,"branch":8,"gender":"M"},"59":{"id":59,"name":"Johanna Varghese","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":42,"branch":8,"gender":"F"},"60":{"id":60,"name":"Leela","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":44,"branch":8,"gender":"F"},"61":{"id":61,"name":"David Daniel","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":37,"branch":8,"gender":"M"},"62":{"id":62,"name":"Joshua Daniel","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":37,"branch":8,"gender":"M"},"63":{"id":63,"name":"Jeremy Daniel","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":37,"branch":8,"gender":"M"},"64":{"id":64,"name":"Hannah Varghese","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":39,"branch":8,"gender":"F"},"65":{"id":65,"name":"Samuel Varghese","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":39,"branch":8,"gender":"M"},"66":{"id":66,"name":"Ruben Joseph","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":45,"branch":8,"gender":"M"},"67":{"id":67,"name":"Rhea Joseph","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":45,"branch":8,"gender":"F"},"68":{"id":68,"name":"Ryan Joseph","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":45,"branch":8,"gender":"M"},"69":{"id":69,"name":"Joshua Thomas","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":46,"branch":8,"gender":"M"},"70":{"id":70,"name":"Amy","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":47,"branch":8,"gender":"F"},"71":{"id":71,"name":"Steeve","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":49,"branch":8,"gender":"M"},"72":{"id":72,"name":"Racheal Reynolds","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":50,"branch":8,"gender":"F"},"73":{"id":73,"name":"Amanda Reynolds","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":50,"branch":8,"gender":"F"},"74":{"id":74,"name":"Aaron Reynolds","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":50,"branch":8,"gender":"M"},"75":{"id":75,"name":"Ethan Sam","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":51,"branch":8,"gender":"M"},"76":{"id":76,"name":"Caleb Sam","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":51,"branch":8,"gender":"M"},"77":{"id":77,"name":"Zakaria Ellla","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":52,"branch":8,"gender":"M"},"78":{"id":78,"name":"Zahra Ella","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":52,"branch":8,"gender":"F"},"79":{"id":79,"name":"Audrey Avarachen","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":53,"branch":8,"gender":"F"},"80":{"id":80,"name":"Katlyn Avarachen","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":53,"branch":8,"gender":"F"},"81":{"id":81,"name":"Thanghan","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":null,"branch":0,"gender":"M"},"82":{"id":82,"name":"Kunjumol","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":null,"branch":0,"gender":"F"},"83":{"id":83,"name":"Podichan","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":null,"branch":0,"gender":"M"},"84":{"id":84,"name":"Biju","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":null,"branch":0,"gender":"M"},"85":{"id":85,"name":"Unni","pet":"","dob":"","dod":"","gen":"2","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":2,"branch":0,"gender":"M"},"86":{"id":86,"name":"Papi","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":85,"branch":0,"gender":"M"},"87":{"id":87,"name":"Baby","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":85,"branch":0,"gender":"M"},"88":{"id":88,"name":"Kunjumon","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":85,"branch":0,"gender":"M"},"89":{"id":89,"name":"Amani","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":85,"branch":0,"gender":"F"},"90":{"id":90,"name":"Soju","pet":"","dob":"19-Apr-1988","dod":"","gen":"5","spouse":"Nimmi Einstien","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"19-Jun-1991","spouse_dod":"","parent_id":16,"branch":5,"gender":"M"},"91":{"id":91,"name":"Simsy","pet":"","dob":"4-Apr-1991","dod":"","gen":"5","spouse":"Rijo C. M","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"30-Apr-1986","spouse_dod":"","parent_id":16,"branch":5,"gender":"F"},"92":{"id":92,"name":"Simjo","pet":"","dob":"11-Apr-1995","dod":"","gen":"5","spouse":"Anusha Wilson","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"22-Mar-1999","spouse_dod":"","parent_id":16,"branch":5,"gender":"M"},"93":{"id":93,"name":"Rosemin","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":18,"branch":5,"gender":"F"},"94":{"id":94,"name":"Angeline","pet":"","dob":"14-Aug-2010","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":18,"branch":5,"gender":"F"},"95":{"id":95,"name":"Edsel","pet":"","dob":"28-Sep-2004","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":19,"branch":5,"gender":"M"},"96":{"id":96,"name":"Erlene","pet":"","dob":"22-Apr-2009","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":19,"branch":5,"gender":"F"},"97":{"id":97,"name":"Felisha","pet":"Achu","dob":"17-Jul-2005","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":20,"branch":5,"gender":"F"},"98":{"id":98,"name":"Fensha","pet":"Allu","dob":"2-Dec-2008","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":20,"branch":5,"gender":"F"},"99":{"id":99,"name":"Fiona","pet":"Ammu","dob":"7-Sep-2019","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":20,"branch":5,"gender":"F"},"100":{"id":100,"name":"Johan Anthony","pet":"","dob":"27-Mar-2011","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":21,"branch":5,"gender":"M"},"101":{"id":101,"name":"Joel","pet":"","dob":"1-Mar-2001","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":23,"branch":5,"gender":"M"},"102":{"id":102,"name":"Noel","pet":"","dob":"22-Nov-2003","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":23,"branch":5,"gender":"M"},"103":{"id":103,"name":"Jovita","pet":"","dob":"12-Feb-2019","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":90,"branch":5,"gender":"F"},"104":{"id":104,"name":"Julia","pet":"","dob":"10-Oct-2023","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":90,"branch":5,"gender":"F"},"105":{"id":105,"name":"Penamma","pet":"","dob":"","dod":"","gen":"2","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":2,"branch":0,"gender":"M"},"106":{"id":106,"name":"Mercy","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"M"},"107":{"id":107,"name":"Sajan","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"M"},"108":{"id":108,"name":"Joy","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"M"},"109":{"id":109,"name":"Mary","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"F"},"110":{"id":110,"name":"George","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"M"},"111":{"id":111,"name":"Raju","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"M"},"112":{"id":112,"name":"Reji","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"M"},"113":{"id":113,"name":"Rosemin","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":17,"branch":5,"gender":"F"},"114":{"id":114,"name":"Omana","pet":"","dob":"","dod":"","gen":"5","spouse":"Col. Babu","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":144,"branch":10,"gender":"F"},"115":{"id":115,"name":"Saji","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":144,"branch":10,"gender":"M"},"116":{"id":116,"name":"Daughter I","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":114,"branch":10,"gender":"F"},"117":{"id":117,"name":"Daughter II","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":114,"branch":10,"gender":"F"},"118":{"id":118,"name":"George","pet":"Aniyan","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"M"},"119":{"id":119,"name":"Joy","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"M"},"120":{"id":120,"name":"Raju","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"M"},"121":{"id":121,"name":"Mary","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"F"},"122":{"id":122,"name":"Reji","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":105,"branch":0,"gender":"M"},"123":{"id":123,"name":"Son","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":121,"branch":0,"gender":"M"},"124":{"id":124,"name":"Daughter","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":121,"branch":0,"gender":"F"},"125":{"id":125,"name":"Samuel","pet":"Sam","dob":"26-Sep-1974","dod":"","gen":"4","spouse":"Jolly","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":12,"branch":12,"gender":"M"},"126":{"id":126,"name":"Daughter I","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":118,"branch":0,"gender":"F"},"127":{"id":127,"name":"Rijo","pet":"","dob":"30-Apr-1986","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":92,"branch":5,"gender":"M"},"128":{"id":128,"name":"Iyrin","pet":"","dob":"28-Oct-2016","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":92,"branch":5,"gender":"F"},"129":{"id":129,"name":"Rajan","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":11,"branch":11,"gender":"M"},"130":{"id":130,"name":"Kunjumon","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":11,"branch":11,"gender":"M"},"131":{"id":131,"name":"Podi","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":11,"branch":11,"gender":"M"},"132":{"id":132,"name":"Penamma","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":11,"branch":11,"gender":"F"},"133":{"id":133,"name":"Thangama","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":11,"branch":11,"gender":"F"},"134":{"id":134,"name":"Benny","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":129,"branch":11,"gender":"M"},"135":{"id":135,"name":"Betty","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":129,"branch":11,"gender":"F"},"136":{"id":136,"name":"Vinu","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":135,"branch":11,"gender":"M"},"137":{"id":137,"name":"Nisha","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":130,"branch":11,"gender":"M"},"138":{"id":138,"name":"Jenish","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":130,"branch":11,"gender":"M"},"139":{"id":139,"name":"Saju","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":131,"branch":11,"gender":"M"},"140":{"id":140,"name":"Lali","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":132,"branch":11,"gender":"M"},"141":{"id":141,"name":"Jessy","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":132,"branch":11,"gender":"F"},"142":{"id":142,"name":"Elsi","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":132,"branch":11,"gender":"F"},"143":{"id":143,"name":"Kunjumon","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":10,"branch":10,"gender":"M"},"144":{"id":144,"name":"Kunjama","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":10,"branch":10,"gender":"F"},"145":{"id":145,"name":"Thangama","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":9,"branch":9,"gender":"F"},"146":{"id":146,"name":"Chinamma","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":9,"branch":9,"gender":"F"},"147":{"id":147,"name":"Moly","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":9,"branch":9,"gender":"M"},"148":{"id":148,"name":"Joy","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":9,"branch":9,"gender":"M"},"149":{"id":149,"name":"George Koshy","pet":"Thangachan","dob":"","dod":"","gen":"5","spouse":"Leela Paulose","spouse_pet":"Lellama","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":145,"branch":9,"gender":"M"},"150":{"id":150,"name":"Sunny","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":145,"branch":9,"gender":"M"},"151":{"id":151,"name":"Jessy","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":145,"branch":9,"gender":"F"},"152":{"id":152,"name":"Benny","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":145,"branch":9,"gender":"M"},"153":{"id":153,"name":"Sissy","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":145,"branch":9,"gender":"F"},"154":{"id":154,"name":"Sam","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":145,"branch":9,"gender":"M"},"155":{"id":155,"name":"Alice","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":146,"branch":9,"gender":"F"},"156":{"id":156,"name":"Anuskha John","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":146,"branch":9,"gender":"F"},"157":{"id":157,"name":"Alathon (ELDO)","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":146,"branch":9,"gender":"M"},"158":{"id":158,"name":"Viju","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":146,"branch":9,"gender":"M"},"159":{"id":159,"name":"Shaji","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":147,"branch":9,"gender":"M"},"160":{"id":160,"name":"Dangli","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":159,"branch":9,"gender":"F"},"161":{"id":161,"name":"Sephi","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":159,"branch":9,"gender":"F"},"162":{"id":162,"name":"Vijayan","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":148,"branch":9,"gender":"M"},"163":{"id":163,"name":"Kurian","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":148,"branch":9,"gender":"M"},"164":{"id":164,"name":"Baby (First Marriage)","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":7,"branch":7,"gender":"M"},"165":{"id":165,"name":"Ponamma (First Marriage)","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":7,"branch":7,"gender":"F"},"166":{"id":166,"name":"Lizzie","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":7,"branch":7,"gender":"F"},"167":{"id":167,"name":"Lovely","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":7,"branch":7,"gender":"F"},"168":{"id":168,"name":"Lalan","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":7,"branch":7,"gender":"M"},"169":{"id":169,"name":"Lilu","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":7,"branch":7,"gender":"F"},"170":{"id":170,"name":"Lalu","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":7,"branch":7,"gender":"F"},"171":{"id":171,"name":"Suji","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":166,"branch":7,"gender":"M"},"172":{"id":172,"name":"Johnson","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":164,"branch":7,"gender":"M"},"173":{"id":173,"name":"Blesson","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":164,"branch":7,"gender":"M"},"174":{"id":174,"name":"Shiny","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":164,"branch":7,"gender":"F"},"175":{"id":175,"name":"George Varghese","pet":"Raju","dob":"14-Jan-1961","dod":"","gen":"4","spouse":"Sherly","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"22-Nov-1966","spouse_dod":"","parent_id":6,"branch":6,"gender":"M"},"176":{"id":176,"name":"Santosh","pet":"","dob":"13-Mar-1971","dod":"","gen":"5","spouse":"Sindhu","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"6-Nov-1974","spouse_dod":"","parent_id":25,"branch":6,"gender":"M"},"177":{"id":177,"name":"Denny","pet":"","dob":"13-May-1974","dod":"","gen":"5","spouse":"Roselyn","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"2-Jan-1971","spouse_dod":"","parent_id":25,"branch":6,"gender":"M"},"178":{"id":178,"name":"Subin","pet":"","dob":"5-Aug-1979","dod":"","gen":"5","spouse":"Jaincy Joseph","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"14-Sep-1981","spouse_dod":"","parent_id":25,"branch":6,"gender":"M"},"179":{"id":179,"name":"Mary","pet":"Abi","dob":"5-Apr-1975","dod":"","gen":"5","spouse":"Babu Thomas","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"13-Feb-1993","spouse_dod":"","parent_id":26,"branch":6,"gender":"F"},"180":{"id":180,"name":"Boby","pet":"","dob":"28-Jun-1976","dod":"","gen":"5","spouse":"Sindhy Baby","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"3-Nov-1976","spouse_dod":"","parent_id":26,"branch":6,"gender":"M"},"181":{"id":181,"name":"Siby","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":26,"branch":6,"gender":"M"},"182":{"id":182,"name":"Angel Victoria","pet":"","dob":"29-Aug-2005","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":18,"branch":5,"gender":"F"},"183":{"id":183,"name":"Aim Koshy","pet":"","dob":"2-Jul-2006","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":18,"branch":5,"gender":"F"},"185":{"id":185,"name":"Kunjeli","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":null,"branch":0,"gender":"F"},"186":{"id":186,"name":"Olvia Mary","pet":"","dob":"19-Dec-2011","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":22,"branch":5,"gender":"F"},"187":{"id":187,"name":"Shervin","pet":"","dob":"10-Jun-2005","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":24,"branch":5,"gender":"M"},"188":{"id":188,"name":"Juanna","pet":"","dob":"8-Mar-2009","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":24,"branch":5,"gender":"F"},"190":{"id":190,"name":"Achama George","pet":"Kunjamma","dob":"","dod":"","gen":"4","spouse":"K. V. Chacko","spouse_pet":"","spouse_house":"Koduthara Veed","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":6,"branch":6,"gender":"F"},"191":{"id":191,"name":"Calvin","pet":"","dob":"9-Apr-2008","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":178,"branch":6,"gender":"M"},"192":{"id":192,"name":"Kevin","pet":"","dob":"19-Jan-2011","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":178,"branch":6,"gender":"M"},"193":{"id":193,"name":"Aleena","pet":"","dob":"17-Aug-2001","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":177,"branch":6,"gender":"F"},"194":{"id":194,"name":"Aron","pet":"","dob":"18-Apr-2008","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":177,"branch":6,"gender":"M"},"195":{"id":195,"name":"Alen Baby","pet":"","dob":"22-Nov-2004","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":180,"branch":6,"gender":"M"},"196":{"id":196,"name":"Abin Baby","pet":"","dob":"11-Oct-2013","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":180,"branch":6,"gender":"M"},"197":{"id":197,"name":"Amaya","pet":"","dob":"15-Jan-2011","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":181,"branch":6,"gender":"F"},"198":{"id":198,"name":"Amanta","pet":"","dob":"2-Apr-2013","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":181,"branch":6,"gender":"F"},"199":{"id":199,"name":"Liyon","pet":"","dob":"16-Jul-2026","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":179,"branch":6,"gender":"M"},"200":{"id":200,"name":"Linet","pet":"","dob":"16-Jul-2000","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":179,"branch":6,"gender":"F"},"201":{"id":201,"name":"Joju","pet":"","dob":"16-Feb-1986","dod":"","gen":"6","spouse":"Anju","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"9-May-1990","spouse_dod":"20-Mar-2021","parent_id":175,"branch":6,"gender":"M"},"202":{"id":202,"name":"Jijo","pet":"","dob":"15-Mar-1989","dod":"","gen":"6","spouse":"Sara George (Dr)","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"11-Aug-1989","spouse_dod":"","parent_id":175,"branch":6,"gender":"M"},"203":{"id":203,"name":"Seraphina","pet":"","dob":"28-May-2023","dod":"","gen":"7","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":202,"branch":6,"gender":"F"},"204":{"id":204,"name":"John Koshy","pet":"Rajan","dob":"20-Apr-1944","dod":"","gen":"4","spouse":"Mariyamma","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"13-Aug-1949","spouse_dod":"","parent_id":null,"branch":0,"gender":"M"},"205":{"id":205,"name":"Thomas John","pet":"Podi","dob":"8-Feb-1958","dod":"","gen":"4","spouse":"Rachael","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"3-Mar-2021","spouse_dod":"","parent_id":null,"branch":0,"gender":"M"},"206":{"id":206,"name":"John Mathew","pet":"Kunjumon","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":null,"branch":0,"gender":"M"},"207":{"id":207,"name":"Leelama","pet":"","dob":"","dod":"","gen":"4","spouse":"P. C. Varghese","spouse_pet":"","spouse_house":"Thappil House","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"10Sep1971","parent_id":null,"branch":0,"gender":"F"},"208":{"id":208,"name":"Koshy John","pet":"Benoy","dob":"10-May-1971","dod":"","gen":"5","spouse":"Suni Varghese","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"28-Oct-1979","spouse_dod":"","parent_id":204,"branch":0,"gender":"M"},"209":{"id":209,"name":"Aniska","pet":"","dob":"24-Jun-2003","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":204,"branch":0,"gender":"F"},"210":{"id":210,"name":"Alwin","pet":"","dob":"7-Mar-2005","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":204,"branch":0,"gender":"M"},"211":{"id":211,"name":"Binu","pet":"","dob":"24-Apr-1976","dod":"","gen":"6","spouse":"","spouse_pet":"Sheena","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"9-Jan-1987","spouse_dod":"","parent_id":null,"branch":0,"gender":"M"},"212":{"id":212,"name":"Jeron","pet":"","dob":"18-Jul-2008","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":211,"branch":0,"gender":"M"},"213":{"id":213,"name":"Edhal","pet":"","dob":"28-Oct-2011","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":211,"branch":0,"gender":"M"},"214":{"id":214,"name":"Betty","pet":"","dob":"26-Aug-1973","dod":"","gen":"5","spouse":"","spouse_pet":"Kuriakose","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"15-Jan-1969","spouse_dod":"","parent_id":204,"branch":0,"gender":"F"},"215":{"id":215,"name":"Joel","pet":"","dob":"1-Dec-1999","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":214,"branch":0,"gender":"M"},"216":{"id":216,"name":"Leya","pet":"","dob":"25-Feb-2002","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":214,"branch":0,"gender":"F"},"217":{"id":217,"name":"Saju","pet":"","dob":"5-Jul-1980","dod":"","gen":"5","spouse":"Rachael","spouse_pet":"Reena","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"27-Oct-1983","spouse_dod":"","parent_id":205,"branch":0,"gender":"M"},"218":{"id":218,"name":"Riju","pet":"","dob":"14-Sep-1985","dod":"","gen":"5","spouse":"Roji Riju","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"9-Jul-1991","spouse_dod":"","parent_id":205,"branch":0,"gender":"M"},"219":{"id":219,"name":"Mariyam","pet":"","dob":"29-Mar-2020","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":218,"branch":0,"gender":"F"},"220":{"id":220,"name":"Anaya","pet":"","dob":"28-Oct-2021","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":218,"branch":0,"gender":"F"},"221":{"id":221,"name":"Achsaba","pet":"","dob":"14-Oct-2010","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":217,"branch":0,"gender":"F"},"222":{"id":222,"name":"Adonsaju","pet":"","dob":"3-Aug-2015","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":217,"branch":0,"gender":"M"},"223":{"id":223,"name":"Baiju","pet":"","dob":"14-Dec-1988","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":205,"branch":0,"gender":"M"},"224":{"id":224,"name":"Midhu","pet":"","dob":"20-Feb-1992","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":205,"branch":0,"gender":"M"},"225":{"id":225,"name":"Rebecca Thomas","pet":"","dob":"17-Apr-2021","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":223,"branch":0,"gender":"F"},"226":{"id":226,"name":"Faith Thomas","pet":"","dob":"27-Feb-2025","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":223,"branch":0,"gender":"F"},"227":{"id":227,"name":"Jesi","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":207,"branch":0,"gender":"F"},"228":{"id":228,"name":"Elsy","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":207,"branch":0,"gender":"F"},"229":{"id":229,"name":"Laly","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":207,"branch":0,"gender":"F"},"230":{"id":230,"name":"V. V. Cherian","pet":"Kunjumon","dob":"5-May-2001","dod":"","gen":"4","spouse":"Mariyamma Mathew","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":10,"branch":10,"gender":"M"},"232":{"id":232,"name":"Jiji Cherian","pet":"","dob":"","dod":"","gen":"5","spouse":"Sini","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":230,"branch":10,"gender":"M"},"233":{"id":233,"name":"Santosh V. Jacob","pet":"","dob":"","dod":"","gen":"5","spouse":"Shynee","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":230,"branch":10,"gender":"M"},"234":{"id":234,"name":"Riya","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":232,"branch":10,"gender":"F"},"235":{"id":235,"name":"Ribu","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":232,"branch":10,"gender":"F"},"236":{"id":236,"name":"Shana Mariam","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":233,"branch":10,"gender":"F"},"237":{"id":237,"name":"Sara Elizabeth","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":233,"branch":10,"gender":"F"},"238":{"id":238,"name":"Mariyamma","pet":"","dob":"","dod":"","gen":"4","spouse":"A. M. Mathew","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":10,"branch":10,"gender":"F"},"239":{"id":239,"name":"Saji","pet":"","dob":"3-Mar-1965","dod":"","gen":"5","spouse":"Shyla","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"9-Aug-1968","spouse_dod":"","parent_id":238,"branch":10,"gender":"M"},"240":{"id":240,"name":"Sunu","pet":"","dob":"","dod":"","gen":"5","spouse":"Suni","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":238,"branch":10,"gender":"M"},"241":{"id":241,"name":"Omana","pet":"","dob":"","dod":"","gen":"5","spouse":"Babu Abraham (Col.)","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":238,"branch":10,"gender":"F"},"242":{"id":242,"name":"Ansha","pet":"","dob":"22-Nov-1995","dod":"","gen":"6","spouse":"Deny Alex","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":239,"branch":10,"gender":"F"},"243":{"id":243,"name":"Alvin","pet":"","dob":"20-Oct-2002","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":239,"branch":10,"gender":"M"},"244":{"id":244,"name":"Vijay","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":241,"branch":10,"gender":"M"},"245":{"id":245,"name":"Manusha","pet":"","dob":"","dod":"","gen":"6","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":241,"branch":10,"gender":"F"},"246":{"id":246,"name":"Sumen Varghese","pet":"","dob":"22-Nov-1995","dod":"","gen":"5","spouse":"Blessy","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"3-Aug-1997","spouse_dod":"","parent_id":125,"branch":12,"gender":"M"},"247":{"id":247,"name":"Subin Varghese","pet":"","dob":"14-Jul-2000","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":125,"branch":12,"gender":"M"},"248":{"id":248,"name":"Regi","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":148,"branch":9,"gender":"M"},"249":{"id":249,"name":"Reni","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":148,"branch":9,"gender":"M"},"250":{"id":250,"name":"Penamma","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":9,"branch":9,"gender":"F"},"251":{"id":251,"name":"Vijayan","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":147,"branch":9,"gender":"M"},"252":{"id":252,"name":"Kurian","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":147,"branch":9,"gender":"M"},"253":{"id":253,"name":"Kunjumol","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":147,"branch":9,"gender":"F"},"254":{"id":254,"name":"Son","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":120,"branch":0,"gender":"M"},"255":{"id":255,"name":"Daughter","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":120,"branch":0,"gender":"F"},"256":{"id":256,"name":"Daughter I","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":119,"branch":0,"gender":"F"},"257":{"id":257,"name":"Daughter II","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":119,"branch":0,"gender":"F"},"258":{"id":258,"name":"Daughter III","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":119,"branch":0,"gender":"F"},"259":{"id":259,"name":"Anu","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":118,"branch":0,"gender":"F"},"260":{"id":260,"name":"Daughter I","pet":"","dob":"","dod":"","gen":"5","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":118,"branch":0,"gender":"F"},"261":{"id":261,"name":"Koshy","pet":"Kunjunchu","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":2,"branch":0,"gender":"M"},"262":{"id":262,"name":"Mercy","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":261,"branch":0,"gender":"F"},"263":{"id":263,"name":"Sajan","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":261,"branch":0,"gender":"M"},"264":{"id":264,"name":"Daughter I","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":261,"branch":0,"gender":"F"},"265":{"id":265,"name":"Daughter II","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":261,"branch":0,"gender":"F"},"266":{"id":266,"name":"Daughter III","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":261,"branch":0,"gender":"F"},"267":{"id":267,"name":"Papi","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":2,"branch":0,"gender":"M"},"268":{"id":268,"name":"Uninnini","pet":"","dob":"","dod":"","gen":"3","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":2,"branch":0,"gender":"M"},"269":{"id":269,"name":"Baby","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":268,"branch":0,"gender":"M"},"270":{"id":270,"name":"Kunjumon","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":268,"branch":0,"gender":"M"},"271":{"id":271,"name":"Amini","pet":"","dob":"","dod":"","gen":"4","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":268,"branch":0,"gender":"F"},"272":{"id":272,"name":"Jiji","pet":"","dob":"","dod":"","gen":"6","spouse":"Roy","spouse_pet":"Thambi","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":149,"branch":9,"gender":"M"},"273":{"id":273,"name":"Jibi","pet":"","dob":"","dod":"","gen":"6","spouse":"Sojo Johnny","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":149,"branch":9,"gender":"M"},"274":{"id":274,"name":"Edwin","pet":"","dob":"","dod":"","gen":"7","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":272,"branch":9,"gender":"M"},"275":{"id":275,"name":"Evona","pet":"","dob":"","dod":"","gen":"7","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":272,"branch":9,"gender":"F"},"276":{"id":276,"name":"Ann Maria","pet":"","dob":"","dod":"","gen":"7","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":273,"branch":9,"gender":"F"},"277":{"id":277,"name":"Alwin","pet":"","dob":"","dod":"","gen":"7","spouse":"","spouse_pet":"","spouse_house":"","spouse_town":"","spouse_yom":"","spouse_dob":"","spouse_dod":"","parent_id":273,"branch":9,"gender":"M"}},"children":{"1":[2,3,4],"3":[5,6,7,8,9,10,11,12],"5":[13,14,15,16],"13":[17,18],"14":[19,20,21],"15":[22,23,24],"6":[25,26,175,190],"8":[27,28,29,30,31,32,33],"27":[34,35,36],"30":[37,38,39],"28":[40,41,42],"29":[43,44],"31":[45,46,47],"32":[48,49],"33":[50,51,52,53],"40":[54,55],"41":[56,57],"42":[58,59],"44":[60],"37":[61,62,63],"39":[64,65],"45":[66,67,68],"46":[69],"47":[70],"49":[71],"50":[72,73,74],"51":[75,76],"52":[77,78],"53":[79,80],"2":[85,105,261,267,268],"85":[86,87,88,89],"16":[90,91,92],"18":[93,94,182,183],"19":[95,96],"20":[97,98,99],"21":[100],"23":[101,102],"90":[103,104],"105":[106,107,108,109,110,111,112,118,119,120,121,122],"17":[113],"144":[114,115],"114":[116,117],"121":[123,124],"12":[125],"118":[126,259,260],"92":[127,128],"11":[129,130,131,132,133],"129":[134,135],"135":[136],"130":[137,138],"131":[139],"132":[140,141,142],"10":[143,144,230,238],"9":[145,146,147,148,250],"145":[149,150,151,152,153,154],"146":[155,156,157,158],"147":[159,251,252,253],"159":[160,161],"148":[162,163,248,249],"7":[164,165,166,167,168,169,170],"166":[171],"164":[172,173,174],"25":[176,177,178],"26":[179,180,181],"22":[186],"24":[187,188],"178":[191,192],"177":[193,194],"180":[195,196],"181":[197,198],"179":[199,200],"175":[201,202],"202":[203],"204":[208,209,210,214],"211":[212,213],"214":[215,216],"205":[217,218,223,224],"218":[219,220],"217":[221,222],"223":[225,226],"207":[227,228,229],"230":[232,233],"232":[234,235],"233":[236,237],"238":[239,240,241],"239":[242,243],"241":[244,245],"125":[246,247],"120":[254,255],"119":[256,257,258],"261":[262,263,264,265,266],"268":[269,270,271],"149":[272,273],"272":[274,275],"273":[276,277]}}
 ;
 const people = RAW.people;       // {id_str: person}
+// Deep-frozen originals for reset; built once before overrides are applied
+const _originalPeople = JSON.parse(JSON.stringify(RAW.people));
 const childrenOf = RAW.children; // {id_str: [child_ids]}
 
-/* ── localStorage photos ─────────────────────────────────────────────── */
-function getPhotos() {
-  try { return JSON.parse(localStorage.getItem('chPhotos')||'{}'); } catch(e){return{};}
+/* ═══════════════════════════════════════════════════════════════════════
+   PHOTO STORAGE — IndexedDB (with localStorage fallback)
+   All photos stored in IDB so mobile browsers don't hit the 5MB quota.
+   Keys: person photos → 'p_<id>', spouse → 'sp_<personId>_<slot>',
+         album → 'alb_<cardId>'
+═══════════════════════════════════════════════════════════════════════ */
+let _idb = null;
+function openIDB() {
+  if (_idb) return Promise.resolve(_idb);
+  return new Promise((res, rej) => {
+    const req = indexedDB.open('chenathara_photos', 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore('photos');
+    req.onsuccess = e => { _idb = e.target.result; res(_idb); };
+    req.onerror = () => rej(req.error);
+  });
 }
-function savePhoto(id, dataUrl) {
-  try {
-    const ph = getPhotos();
-    ph[id] = dataUrl;
-    localStorage.setItem('chPhotos', JSON.stringify(ph));
-  } catch(e){}
+function idbGet(key) {
+  return openIDB().then(db => new Promise((res, rej) => {
+    const tx = db.transaction('photos', 'readonly');
+    const req = tx.objectStore('photos').get(key);
+    req.onsuccess = () => res(req.result || null);
+    req.onerror = () => rej(req.error);
+  })).catch(() => {
+    // IDB unavailable — fall back to localStorage
+    try { return localStorage.getItem('ch_' + key); } catch(e){ return null; }
+  });
+}
+function idbPut(key, val) {
+  return openIDB().then(db => new Promise((res, rej) => {
+    const tx = db.transaction('photos', 'readwrite');
+    tx.objectStore('photos').put(val, key);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  })).catch(() => {
+    try { localStorage.setItem('ch_' + key, val); } catch(e){}
+  });
+}
+function idbDel(key) {
+  return openIDB().then(db => new Promise((res, rej) => {
+    const tx = db.transaction('photos', 'readwrite');
+    tx.objectStore('photos').delete(key);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  })).catch(() => {
+    try { localStorage.removeItem('ch_' + key); } catch(e){}
+  });
+}
+
+/* ── Image compression — resizes to max 900px, JPEG 0.80 ─────────────── */
+function compressImage(dataUrl, maxPx, quality, callback) {
+  maxPx = maxPx || 900; quality = quality || 0.80;
+  const img = new Image();
+  img.onload = () => {
+    let w = img.naturalWidth, h = img.naturalHeight;
+    if (w > maxPx || h > maxPx) {
+      if (w > h) { h = Math.round(h * maxPx / w); w = maxPx; }
+      else       { w = Math.round(w * maxPx / h); h = maxPx; }
+    }
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    c.getContext('2d').drawImage(img, 0, 0, w, h);
+    callback(c.toDataURL('image/jpeg', quality));
+  };
+  img.src = dataUrl;
+}
+
+/* ── Person photos ───────────────────────────────────────────────────── */
+// In-memory cache so sync reads still work after first async load
+const _photoCache = {};
+function getPhotos() { return _photoCache; }
+function loadAllPhotos() {
+  // Pre-load all person photo keys from IDB into cache at startup
+  return openIDB().then(db => new Promise(res => {
+    const tx = db.transaction('photos', 'readonly');
+    const req = tx.objectStore('photos').openCursor();
+    req.onsuccess = e => {
+      const cursor = e.target.result;
+      if (cursor) {
+        const key = cursor.key;
+        if (key.startsWith('p_'))   _photoCache[key.slice(2)]  = cursor.value;
+        if (key.startsWith('sp_'))  _spPhotoCache[key.slice(3)] = cursor.value;
+        if (key.startsWith('alb_')) _albPhotoCache[key.slice(4)] = cursor.value;
+        cursor.continue();
+      } else { res(); }
+    };
+    req.onerror = () => res();
+  })).catch(() => {
+    // Migrate old localStorage photos
+    try {
+      const old = JSON.parse(localStorage.getItem('chPhotos')||'{}');
+      Object.assign(_photoCache, old);
+    } catch(e){}
+  });
+}
+function savePhoto(id, dataUrl, cb) {
+  compressImage(dataUrl, 900, 0.80, compressed => {
+    _photoCache[id] = compressed;
+    idbPut('p_' + id, compressed).then(() => { if (cb) cb(); });
+  });
 }
 function removePhoto(id) {
-  try {
-    const ph = getPhotos();
-    delete ph[id];
-    localStorage.setItem('chPhotos', JSON.stringify(ph));
-  } catch(e){}
+  delete _photoCache[id];
+  idbDel('p_' + id);
 }
 
-/* ── localStorage spouse photos ──────────────────────────────────────── */
-function getSpousePhotos() {
-  try { return JSON.parse(localStorage.getItem('chSpousePhotos')||'{}'); } catch(e){return{};}
-}
-function saveSpousePhoto(personId, slot, dataUrl) {
-  // slot: 'sp1' or 'sp2'
-  try {
-    const ph = getSpousePhotos();
-    ph[personId + '_' + slot] = dataUrl;
-    localStorage.setItem('chSpousePhotos', JSON.stringify(ph));
-  } catch(e){}
+/* ── Spouse photos ───────────────────────────────────────────────────── */
+const _spPhotoCache = {};
+function getSpousePhotos() { return _spPhotoCache; }
+function saveSpousePhoto(personId, slot, dataUrl, cb) {
+  const key = personId + '_' + slot;
+  compressImage(dataUrl, 900, 0.80, compressed => {
+    _spPhotoCache[key] = compressed;
+    idbPut('sp_' + key, compressed).then(() => { if (cb) cb(); });
+  });
 }
 function removeSpousePhoto(personId, slot) {
-  try {
-    const ph = getSpousePhotos();
-    delete ph[personId + '_' + slot];
-    localStorage.setItem('chSpousePhotos', JSON.stringify(ph));
-  } catch(e){}
+  const key = personId + '_' + slot;
+  delete _spPhotoCache[key];
+  idbDel('sp_' + key);
 }
 
-/* ── localStorage album ──────────────────────────────────────────────── */
+/* ── Album photos ────────────────────────────────────────────────────── */
+const _albPhotoCache = {};
+
+/* ── localStorage album metadata (titles, order — tiny, no photos) ──── */
 const ALBUM_STORE = 'chAlbumCards';
 const ALBUM_DEFAULT = [
   {id:'a1', title:'Family Portrait',    sub:'circa 1950s · Central Kerala', photo:null},
@@ -1000,15 +1087,31 @@ function albumHandleFile(cardId, file) {
   if (!file || !file.type.startsWith('image/')) return;
   const reader = new FileReader();
   reader.onload = e => {
-    updateAlbumCard(cardId, {photo: e.target.result});
-    renderAlbum();
+    compressImage(e.target.result, 1200, 0.80, compressed => {
+      _albPhotoCache[cardId] = compressed;
+      idbPut('alb_' + cardId, compressed).then(() => {
+        // Also update metadata (no photo field — stored in IDB)
+        const cards = getAlbumCards();
+        const idx = cards.findIndex(c => c.id === cardId);
+        if (idx >= 0 && !cards[idx].hasPhoto) {
+          cards[idx].hasPhoto = true;
+          saveAlbumCards(cards);
+        }
+        renderAlbum();
+      });
+    });
   };
   reader.readAsDataURL(file);
 }
 function albumRemovePhoto(cardId) {
   if (!isAdminUnlocked()) { openAdminModal(); return; }
-  updateAlbumCard(cardId, {photo: null});
-  renderAlbum();
+  delete _albPhotoCache[cardId];
+  idbDel('alb_' + cardId).then(() => {
+    const cards = getAlbumCards();
+    const idx = cards.findIndex(c => c.id === cardId);
+    if (idx >= 0) { delete cards[idx].hasPhoto; saveAlbumCards(cards); }
+    renderAlbum();
+  });
 }
 function selectAllText(el) {
   const range = document.createRange();
@@ -1044,12 +1147,13 @@ function renderAlbum() {
     inp.onchange = e => { if (e.target.files[0]) albumHandleFile(card.id, e.target.files[0]); e.target.value=''; };
     wrap.appendChild(inp);
 
-    // Photo area
+    // Photo area — read from IDB cache
+    const cardPhoto = _albPhotoCache[card.id] || null;
     const imgDiv = document.createElement('div');
-    imgDiv.className = 'album-img' + (card.photo ? '' : ' no-photo');
-    if (card.photo) {
+    imgDiv.className = 'album-img' + (cardPhoto ? '' : ' no-photo');
+    if (cardPhoto) {
       const img = document.createElement('img');
-      img.src = card.photo; img.alt = card.title || '';
+      img.src = cardPhoto; img.alt = card.title || '';
       imgDiv.appendChild(img);
     } else {
       imgDiv.innerHTML = `<div class="album-img-ph">${PHOTO_SVG}<span>Photograph</span></div>`;
@@ -1057,7 +1161,7 @@ function renderAlbum() {
     // Upload overlay (admin only via CSS)
     const uploadOverlay = document.createElement('div');
     uploadOverlay.className = 'album-img-upload-btn';
-    uploadOverlay.innerHTML = `${UPLOAD_SVG}<span>${card.photo ? 'Replace photo' : 'Upload photo'}</span>`;
+    uploadOverlay.innerHTML = `${UPLOAD_SVG}<span>${cardPhoto ? 'Replace photo' : 'Upload photo'}</span>`;
     uploadOverlay.onclick = () => albumUploadPhoto(card.id);
     imgDiv.appendChild(uploadOverlay);
     wrap.appendChild(imgDiv);
@@ -1106,11 +1210,11 @@ function renderAlbum() {
 
     const uploadBtn = document.createElement('button');
     uploadBtn.className = 'album-card-admin-btn';
-    uploadBtn.textContent = card.photo ? '📷 Replace photo' : '📷 Upload photo';
+    uploadBtn.textContent = cardPhoto ? '📷 Replace photo' : '📷 Upload photo';
     uploadBtn.onclick = () => albumUploadPhoto(card.id);
     adminBar.appendChild(uploadBtn);
 
-    if (card.photo) {
+    if (cardPhoto) {
       const removeBtn = document.createElement('button');
       removeBtn.className = 'album-card-admin-btn';
       removeBtn.textContent = '✕ Remove photo';
@@ -1134,6 +1238,34 @@ function renderAlbum() {
   addBtn.innerHTML = `${UPLOAD_SVG}<span>Add photograph</span>`;
   addBtn.onclick = addAlbumCard;
   grid.appendChild(addBtn);
+}
+
+/* ── Person data overrides (admin edits stored in localStorage) ──────── */
+const PERSON_OVERRIDES_KEY = 'chPersonOverrides';
+function getPersonOverrides() {
+  try { return JSON.parse(localStorage.getItem(PERSON_OVERRIDES_KEY)||'{}'); } catch(e){ return {}; }
+}
+function savePersonOverride(id, fields) {
+  const ov = getPersonOverrides();
+  ov[id] = Object.assign(ov[id] || {}, fields);
+  try { localStorage.setItem(PERSON_OVERRIDES_KEY, JSON.stringify(ov)); } catch(e){}
+  // Merge into live people object so all views update immediately
+  if (people[String(id)]) Object.assign(people[String(id)], fields);
+}
+function clearPersonOverride(id) {
+  const ov = getPersonOverrides();
+  delete ov[id];
+  try { localStorage.setItem(PERSON_OVERRIDES_KEY, JSON.stringify(ov)); } catch(e){}
+  // Restore from frozen originals
+  if (_originalPeople[String(id)]) {
+    Object.assign(people[String(id)], _originalPeople[String(id)]);
+  }
+}
+function applyPersonOverrides() {
+  const ov = getPersonOverrides();
+  Object.keys(ov).forEach(id => {
+    if (people[id]) Object.assign(people[id], ov[id]);
+  });
 }
 
 /* ── helpers ─────────────────────────────────────────────────────────── */
@@ -1301,12 +1433,12 @@ function openProfile(id) {
     if (!isAdminUnlocked()) { e.target.value=''; openAdminModal(); return; }
     const file = e.target.files[0];
     if (!file) return;
-    if (file.size > 2*1024*1024) { alert('Please use an image under 2 MB.'); return; }
     const reader = new FileReader();
     reader.onload = (ev) => {
-      savePhoto(id, ev.target.result);
-      openProfile(id); // re-render
-      renderDirectory();
+      savePhoto(id, ev.target.result, () => {
+        openProfile(id); // re-render after compression+save
+        renderDirectory();
+      });
     };
     reader.readAsDataURL(file);
   };
@@ -1382,11 +1514,11 @@ function openProfile(id) {
       if (!isAdminUnlocked()) { e.target.value=''; openAdminModal(); return; }
       const file = e.target.files[0];
       if (!file) return;
-      if (file.size > 2*1024*1024) { alert('Please use an image under 2 MB.'); return; }
       const reader = new FileReader();
       reader.onload = (ev) => {
-        saveSpousePhoto(id, slot, ev.target.result);
-        openProfile(id);
+        saveSpousePhoto(id, slot, ev.target.result, () => {
+          openProfile(id);
+        });
       };
       reader.readAsDataURL(file);
     };
@@ -1445,6 +1577,80 @@ function openProfile(id) {
   // Spouse 2
   if (p.spouse2) {
     buildSpouseSection('Second Spouse', [p.spouse2, p.spouse2_pet||'', p.spouse2_house||'', p.spouse2_town||'', p.spouse2_yom||'', p.spouse2_dob||'', p.spouse2_dod||''], 'sp2');
+  }
+
+  // ── Admin: Edit Details section ───────────────────────────────────────
+  if (isAdminUnlocked()) {
+    const editSec = document.createElement('div');
+    editSec.className = 'profile-section';
+    editSec.innerHTML = '<div class="profile-section-title" style="color:var(--gold2);">✏️ Edit Details</div>';
+    const editNote = document.createElement('div');
+    editNote.style.cssText = 'font-family:Inter,sans-serif;font-size:11px;color:var(--text3);margin-bottom:10px;';
+    editNote.textContent = 'Changes are saved locally in your browser and override the source data.';
+    editSec.appendChild(editNote);
+
+    const EDIT_FIELDS = [
+      {key:'name',      label:'Full Name'},
+      {key:'pet',       label:'Pet Name'},
+      {key:'house',     label:'House Name'},
+      {key:'town',      label:'Town / Place'},
+      {key:'dob',       label:'Year of Birth'},
+      {key:'dod',       label:'Year of Death'},
+      {key:'yom',       label:'Year of Marriage'},
+      {key:'notes',     label:'Notes'},
+    ];
+    const form = document.createElement('div');
+    form.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;';
+
+    const overrides = getPersonOverrides();
+    const over = overrides[id] || {};
+
+    EDIT_FIELDS.forEach(f => {
+      const wrap = document.createElement('div');
+      if (f.key === 'notes') wrap.style.gridColumn = '1/-1';
+      const lbl = document.createElement('label');
+      lbl.style.cssText = 'font-family:Inter,sans-serif;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:3px;';
+      lbl.textContent = f.label;
+      const inp = document.createElement(f.key === 'notes' ? 'textarea' : 'input');
+      inp.style.cssText = 'width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:4px;background:var(--bg2);color:var(--text);font-family:Inter,sans-serif;font-size:12px;box-sizing:border-box;';
+      if (f.key === 'notes') { inp.rows = 2; inp.style.resize = 'vertical'; }
+      inp.value = over[f.key] !== undefined ? over[f.key] : (p[f.key] || '');
+      inp.dataset.field = f.key;
+      wrap.appendChild(lbl);
+      wrap.appendChild(inp);
+      form.appendChild(wrap);
+    });
+
+    editSec.appendChild(form);
+
+    const btnRow = document.createElement('div');
+    btnRow.style.cssText = 'display:flex;gap:8px;margin-top:10px;';
+    const saveBtn = document.createElement('button');
+    saveBtn.style.cssText = 'padding:6px 14px;border-radius:5px;border:none;background:var(--teal);color:#fff;font-family:Inter,sans-serif;font-size:12px;font-weight:600;cursor:pointer;';
+    saveBtn.textContent = '💾 Save Changes';
+    saveBtn.onclick = () => {
+      const fields = {};
+      form.querySelectorAll('[data-field]').forEach(inp => {
+        fields[inp.dataset.field] = inp.value.trim();
+      });
+      savePersonOverride(id, fields);
+      openProfile(id); // re-render with new data
+      renderDirectory();
+    };
+    const resetBtn = document.createElement('button');
+    resetBtn.style.cssText = 'padding:6px 12px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text3);font-family:Inter,sans-serif;font-size:12px;cursor:pointer;';
+    resetBtn.textContent = 'Reset to original';
+    resetBtn.onclick = () => {
+      if (confirm('Remove all local edits for this person and restore the original data?')) {
+        clearPersonOverride(id);
+        openProfile(id);
+        renderDirectory();
+      }
+    };
+    btnRow.appendChild(saveBtn);
+    btnRow.appendChild(resetBtn);
+    editSec.appendChild(btnRow);
+    body.appendChild(editSec);
   }
 
   // Family connections
@@ -1859,8 +2065,15 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
 </div>
 
 <script>
-/* ═══ ADMIN AUTH ═══════════════════════════════════════════════════════════ */
-const ADMIN_HASH = '7151db819d77a706586c0be02f8532bc4588943f0717fda543069b8b32dd27ef';
+/* ═══ ADMIN AUTH ═══════════════════════════════════════════════════════════
+   Two admin passwords — both give full access.
+   Primary   (#Malabar1981)    hash: 7151db8...
+   Secondary (Chenathara2024)  hash: 3a79e09... — share with family editor
+═══════════════════════════════════════════════════════════════════════════ */
+const ADMIN_HASHES = [
+  '7151db819d77a706586c0be02f8532bc4588943f0717fda543069b8b32dd27ef', // primary
+  '3a79e09951b7c98cc498433c5497a6d2db21811c9982f13132e6173e9ece1ff4'  // family editor
+];
 
 async function sha256(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
@@ -1906,7 +2119,7 @@ function closeAdminModal() {
 async function submitAdminPw() {
   const pw = document.getElementById('adminPwInput').value;
   const hash = await sha256(pw);
-  if (hash === ADMIN_HASH) {
+  if (ADMIN_HASHES.includes(hash)) {
     try { sessionStorage.setItem('chAdminUnlocked', '1'); } catch(e){}
     closeAdminModal();
     applyAdminUI();
@@ -1931,7 +2144,16 @@ document.getElementById('adminModal').addEventListener('click', e => {
 });
 
 // Init on load
-window.addEventListener('load', applyAdminUI);
+window.addEventListener('load', () => {
+  // Apply any saved person-data overrides before rendering
+  applyPersonOverrides();
+  // Load all photos from IndexedDB into memory caches, then apply UI
+  loadAllPhotos().finally(() => {
+    applyAdminUI();
+    // Re-render views with loaded photos
+    renderDirectory();
+  });
+});
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
 
