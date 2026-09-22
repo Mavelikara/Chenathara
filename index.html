@@ -2107,13 +2107,14 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
       <button class="admin-modal-ok" onclick="syncPhotosToCloud()" style="width:100%;margin-bottom:0">⬆️ Sync local photos to cloud</button>
       <div id="syncProgress" style="margin-top:8px;font-size:12px;min-height:16px;"></div>
       <div style="margin-top:12px;border-top:1px solid var(--border2);padding-top:10px;">
-        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;"><strong>📋 Photo Map</strong> — export on desktop, import on mobile to make cloud photos visible everywhere.</div>
-        <div style="display:flex;gap:6px;margin-bottom:6px;">
-          <button class="admin-modal-ok" onclick="exportPhotoMap()" style="flex:1;margin-bottom:0;font-size:12px;padding:6px 8px">📤 Export</button>
-          <button class="admin-modal-ok" onclick="importPhotoMap()" style="flex:1;margin-bottom:0;font-size:12px;padding:6px 8px">📥 Import</button>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">🔑 <strong>GitHub Token</strong> — lets the site push the photo map automatically so <em>every visitor</em> sees photos instantly, no manual steps.</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">Create a fine-grained token at <a href="https://github.com/settings/tokens?type=beta" target="_blank" style="color:var(--teal3)">github.com/settings/tokens</a> with <strong>Contents: Read &amp; write</strong> on the Chenathara repo.</div>
+        <input class="admin-modal-input" type="password" id="ghTokenInput" placeholder="github_pat_…  or  ghp_…" autocomplete="off" style="margin-bottom:6px;">
+        <div style="display:flex;gap:6px;">
+          <button class="admin-modal-ok" onclick="saveGHToken()" style="flex:1;margin-bottom:0;font-size:12px;padding:6px 8px">💾 Save Token</button>
+          <button class="admin-modal-ok" onclick="pushPhotoMapToGitHub()" style="flex:1;margin-bottom:0;font-size:12px;padding:6px 8px">📡 Push photo map</button>
         </div>
-        <textarea id="photoMapText" placeholder="Export generates JSON here. Paste JSON here to import on another device." style="width:100%;height:80px;font-size:11px;font-family:monospace;background:var(--bg2);color:var(--text1);border:1px solid var(--border2);border-radius:6px;padding:6px;box-sizing:border-box;resize:vertical;"></textarea>
-        <div id="photoMapStatus" style="font-size:11px;min-height:14px;margin-top:3px;"></div>
+        <div id="ghPushStatus" style="font-size:11px;min-height:14px;margin-top:5px;"></div>
       </div>
     </div>
   </div>
@@ -2192,10 +2193,8 @@ function openImgBBSettings() {
   status.textContent = getImgBBKey() ? '✓ Key saved — new uploads will go to the cloud' : '';
   status.style.color = 'var(--sage)';
   prog.textContent = '';
-  // Show sync section if there are any local base64 photos
-  const hasLocal = Object.values(_photoCache).some(v => v && v.startsWith('data:')) ||
-                   Object.values(_spPhotoCache).some(v => v && v.startsWith('data:')) ||
-                   Object.values(_albPhotoCache).some(v => v && v.startsWith('data:'));
+  document.getElementById('ghTokenInput').value = getGHToken() ? '••••••••••••' : '';
+  document.getElementById('ghPushStatus').textContent = '';
   sync.style.display = getImgBBKey() ? '' : 'none';
   modal.classList.add('open');
   setTimeout(() => inp.focus(), 80);
@@ -2246,15 +2245,41 @@ async function syncPhotosToCloud() {
   }
   if (failed === 0) {
     prog.style.color = 'var(--sage)';
-    prog.textContent = `✓ All ${done} photos synced to cloud — now visible on every device!`;
+    prog.textContent = `✓ All ${done} photos synced to cloud!`;
     renderDirectory(); renderAlbum();
+    // Auto-push photo map to GitHub so all visitors see photos immediately
+    if (getGHToken()) {
+      prog.textContent += ' Pushing photo map to site…';
+      const ok = await pushPhotoMapToGitHub(true);
+      prog.textContent = ok
+        ? `✓ All ${done} photos synced — photo map pushed! Everyone sees them now.`
+        : `✓ All ${done} photos synced — but photo map push failed. Try "Push photo map" manually.`;
+    } else {
+      prog.textContent += ' Add a GitHub Token above and click "Push photo map" to make photos visible to all visitors.';
+    }
   } else {
     prog.style.color = 'var(--gold)';
     prog.textContent = `${done} synced, ${failed} failed. Try again later.`;
   }
 }
 
-function exportPhotoMap() {
+function getGHToken() { try { return localStorage.getItem('chGHToken') || ''; } catch(e) { return ''; } }
+function setGHToken(t) { try { if (t) localStorage.setItem('chGHToken', t); else localStorage.removeItem('chGHToken'); } catch(e) {} }
+
+function saveGHToken() {
+  const inp = document.getElementById('ghTokenInput');
+  const st  = document.getElementById('ghPushStatus');
+  const val = inp.value.trim();
+  // If they haven't changed the masked placeholder, keep existing token
+  if (val === '••••••••••••') { st.style.color = 'var(--sage)'; st.textContent = '✓ Token already saved.'; return; }
+  setGHToken(val);
+  if (!val) { st.style.color = 'var(--text3)'; st.textContent = 'Token cleared.'; inp.value = ''; return; }
+  inp.value = '••••••••••••';
+  st.style.color = 'var(--sage)';
+  st.textContent = '✓ Token saved. Click "Push photo map" to update the site.';
+}
+
+function buildPhotoMap() {
   const map = {};
   for (const [id, url] of Object.entries(_photoCache))
     if (url && url.startsWith('https://')) map['p_' + id] = url;
@@ -2262,50 +2287,70 @@ function exportPhotoMap() {
     if (url && url.startsWith('https://')) map['sp_' + key] = url;
   for (const [cardId, url] of Object.entries(_albPhotoCache))
     if (url && url.startsWith('https://')) map['alb_' + cardId] = url;
-  const status = document.getElementById('photoMapStatus');
-  const count = Object.keys(map).length;
-  if (count === 0) {
-    status.style.color = 'var(--gold)';
-    status.textContent = 'No cloud photos found on this device.';
-    document.getElementById('photoMapText').value = '';
-    return;
-  }
-  document.getElementById('photoMapText').value = JSON.stringify(map, null, 2);
-  status.style.color = 'var(--sage)';
-  status.textContent = `✓ Exported ${count} photo mapping${count !== 1 ? 's' : ''}. Copy the text above and paste on another device.`;
+  return map;
 }
 
-async function importPhotoMap() {
-  const status = document.getElementById('photoMapStatus');
-  const text = document.getElementById('photoMapText').value.trim();
-  if (!text) { status.style.color = 'var(--gold)'; status.textContent = 'Paste exported JSON first.'; return; }
-  let map;
-  try { map = JSON.parse(text); } catch(e) {
-    status.style.color = 'var(--red,#e05)';
-    status.textContent = 'Invalid JSON. Copy the full exported text and try again.';
-    return;
+async function pushPhotoMapToGitHub(silent = false) {
+  const token = getGHToken();
+  const st = document.getElementById('ghPushStatus');
+  if (!token) {
+    if (!silent) { st.style.color = 'var(--gold)'; st.textContent = 'No GitHub token saved — enter one above first.'; }
+    return false;
   }
-  status.style.color = 'var(--text2)';
-  status.textContent = 'Importing…';
+  if (!silent) { st.style.color = 'var(--text2)'; st.textContent = 'Pushing photo map to site…'; }
+  const map = buildPhotoMap();
+  const count = Object.keys(map).length;
+  if (count === 0 && !silent) { st.style.color = 'var(--gold)'; st.textContent = 'No cloud photos to push yet.'; return false; }
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(map, null, 2))));
+  const apiUrl = 'https://api.github.com/repos/Mavelikara/Chenathara/contents/photo-map.json';
+  const headers = { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
+  let sha = null;
+  try {
+    const getRes = await fetch(apiUrl, { headers });
+    if (getRes.ok) { const d = await getRes.json(); sha = d.sha; }
+  } catch(e) {}
+  const body = { message: 'Update photo map [skip ci]', content };
+  if (sha) body.sha = sha;
+  try {
+    const putRes = await fetch(apiUrl, { method: 'PUT', headers, body: JSON.stringify(body) });
+    if (putRes.ok) {
+      if (!silent) { st.style.color = 'var(--sage)'; st.textContent = `✓ Photo map pushed (${count} photo${count !== 1 ? 's' : ''}) — all visitors will see them on next page load!`; }
+      return true;
+    }
+    const err = await putRes.json().catch(() => ({}));
+    if (!silent) { st.style.color = 'var(--gold)'; st.textContent = `Push failed: ${err.message || putRes.status}. Check your token permissions.`; }
+    return false;
+  } catch(e) {
+    if (!silent) { st.style.color = 'var(--gold)'; st.textContent = 'Push failed — check your connection and try again.'; }
+    return false;
+  }
+}
+
+async function applyPhotoMapFromRepo(map) {
   let count = 0;
   for (const [idbKey, url] of Object.entries(map)) {
     if (!url || !url.startsWith('https://')) continue;
-    await idbPut(idbKey, url);
     if (idbKey.startsWith('p_')) {
       const id = idbKey.slice(2);
-      _photoCache[id] = url;
+      if (!_photoCache[id]) { _photoCache[id] = url; await idbPut(idbKey, url); count++; }
     } else if (idbKey.startsWith('sp_')) {
       const key = idbKey.slice(3);
-      _spPhotoCache[key] = url;
+      if (!_spPhotoCache[key]) { _spPhotoCache[key] = url; await idbPut(idbKey, url); count++; }
     } else if (idbKey.startsWith('alb_')) {
       const cardId = idbKey.slice(4);
-      _albPhotoCache[cardId] = url;
+      if (!_albPhotoCache[cardId]) { _albPhotoCache[cardId] = url; await idbPut(idbKey, url); count++; }
     }
-    count++;
   }
-  status.style.color = 'var(--sage)';
-  status.textContent = `✓ Imported ${count} photo mapping${count !== 1 ? 's' : ''} — photos should now appear!`;
-  renderDirectory(); renderAlbum();
+  if (count > 0) { renderDirectory(); renderAlbum(); }
+}
+
+async function fetchPhotoMapFromRepo() {
+  try {
+    const res = await fetch('https://raw.githubusercontent.com/Mavelikara/Chenathara/main/photo-map.json?_=' + Date.now());
+    if (!res.ok) return;
+    const map = await res.json();
+    await applyPhotoMapFromRepo(map);
+  } catch(e) {}
 }
 
 async function submitAdminPw() {
@@ -2345,8 +2390,9 @@ window.addEventListener('load', () => {
   // Load all photos from IndexedDB into memory caches, then apply UI
   loadAllPhotos().finally(() => {
     applyAdminUI();
-    // Re-render views with loaded photos
     renderDirectory();
+    // Fetch photo map from repo so photos appear on every device automatically
+    fetchPhotoMapFromRepo();
   });
 });
 
