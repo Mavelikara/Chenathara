@@ -117,12 +117,12 @@ a:hover{text-decoration:underline;}
   background:rgba(184,137,30,.25); border-color:rgba(184,137,30,.55);
   color:var(--gold-lt,#F5E8C8);
 }
-/* Admin modal */
-#adminModal{
+/* Admin + ImgBB modals */
+#adminModal, #imgbbModal{
   display:none; position:fixed; inset:0; z-index:500;
   background:var(--overlay); align-items:center; justify-content:center;
 }
-#adminModal.open{display:flex;}
+#adminModal.open, #imgbbModal.open{display:flex;}
 .admin-modal-box{
   background:var(--surface); border:1px solid var(--border);
   border-radius:12px; padding:32px 28px; width:340px; max-width:92vw;
@@ -733,6 +733,9 @@ body.admin-unlocked .album-add-btn{display:flex;}
     </a>
     <span class="header-stats">275 members · 8 generations</span>
     <div class="header-right">
+      <button class="admin-lock-btn" id="imgbbSettingsBtn" onclick="openImgBBSettings()" title="Photo cloud settings" style="display:none">
+        ☁️ <span>Photos</span>
+      </button>
       <button class="admin-lock-btn" id="adminLockBtn" onclick="openAdminModal()" title="Admin access">
         <span id="adminLockIcon">🔒</span> <span id="adminLockLabel">Admin</span>
       </button>
@@ -1003,8 +1006,11 @@ function loadAllPhotos() {
 }
 function savePhoto(id, dataUrl, cb) {
   compressImage(dataUrl, 900, 0.80, compressed => {
-    _photoCache[id] = compressed;
-    idbPut('p_' + id, compressed).then(() => { if (cb) cb(); });
+    uploadToImgBB(compressed).then(url => {
+      const val = url || compressed;
+      _photoCache[id] = val;
+      idbPut('p_' + id, val).then(() => { if (cb) cb(); });
+    });
   });
 }
 function removePhoto(id) {
@@ -1018,8 +1024,11 @@ function getSpousePhotos() { return _spPhotoCache; }
 function saveSpousePhoto(personId, slot, dataUrl, cb) {
   const key = personId + '_' + slot;
   compressImage(dataUrl, 900, 0.80, compressed => {
-    _spPhotoCache[key] = compressed;
-    idbPut('sp_' + key, compressed).then(() => { if (cb) cb(); });
+    uploadToImgBB(compressed).then(url => {
+      const val = url || compressed;
+      _spPhotoCache[key] = val;
+      idbPut('sp_' + key, val).then(() => { if (cb) cb(); });
+    });
   });
 }
 function removeSpousePhoto(personId, slot) {
@@ -1030,6 +1039,28 @@ function removeSpousePhoto(personId, slot) {
 
 /* ── Album photos ────────────────────────────────────────────────────── */
 const _albPhotoCache = {};
+
+/* ── ImgBB cloud storage (makes photos visible on all devices) ───────── */
+const IMGBB_KEY_STORE = 'chImgBBKey';
+function getImgBBKey() {
+  try { return localStorage.getItem(IMGBB_KEY_STORE) || ''; } catch(e){ return ''; }
+}
+function setImgBBKey(key) {
+  try { localStorage.setItem(IMGBB_KEY_STORE, key.trim()); } catch(e){}
+}
+function uploadToImgBB(dataUrl) {
+  const key = getImgBBKey();
+  if (!key) return Promise.resolve(null);
+  const base64 = dataUrl.split(',')[1];
+  if (!base64) return Promise.resolve(null);
+  const form = new FormData();
+  form.append('key', key);
+  form.append('image', base64);
+  return fetch('https://api.imgbb.com/1/upload', {method:'POST', body:form})
+    .then(r => r.json())
+    .then(j => (j.success && j.data && j.data.url) ? j.data.url : null)
+    .catch(() => null);
+}
 
 /* ── localStorage album metadata (titles, order — tiny, no photos) ──── */
 const ALBUM_STORE = 'chAlbumCards';
@@ -1088,16 +1119,18 @@ function albumHandleFile(cardId, file) {
   const reader = new FileReader();
   reader.onload = e => {
     compressImage(e.target.result, 1200, 0.80, compressed => {
-      _albPhotoCache[cardId] = compressed;
-      idbPut('alb_' + cardId, compressed).then(() => {
-        // Also update metadata (no photo field — stored in IDB)
-        const cards = getAlbumCards();
-        const idx = cards.findIndex(c => c.id === cardId);
-        if (idx >= 0 && !cards[idx].hasPhoto) {
-          cards[idx].hasPhoto = true;
-          saveAlbumCards(cards);
-        }
-        renderAlbum();
+      uploadToImgBB(compressed).then(url => {
+        const val = url || compressed;
+        _albPhotoCache[cardId] = val;
+        idbPut('alb_' + cardId, val).then(() => {
+          const cards = getAlbumCards();
+          const idx = cards.findIndex(c => c.id === cardId);
+          if (idx >= 0 && !cards[idx].hasPhoto) {
+            cards[idx].hasPhoto = true;
+            saveAlbumCards(cards);
+          }
+          renderAlbum();
+        });
       });
     });
   };
@@ -2058,6 +2091,25 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
   </div>
 </div>
 
+<!-- ══ IMGBB CLOUD STORAGE MODAL ════════════════════════════════════════ -->
+<div id="imgbbModal" role="dialog" aria-modal="true">
+  <div class="admin-modal-box" style="max-width:380px">
+    <div class="admin-modal-title">☁️ Cloud Photo Storage</div>
+    <div class="admin-modal-sub">Enter your free <a href="https://api.imgbb.com/" target="_blank" style="color:var(--teal3)">ImgBB API key</a> so photos are visible on every device.</div>
+    <input class="admin-modal-input" type="text" id="imgbbKeyInput" placeholder="Paste your ImgBB API key here" autocomplete="off">
+    <div id="imgbbStatus" style="font-size:12px;min-height:18px;margin-top:4px;"></div>
+    <div class="admin-modal-btns">
+      <button class="admin-modal-cancel" onclick="closeImgBBSettings()">Close</button>
+      <button class="admin-modal-ok" onclick="saveImgBBKey()">Save Key</button>
+    </div>
+    <div id="syncSection" style="margin-top:14px;border-top:1px solid var(--border2);padding-top:12px;display:none">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:8px;">Photos already uploaded on this device can be pushed to the cloud so other devices see them.</div>
+      <button class="admin-modal-ok" onclick="syncPhotosToCloud()" style="width:100%;margin-bottom:0">⬆️ Sync local photos to cloud</button>
+      <div id="syncProgress" style="margin-top:8px;font-size:12px;min-height:16px;"></div>
+    </div>
+  </div>
+</div>
+
 <div id="spousePopup" role="dialog" aria-modal="true">
   <button class="sp-popup-close" onclick="closeSpousePopup()" aria-label="Close">✕</button>
   <div class="sp-popup-hdr" id="spousePopupHdr"></div>
@@ -2093,6 +2145,9 @@ function applyAdminUI() {
   if (btn) btn.classList.toggle('unlocked', unlocked);
   if (icon) icon.textContent = unlocked ? '🔓' : '🔒';
   if (lbl) lbl.textContent = unlocked ? 'Admin ✓' : 'Admin';
+  // Show/hide cloud photo settings button
+  const cloudBtn = document.getElementById('imgbbSettingsBtn');
+  if (cloudBtn) cloudBtn.style.display = unlocked ? '' : 'none';
   // Re-render album so edit controls appear/disappear immediately
   if (document.getElementById('albumGrid')) renderAlbum();
 }
@@ -2114,6 +2169,107 @@ function openAdminModal() {
 
 function closeAdminModal() {
   document.getElementById('adminModal').classList.remove('open');
+}
+
+/* ── ImgBB settings dialog ─────────────────────────────────────────── */
+function openImgBBSettings() {
+  if (!isAdminUnlocked()) { openAdminModal(); return; }
+  const modal = document.getElementById('imgbbModal');
+  const inp = document.getElementById('imgbbKeyInput');
+  const status = document.getElementById('imgbbStatus');
+  const sync = document.getElementById('syncSection');
+  const prog = document.getElementById('syncProgress');
+  inp.value = getImgBBKey();
+  status.textContent = getImgBBKey() ? '✓ Key saved — new uploads will go to the cloud' : '';
+  status.style.color = 'var(--sage)';
+  prog.textContent = '';
+  // Show sync section if there are any local base64 photos
+  const hasLocal = Object.values(_photoCache).some(v => v && v.startsWith('data:')) ||
+                   Object.values(_spPhotoCache).some(v => v && v.startsWith('data:')) ||
+                   Object.values(_albPhotoCache).some(v => v && v.startsWith('data:'));
+  sync.style.display = (hasLocal && getImgBBKey()) ? '' : 'none';
+  modal.classList.add('open');
+  setTimeout(() => inp.focus(), 80);
+}
+function closeImgBBSettings() {
+  document.getElementById('imgbbModal').classList.remove('open');
+}
+function saveImgBBKey() {
+  const key = document.getElementById('imgbbKeyInput').value.trim();
+  const status = document.getElementById('imgbbStatus');
+  setImgBBKey(key);
+  if (!key) {
+    status.style.color = 'var(--text3)';
+    status.textContent = 'Key cleared.';
+    document.getElementById('syncSection').style.display = 'none';
+    return;
+  }
+  status.style.color = 'var(--text3)';
+  status.textContent = 'Testing key…';
+  // Upload a minimal 1×1 JPEG to verify the key works
+  const testB64 = '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoH' +
+    'BwYIDAoMCwsKCwsNCxAQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/wAALCAAB' +
+    'AAEBAREAAP/EABQAAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oACAEB' +
+    'AAA/AFX/2Q==';
+  const form = new FormData();
+  form.append('key', key);
+  form.append('image', testB64);
+  fetch('https://api.imgbb.com/1/upload', {method:'POST', body:form})
+    .then(r => r.json())
+    .then(j => {
+      if (j.success) {
+        status.style.color = 'var(--sage)';
+        status.textContent = '✓ Key valid — new photos will be visible on all devices';
+        const hasLocal = Object.values(_photoCache).some(v => v && v.startsWith('data:')) ||
+                         Object.values(_spPhotoCache).some(v => v && v.startsWith('data:')) ||
+                         Object.values(_albPhotoCache).some(v => v && v.startsWith('data:'));
+        document.getElementById('syncSection').style.display = hasLocal ? '' : 'none';
+      } else {
+        status.style.color = 'var(--red)';
+        status.textContent = '✗ Key rejected by ImgBB — please check and try again';
+      }
+    })
+    .catch(() => {
+      status.style.color = 'var(--red)';
+      status.textContent = '✗ Could not reach ImgBB — check your internet connection';
+    });
+}
+async function syncPhotosToCloud() {
+  if (!getImgBBKey()) return;
+  const prog = document.getElementById('syncProgress');
+  const caches = [
+    {cache: _photoCache,    prefix: 'p_'},
+    {cache: _spPhotoCache,  prefix: 'sp_'},
+    {cache: _albPhotoCache, prefix: 'alb_'},
+  ];
+  // Count how many local base64 photos we have
+  let total = 0;
+  for (const {cache} of caches) for (const v of Object.values(cache)) if (v && v.startsWith('data:')) total++;
+  if (total === 0) { prog.textContent = 'No local photos found to sync.'; return; }
+  let done = 0, failed = 0;
+  prog.style.color = 'var(--text2)';
+  prog.textContent = `Uploading 0 / ${total}…`;
+  for (const {cache, prefix} of caches) {
+    for (const [id, val] of Object.entries(cache)) {
+      if (!val || !val.startsWith('data:')) continue;
+      const url = await uploadToImgBB(val);
+      if (url) {
+        cache[id] = url;
+        await idbPut(prefix + id, url);
+        done++;
+      } else { failed++; }
+      prog.textContent = `Uploading ${done + failed} / ${total}…`;
+    }
+  }
+  if (failed === 0) {
+    prog.style.color = 'var(--sage)';
+    prog.textContent = `✓ All ${done} photos synced to cloud — now visible on every device!`;
+    renderDirectory(); renderAlbum();
+    document.getElementById('syncSection').style.display = 'none';
+  } else {
+    prog.style.color = 'var(--gold)';
+    prog.textContent = `${done} synced, ${failed} failed. Try again later.`;
+  }
 }
 
 async function submitAdminPw() {
@@ -2142,6 +2298,9 @@ function requireAdmin(callback) {
 document.getElementById('adminModal').addEventListener('click', e => {
   if (e.target === document.getElementById('adminModal')) closeAdminModal();
 });
+document.getElementById('imgbbModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('imgbbModal')) closeImgBBSettings();
+});
 
 // Init on load
 window.addEventListener('load', () => {
@@ -2165,10 +2324,9 @@ function openSpousePopup(name, pet, house, town, yom, dob, dod, label, personId,
   // Build initials for avatar
   const inits = (name||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
 
-  // Check for stored photo
-  const spPhotos = (() => { try { return JSON.parse(localStorage.getItem('chSpousePhotos')||'{}'); } catch(e){return{};} })();
+  // Check for stored spouse photo (from in-memory cache loaded at startup)
   const photoKey = personId + '_' + slot;
-  const photoUrl = spPhotos[photoKey] || null;
+  const photoUrl = _spPhotoCache[photoKey] || null;
 
   // Header
   let avatarHtml;
