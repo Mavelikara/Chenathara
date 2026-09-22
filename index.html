@@ -2106,6 +2106,15 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
       <div style="font-size:12px;color:var(--text2);margin-bottom:8px;">Run this on the <strong>device where you originally uploaded photos</strong> (usually desktop) to push them to the cloud so every device can see them.</div>
       <button class="admin-modal-ok" onclick="syncPhotosToCloud()" style="width:100%;margin-bottom:0">⬆️ Sync local photos to cloud</button>
       <div id="syncProgress" style="margin-top:8px;font-size:12px;min-height:16px;"></div>
+      <div style="margin-top:12px;border-top:1px solid var(--border2);padding-top:10px;">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;"><strong>📋 Photo Map</strong> — export on desktop, import on mobile to make cloud photos visible everywhere.</div>
+        <div style="display:flex;gap:6px;margin-bottom:6px;">
+          <button class="admin-modal-ok" onclick="exportPhotoMap()" style="flex:1;margin-bottom:0;font-size:12px;padding:6px 8px">📤 Export</button>
+          <button class="admin-modal-ok" onclick="importPhotoMap()" style="flex:1;margin-bottom:0;font-size:12px;padding:6px 8px">📥 Import</button>
+        </div>
+        <textarea id="photoMapText" placeholder="Export generates JSON here. Paste JSON here to import on another device." style="width:100%;height:80px;font-size:11px;font-family:monospace;background:var(--bg2);color:var(--text1);border:1px solid var(--border2);border-radius:6px;padding:6px;box-sizing:border-box;resize:vertical;"></textarea>
+        <div id="photoMapStatus" style="font-size:11px;min-height:14px;margin-top:3px;"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -2243,6 +2252,60 @@ async function syncPhotosToCloud() {
     prog.style.color = 'var(--gold)';
     prog.textContent = `${done} synced, ${failed} failed. Try again later.`;
   }
+}
+
+function exportPhotoMap() {
+  const map = {};
+  for (const [id, url] of Object.entries(_photoCache))
+    if (url && url.startsWith('https://')) map['p_' + id] = url;
+  for (const [key, url] of Object.entries(_spPhotoCache))
+    if (url && url.startsWith('https://')) map['sp_' + key] = url;
+  for (const [cardId, url] of Object.entries(_albPhotoCache))
+    if (url && url.startsWith('https://')) map['alb_' + cardId] = url;
+  const status = document.getElementById('photoMapStatus');
+  const count = Object.keys(map).length;
+  if (count === 0) {
+    status.style.color = 'var(--gold)';
+    status.textContent = 'No cloud photos found on this device.';
+    document.getElementById('photoMapText').value = '';
+    return;
+  }
+  document.getElementById('photoMapText').value = JSON.stringify(map, null, 2);
+  status.style.color = 'var(--sage)';
+  status.textContent = `✓ Exported ${count} photo mapping${count !== 1 ? 's' : ''}. Copy the text above and paste on another device.`;
+}
+
+async function importPhotoMap() {
+  const status = document.getElementById('photoMapStatus');
+  const text = document.getElementById('photoMapText').value.trim();
+  if (!text) { status.style.color = 'var(--gold)'; status.textContent = 'Paste exported JSON first.'; return; }
+  let map;
+  try { map = JSON.parse(text); } catch(e) {
+    status.style.color = 'var(--red,#e05)';
+    status.textContent = 'Invalid JSON. Copy the full exported text and try again.';
+    return;
+  }
+  status.style.color = 'var(--text2)';
+  status.textContent = 'Importing…';
+  let count = 0;
+  for (const [idbKey, url] of Object.entries(map)) {
+    if (!url || !url.startsWith('https://')) continue;
+    await idbPut(idbKey, url);
+    if (idbKey.startsWith('p_')) {
+      const id = idbKey.slice(2);
+      _photoCache[id] = url;
+    } else if (idbKey.startsWith('sp_')) {
+      const key = idbKey.slice(3);
+      _spPhotoCache[key] = url;
+    } else if (idbKey.startsWith('alb_')) {
+      const cardId = idbKey.slice(4);
+      _albPhotoCache[cardId] = url;
+    }
+    count++;
+  }
+  status.style.color = 'var(--sage)';
+  status.textContent = `✓ Imported ${count} photo mapping${count !== 1 ? 's' : ''} — photos should now appear!`;
+  renderDirectory(); renderAlbum();
 }
 
 async function submitAdminPw() {
