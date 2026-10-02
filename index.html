@@ -1291,6 +1291,9 @@ function clearPersonOverride(id) {
   try { localStorage.setItem(PERSON_OVERRIDES_KEY, JSON.stringify(ov)); } catch(e){}
   // Restore from frozen originals
   if (_originalPeople[String(id)]) {
+    Object.keys(people[String(id)]).forEach(k => {
+      if (!(k in _originalPeople[String(id)])) delete people[String(id)][k];
+    });
     Object.assign(people[String(id)], _originalPeople[String(id)]);
   }
 }
@@ -1366,6 +1369,8 @@ function renderDirectory() {
       (p.pet && p.pet.toLowerCase().includes(q)) ||
       (p.spouse && p.spouse.toLowerCase().includes(q)) ||
       (p.spouse_pet && p.spouse_pet.toLowerCase().includes(q)) ||
+      (p.spouse2 && p.spouse2.toLowerCase().includes(q)) ||
+      (p.spouse2_pet && p.spouse2_pet.toLowerCase().includes(q)) ||
       String(p.id).includes(q)
     );
   });
@@ -1397,6 +1402,7 @@ function renderDirectory() {
     if (p.dob) metaParts.push(`b. ${esc(p.dob)}`);
     if (p.dod) metaParts.push(`d. ${esc(p.dod)}`);
     if (p.spouse) metaParts.push(`+ ${esc(p.spouse)}`);
+    if (p.spouse2) metaParts.push(`+ ${esc(p.spouse2)}`);
     const metaLine = metaParts.length ? `<div class="dir-card-meta">${metaParts.join(' · ')}</div>` : '';
     const genLine = `<div class="dir-card-gen">Gen ${p.gen} · ${esc(BRANCH_NAMES[p.branch]||'Unknown')}</div>`;
 
@@ -1656,6 +1662,59 @@ function openProfile(id) {
 
     editSec.appendChild(form);
 
+    // ── Optional second spouse — only shown on request via the "+" button ──
+    const SPOUSE2_FIELDS = [
+      {key:'spouse2',       label:'Second Spouse Name'},
+      {key:'spouse2_pet',   label:'Pet Name'},
+      {key:'spouse2_house', label:'House Name'},
+      {key:'spouse2_town',  label:'Town / Place'},
+      {key:'spouse2_dob',   label:'Year of Birth'},
+      {key:'spouse2_dod',   label:'Year of Death'},
+      {key:'spouse2_yom',   label:'Year of Marriage'},
+    ];
+    const sp2Wrap = document.createElement('div');
+    sp2Wrap.style.cssText = 'margin-top:10px;';
+    function showSpouse2Fields(focus) {
+      sp2Wrap.innerHTML = '';
+      const hdr = document.createElement('div');
+      hdr.style.cssText = 'font-family:Inter,sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);margin:4px 0 6px;';
+      hdr.textContent = 'Second Spouse';
+      const hint = document.createElement('div');
+      hint.style.cssText = 'font-family:Inter,sans-serif;font-size:11px;color:var(--text3);margin-bottom:8px;';
+      hint.textContent = 'Clear the name and save to remove the second spouse.';
+      const grid = document.createElement('div');
+      grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;';
+      SPOUSE2_FIELDS.forEach(f => {
+        const wrap = document.createElement('div');
+        if (f.key === 'spouse2') wrap.style.gridColumn = '1/-1';
+        const lbl = document.createElement('label');
+        lbl.style.cssText = 'font-family:Inter,sans-serif;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:3px;';
+        lbl.textContent = f.label;
+        const inp = document.createElement('input');
+        inp.style.cssText = 'width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:4px;background:var(--bg2);color:var(--text);font-family:Inter,sans-serif;font-size:12px;box-sizing:border-box;';
+        inp.value = p[f.key] || '';
+        inp.dataset.field = f.key;
+        wrap.appendChild(lbl);
+        wrap.appendChild(inp);
+        grid.appendChild(wrap);
+      });
+      sp2Wrap.appendChild(hdr);
+      sp2Wrap.appendChild(hint);
+      sp2Wrap.appendChild(grid);
+      if (focus) grid.querySelector('input').focus();
+    }
+    if (p.spouse2) {
+      showSpouse2Fields(false);
+    } else if (p.spouse) {
+      const addSp2Btn = document.createElement('button');
+      addSp2Btn.type = 'button';
+      addSp2Btn.style.cssText = 'padding:5px 12px;border-radius:5px;border:1px dashed var(--border);background:transparent;color:var(--sage);font-family:Inter,sans-serif;font-size:12px;font-weight:600;cursor:pointer;';
+      addSp2Btn.textContent = '+ Add second spouse';
+      addSp2Btn.onclick = () => showSpouse2Fields(true);
+      sp2Wrap.appendChild(addSp2Btn);
+    }
+    editSec.appendChild(sp2Wrap);
+
     const btnRow = document.createElement('div');
     btnRow.style.cssText = 'display:flex;gap:8px;margin-top:10px;';
     const saveBtn = document.createElement('button');
@@ -1663,9 +1722,13 @@ function openProfile(id) {
     saveBtn.textContent = '💾 Save Changes';
     saveBtn.onclick = () => {
       const fields = {};
-      form.querySelectorAll('[data-field]').forEach(inp => {
+      editSec.querySelectorAll('[data-field]').forEach(inp => {
         fields[inp.dataset.field] = inp.value.trim();
       });
+      // No second-spouse name → drop any leftover second-spouse details
+      if ('spouse2' in fields && !fields.spouse2) {
+        SPOUSE2_FIELDS.forEach(f => { fields[f.key] = ''; });
+      }
       savePersonOverride(id, fields);
       openProfile(id); // re-render with new data
       renderDirectory();
@@ -1962,6 +2025,11 @@ function render(){
         ctx.fillStyle=dark?'#5A9A6A':'#3A6A4A';
         const sp=`+ ${p.spouse}${p.spouse_pet?` "${p.spouse_pet}"`:''}`;
         ctx.fillText(fitTxt(sp,`italic ${sSz}px Cormorant Garant,Georgia,serif`,w-2*padX),x+padX,ty);
+        ty+=sSz+1;
+        if(p.spouse2&&ty<y+h-3){
+          const sp2=`+ ${p.spouse2}${p.spouse2_pet?` "${p.spouse2_pet}"`:''}`;
+          ctx.fillText(fitTxt(sp2,`italic ${sSz}px Cormorant Garant,Georgia,serif`,w-2*padX),x+padX,ty);
+        }
       }
       // Photo indicator
       if(photos[id]){
@@ -2035,7 +2103,8 @@ function showTreeTooltip(id,cx,cy){
   if(p.pet) html+=`<div class="tt-pet">"${esc(p.pet)}"</div>`;
   const d=[p.dob?`b. ${esc(p.dob)}`:'',p.dod?`d. ${esc(p.dod)}`:''].filter(Boolean).join(' · ');
   if(d) html+=`<div class="tt-meta">${d}</div>`;
-  if(p.spouse) html+=`<div class="tt-sp">+ ${esc(p.spouse)}${p.spouse_pet?` "${esc(p.spouse_pet)}"`:''}`;
+  if(p.spouse) html+=`<div class="tt-sp">+ ${esc(p.spouse)}${p.spouse_pet?` "${esc(p.spouse_pet)}"`:''}</div>`;
+  if(p.spouse2) html+=`<div class="tt-sp">+ ${esc(p.spouse2)}${p.spouse2_pet?` "${esc(p.spouse2_pet)}"`:''}</div>`;
   html+=`<div class="tt-meta">ID #${p.id} · Gen ${p.gen} · ${esc(BRANCH_NAMES[p.branch]||'')}</div>`;
   html+=`<div class="tt-hint">Click for profile ›</div>`;
   tooltip.innerHTML=html;
@@ -2064,7 +2133,7 @@ function treeSearch(q){
   const lq=q.toLowerCase();
   highlighted=new Set();
   for(const[id,p] of Object.entries(people)){
-    if(p.name.toLowerCase().includes(lq)||(p.pet&&p.pet.toLowerCase().includes(lq))||(p.spouse&&p.spouse.toLowerCase().includes(lq)))
+    if(p.name.toLowerCase().includes(lq)||(p.pet&&p.pet.toLowerCase().includes(lq))||(p.spouse&&p.spouse.toLowerCase().includes(lq))||(p.spouse2&&p.spouse2.toLowerCase().includes(lq)))
       highlighted.add(Number(id));
   }
   render();
