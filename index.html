@@ -718,6 +718,8 @@ body.admin-unlocked .pp-actions{display:flex;}
 .pp-add svg{width:24px; height:24px; opacity:.6;}
 .pp-add:hover{border-color:var(--teal3); color:var(--teal); background:var(--teal-lt);}
 body.admin-unlocked .pp-add{display:flex;}
+.pp-manage{font-family:'Inter',sans-serif; font-size:11px; color:var(--text3); text-align:center; margin-bottom:6px;}
+.pp-manage span{color:var(--teal3); text-decoration:underline; cursor:pointer;}
 .pp-status{font-family:'Inter',sans-serif; font-size:11px; color:var(--text3); min-height:14px;}
 /* ─── SPOUSE POPUP ──────────────────────────────────────────────────────── */
 #spousePopup{
@@ -1262,7 +1264,7 @@ function buildPhotoSection(id, p) {
       tile.appendChild(actions);
       grid.appendChild(tile);
     });
-    if (photos.length < MAX_PERSON_PHOTOS) {
+    if (photos.length < MAX_PERSON_PHOTOS && isAdminUnlocked()) {
       const addTile = document.createElement('div');
       addTile.className = 'pp-tile';
       const add = document.createElement('button');
@@ -1275,6 +1277,15 @@ function buildPhotoSection(id, p) {
     // One photo and no visible "add" tile → show it large, as before
     if (photos.length === 1 && !isAdminUnlocked()) grid.classList.add('single');
     sec.appendChild(grid);
+    if (!isAdminUnlocked()) {
+      // Locked: one line that leads to the admin password, then the controls appear
+      const manage = document.createElement('div');
+      manage.className = 'pp-manage';
+      const more = photos.length < MAX_PERSON_PHOTOS ? 'Add more photos' : 'Change photos';
+      manage.innerHTML = `<span>🔒 ${more} or remove</span> · ${photos.length} of ${MAX_PERSON_PHOTOS} used`;
+      manage.querySelector('span').onclick = () => openAdminModal();
+      sec.appendChild(manage);
+    }
   }
   sec.appendChild(fileInput);
   sec.appendChild(status);
@@ -2537,6 +2548,9 @@ function applyAdminUI() {
   if (cloudBtn) cloudBtn.style.display = unlocked ? '' : 'none';
   // Re-render album so edit controls appear/disappear immediately
   if (document.getElementById('albumGrid')) renderAlbum();
+  // Re-render an open profile so its photo controls appear/disappear immediately
+  const pm = document.getElementById('profileModal');
+  if (pm && pm.classList.contains('open') && typeof currentProfileId !== 'undefined' && currentProfileId != null) openProfile(currentProfileId);
 }
 
 function openAdminModal() {
