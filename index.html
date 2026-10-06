@@ -690,37 +690,6 @@ body.admin-unlocked .album-zoom-hint{display:none;}
 }
 .photo-upload-label span{color:var(--teal3); text-decoration:underline; cursor:pointer;}
 .photo-upload-zone input[type=file]{display:none;}
-/* Profile photographs (up to 3 per member) */
-.pp-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:10px; margin-bottom:10px;}
-.pp-tile{min-width:0; text-align:center;}
-.pp-frame{
-  position:relative; background:var(--bg2); border:1px solid var(--border2);
-  border-radius:6px; overflow:hidden; height:170px;
-}
-.pp-grid.single .pp-frame{height:240px;}
-.pp-frame img{width:100%; height:100%; object-fit:contain; display:block; cursor:zoom-in;}
-.pp-frame img:focus-visible{outline:3px solid var(--gold2); outline-offset:-3px;}
-.pp-main{
-  position:absolute; left:6px; top:6px; pointer-events:none;
-  font-family:'Inter',sans-serif; font-size:9px; font-weight:600; letter-spacing:.08em;
-  text-transform:uppercase; color:#fff; background:rgba(26,74,74,.85);
-  padding:2px 7px; border-radius:10px;
-}
-.pp-actions{display:none; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:6px;}
-body.admin-unlocked .pp-actions{display:flex;}
-.pp-add{
-  display:none; flex-direction:column; align-items:center; justify-content:center; gap:6px;
-  width:100%; height:170px; cursor:pointer; padding:8px;
-  background:transparent; border:2px dashed var(--border); border-radius:6px;
-  font-family:'Inter',sans-serif; font-size:12px; color:var(--text3); transition:all .15s;
-}
-.pp-add small{font-size:10px; opacity:.8;}
-.pp-add svg{width:24px; height:24px; opacity:.6;}
-.pp-add:hover{border-color:var(--teal3); color:var(--teal); background:var(--teal-lt);}
-body.admin-unlocked .pp-add{display:flex;}
-.pp-manage{font-family:'Inter',sans-serif; font-size:11px; color:var(--text3); text-align:center; margin-bottom:6px;}
-.pp-manage span{color:var(--teal3); text-decoration:underline; cursor:pointer;}
-.pp-status{font-family:'Inter',sans-serif; font-size:11px; color:var(--text3); min-height:14px;}
 /* ─── SPOUSE POPUP ──────────────────────────────────────────────────────── */
 #spousePopup{
   display:none; position:fixed; z-index:300;
@@ -1126,172 +1095,6 @@ function removePhoto(id) {
   idbDel('p_' + id);
 }
 
-/* ── Up to 3 photos per member ───────────────────────────────────────────
-   Slot 1 is the main photo (key 'p_<id>', used for avatars everywhere);
-   slots 2 and 3 are 'p_<id>_2' and 'p_<id>_3'. They live in the same cache,
-   so cloud sync and the photo map pick them up with no extra work. */
-const MAX_PERSON_PHOTOS = 3;
-function personPhotoKey(id, slot) { return slot === 1 ? String(id) : id + '_' + slot; }
-function getPersonPhotos(id) {
-  const out = [];
-  for (let n = 1; n <= MAX_PERSON_PHOTOS; n++) {
-    const v = _photoCache[personPhotoKey(id, n)];
-    if (v) out.push(v);
-  }
-  return out;
-}
-async function setPersonPhotos(id, list) {
-  // Rewrites all slots in order, so there are never gaps and slot 1 is filled first
-  for (let n = 1; n <= MAX_PERSON_PHOTOS; n++) {
-    const key = personPhotoKey(id, n), v = list[n - 1];
-    if (v) { _photoCache[key] = v; await idbPut('p_' + key, v); }
-    else   { delete _photoCache[key]; await idbDel('p_' + key); }
-  }
-}
-function refreshAfterPhotoChange(id) {
-  openProfile(id);
-  renderDirectory();
-  render(); // refresh tree
-}
-async function addPersonPhotos(id, files, statusEl) {
-  const list = getPersonPhotos(id);
-  const room = MAX_PERSON_PHOTOS - list.length;
-  const picked = Array.from(files || []).filter(f => f.type.startsWith('image/'));
-  const use = picked.slice(0, Math.max(room, 0));
-  for (let i = 0; i < use.length; i++) {
-    if (statusEl) statusEl.textContent = `Uploading ${i + 1} of ${use.length}…`;
-    const dataUrl = await new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = e => res(e.target.result); r.onerror = () => rej(r.error);
-      r.readAsDataURL(use[i]);
-    }).catch(() => null);
-    if (!dataUrl) continue;
-    const compressed = await new Promise(res => compressImage(dataUrl, 900, 0.80, res));
-    const url = await uploadToImgBB(compressed);
-    list.push(url || compressed);
-  }
-  await setPersonPhotos(id, list);
-  refreshAfterPhotoChange(id);
-  if (picked.length > use.length) {
-    const st = document.getElementById('ppStatus_' + id);
-    if (st) st.textContent = `Only ${MAX_PERSON_PHOTOS} photos are allowed per member — ${picked.length - use.length} not added.`;
-  }
-}
-async function removePersonPhoto(id, index) {
-  if (!isAdminUnlocked()) { openAdminModal(); return; }
-  const list = getPersonPhotos(id);
-  list.splice(index, 1);
-  await setPersonPhotos(id, list);
-  refreshAfterPhotoChange(id);
-}
-async function makeMainPersonPhoto(id, index) {
-  if (!isAdminUnlocked()) { openAdminModal(); return; }
-  const list = getPersonPhotos(id);
-  if (index <= 0 || index >= list.length) return;
-  list.unshift(list.splice(index, 1)[0]);
-  await setPersonPhotos(id, list);
-  refreshAfterPhotoChange(id);
-}
-function buildPhotoSection(id, p) {
-  const photos = getPersonPhotos(id);
-  const sec = document.createElement('div');
-  sec.className = 'profile-section';
-  sec.innerHTML = `<div class="profile-section-title">${photos.length > 1 ? 'Photographs' : 'Photograph'}</div>`;
-
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file'; fileInput.accept = 'image/*'; fileInput.multiple = true;
-  fileInput.id = `photoFileInput_${id}`;
-  fileInput.style.display = 'none';
-  const status = document.createElement('div');
-  status.className = 'pp-status'; status.id = 'ppStatus_' + id;
-  fileInput.onchange = e => {
-    if (!isAdminUnlocked()) { e.target.value = ''; openAdminModal(); return; }
-    const files = Array.from(e.target.files);
-    e.target.value = '';
-    if (files.length) addPersonPhotos(id, files, status);
-  };
-  const pick = () => { if (!isAdminUnlocked()) { openAdminModal(); return; } fileInput.click(); };
-
-  if (photos.length === 0) {
-    const zone = document.createElement('div');
-    zone.className = 'photo-upload-zone';
-    zone.innerHTML = `
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px;height:32px;opacity:.3;display:block;margin:0 auto 6px">
-        <rect x="3" y="5" width="18" height="14" rx="2"/>
-        <circle cx="8.5" cy="10.5" r="1.5"/>
-        <path d="m21 15-5-5L5 19"/>
-      </svg>
-      <label class="photo-upload-label">No photo yet — <span>upload up to ${MAX_PERSON_PHOTOS}</span></label>`;
-    zone.querySelector('span').onclick = pick;
-    sec.appendChild(zone);
-  } else {
-    const grid = document.createElement('div');
-    grid.className = 'pp-grid';
-    const items = photos.map(src => ({src, title: p.name || '', sub: p.pet ? `"${p.pet}"` : ''}));
-    photos.forEach((src, i) => {
-      const tile = document.createElement('div');
-      tile.className = 'pp-tile';
-      const frame = document.createElement('div');
-      frame.className = 'pp-frame';
-      const img = document.createElement('img');
-      img.src = src; img.alt = `${p.name || 'Member'} — photo ${i + 1}`;
-      img.title = 'Click to enlarge'; img.tabIndex = 0; img.setAttribute('role', 'button');
-      img.onclick = () => openPhotoLightbox(items, i);
-      img.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPhotoLightbox(items, i); } };
-      frame.appendChild(img);
-      if (i === 0 && photos.length > 1) {
-        const badge = document.createElement('div');
-        badge.className = 'pp-main'; badge.textContent = 'Main';
-        frame.appendChild(badge);
-      }
-      tile.appendChild(frame);
-
-      const actions = document.createElement('div');
-      actions.className = 'pp-actions';
-      if (i > 0) {
-        const mainBtn = document.createElement('button');
-        mainBtn.className = 'album-card-admin-btn';
-        mainBtn.textContent = '★ Make main';
-        mainBtn.title = 'Use this photo as the profile picture';
-        mainBtn.onclick = () => makeMainPersonPhoto(id, i);
-        actions.appendChild(mainBtn);
-      }
-      const rmBtn = document.createElement('button');
-      rmBtn.className = 'album-card-admin-btn del';
-      rmBtn.textContent = '✕ Remove';
-      rmBtn.onclick = () => removePersonPhoto(id, i);
-      actions.appendChild(rmBtn);
-      tile.appendChild(actions);
-      grid.appendChild(tile);
-    });
-    if (photos.length < MAX_PERSON_PHOTOS && isAdminUnlocked()) {
-      const addTile = document.createElement('div');
-      addTile.className = 'pp-tile';
-      const add = document.createElement('button');
-      add.className = 'pp-add';
-      add.innerHTML = `${UPLOAD_SVG}<span>Add photo</span><small>${photos.length} of ${MAX_PERSON_PHOTOS} used</small>`;
-      add.onclick = pick;
-      addTile.appendChild(add);
-      grid.appendChild(addTile);
-    }
-    // One photo and no visible "add" tile → show it large, as before
-    if (photos.length === 1 && !isAdminUnlocked()) grid.classList.add('single');
-    sec.appendChild(grid);
-    if (!isAdminUnlocked()) {
-      // Locked: one line that leads to the admin password, then the controls appear
-      const manage = document.createElement('div');
-      manage.className = 'pp-manage';
-      const more = photos.length < MAX_PERSON_PHOTOS ? 'Add more photos' : 'Change photos';
-      manage.innerHTML = `<span>🔒 ${more} or remove</span> · ${photos.length} of ${MAX_PERSON_PHOTOS} used`;
-      manage.querySelector('span').onclick = () => openAdminModal();
-      sec.appendChild(manage);
-    }
-  }
-  sec.appendChild(fileInput);
-  sec.appendChild(status);
-  return sec;
-}
-
 /* ── Spouse photos ───────────────────────────────────────────────────── */
 const _spPhotoCache = {};
 function getSpousePhotos() { return _spPhotoCache; }
@@ -1433,29 +1236,25 @@ const UPLOAD_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 const ZOOM_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></svg>`;
 
 /* ── Photo lightbox (click an album photo to enlarge) ─────────────────── */
-let _lbItems = [], _lbIndex = 0, _lbReturnFocus = null;
-function albumLightboxItems() {
-  return getAlbumCards().filter(c => _albPhotoCache[c.id])
-    .map(c => ({id: c.id, src: _albPhotoCache[c.id], title: c.title || '', sub: c.sub || ''}));
+let _lbCardId = null, _lbReturnFocus = null;
+function lightboxCards() {
+  return getAlbumCards().filter(c => _albPhotoCache[c.id]);
 }
 function openLightbox(cardId) {
-  const items = albumLightboxItems();
-  const i = items.findIndex(it => it.id === cardId);
-  if (i >= 0) openPhotoLightbox(items, i);
-}
-function openPhotoLightbox(items, index) {
-  if (!items || !items[index]) return;
+  const cards = lightboxCards();
+  const card = cards.find(c => c.id === cardId);
+  if (!card) return;
   const lb = document.getElementById('photoLightbox');
   if (!lb.classList.contains('open')) _lbReturnFocus = document.activeElement;
-  _lbItems = items; _lbIndex = index;
-  const it = items[index];
+  _lbCardId = cardId;
   const img = document.getElementById('lbImg');
-  img.src = it.src;
-  img.alt = it.title || 'Photograph';
-  document.getElementById('lbTitle').textContent = it.title || '';
-  document.getElementById('lbSub').textContent = it.sub || '';
-  const many = items.length > 1;
-  document.getElementById('lbCount').textContent = many ? (index + 1) + ' of ' + items.length : '';
+  img.src = _albPhotoCache[cardId];
+  img.alt = card.title || 'Photograph';
+  document.getElementById('lbTitle').textContent = card.title || '';
+  document.getElementById('lbSub').textContent = card.sub || '';
+  const many = cards.length > 1;
+  document.getElementById('lbCount').textContent =
+    many ? (cards.indexOf(card) + 1) + ' of ' + cards.length : '';
   document.getElementById('lbPrev').hidden = !many;
   document.getElementById('lbNext').hidden = !many;
   lb.classList.add('open');
@@ -1468,14 +1267,15 @@ function closeLightbox() {
   lb.classList.remove('open');
   document.body.style.overflow = '';
   document.getElementById('lbImg').removeAttribute('src');
-  _lbItems = []; _lbIndex = 0;
+  _lbCardId = null;
   if (_lbReturnFocus && document.contains(_lbReturnFocus)) _lbReturnFocus.focus();
   _lbReturnFocus = null;
 }
 function lightboxStep(dir) {
-  const n = _lbItems.length;
-  if (n < 2) return;
-  openPhotoLightbox(_lbItems, (_lbIndex + dir + n) % n);
+  const cards = lightboxCards();
+  if (cards.length < 2) return;
+  const i = cards.findIndex(c => c.id === _lbCardId);
+  openLightbox(cards[(i + dir + cards.length) % cards.length].id);
 }
 function lightboxBackdropClick(e) {
   // Click on the dark area (not the photo, caption or buttons) closes
@@ -1483,9 +1283,9 @@ function lightboxBackdropClick(e) {
 }
 function lightboxOpenInWindow(e) {
   if (e) e.preventDefault();
-  const card = _lbItems[_lbIndex];
-  if (!card || !card.src) return false;
-  const src = card.src;
+  const src = _albPhotoCache[_lbCardId];
+  if (!src) return false;
+  const card = albumCardById(_lbCardId) || {};
   const esc = t => String(t || '').replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
   const w = window.open('', '_blank');
   if (!w) { if (/^https?:/.test(src)) location.href = src; return false; }
@@ -1501,8 +1301,7 @@ p{margin:14px 12px 4px;font-size:20px}small{display:block;margin:0 12px 18px;fon
 }
 document.addEventListener('keydown', e => {
   if (!document.getElementById('photoLightbox').classList.contains('open')) return;
-  // Esc closes only the enlarged photo, not the profile underneath it
-  if (e.key === 'Escape') { e.stopImmediatePropagation(); closeLightbox(); }
+  if (e.key === 'Escape') closeLightbox();
   else if (e.key === 'ArrowLeft') lightboxStep(-1);
   else if (e.key === 'ArrowRight') lightboxStep(1);
 });
@@ -1827,8 +1626,94 @@ function openProfile(id) {
   const body = document.getElementById('modalBody');
   body.innerHTML = '';
 
-  // Photo section (up to 3 photographs)
-  body.appendChild(buildPhotoSection(id, p));
+  // Photo section
+  const photoSec = document.createElement('div');
+  photoSec.className = 'profile-section';
+  photoSec.innerHTML = '<div class="profile-section-title">Photograph</div>';
+
+  const zone = document.createElement('div');
+  zone.className = 'photo-upload-zone';
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file'; fileInput.accept = 'image/*';
+  fileInput.onchange = (e) => {
+    if (!isAdminUnlocked()) { e.target.value=''; openAdminModal(); return; }
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      savePhoto(id, ev.target.result, () => {
+        openProfile(id); // re-render after compression+save
+        renderDirectory();
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  if (photos[id]) {
+    const img = document.createElement('img');
+    img.src = photos[id];
+    img.style.cssText = 'width:100%;max-height:240px;object-fit:contain;border-radius:4px;';
+    zone.appendChild(img);
+    const removeLbl = document.createElement('div');
+    removeLbl.style.cssText = 'margin-top:8px;font-family:Inter,sans-serif;font-size:11px;color:var(--text3);';
+    removeLbl.innerHTML = `<span style="color:var(--teal3);cursor:pointer;text-decoration:underline;" onclick="if(!isAdminUnlocked()){openAdminModal();return;}removePhotoAndRefresh(${id})">Remove photo</span>`;
+    zone.appendChild(removeLbl);
+  } else {
+    zone.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px;height:32px;opacity:.3;display:block;margin:0 auto 6px">
+        <rect x="3" y="5" width="18" height="14" rx="2"/>
+        <circle cx="8.5" cy="10.5" r="1.5"/>
+        <path d="m21 15-5-5L5 19"/>
+      </svg>
+      <label class="photo-upload-label">
+        No photo yet — <span onclick="if(!isAdminUnlocked()){openAdminModal();return;}document.getElementById('photoFileInput_${id}').click()">upload one</span>
+      </label>
+    `;
+  }
+  zone.appendChild(fileInput);
+  fileInput.id = `photoFileInput_${id}`;
+  photoSec.appendChild(zone);
+
+  // Additional photographs — up to 3 per person in total (stored as p_<id>_2, p_<id>_3)
+  if (photos[id]) {
+    let used = 1;
+    for (let n = 2; n <= MAX_PERSON_PHOTOS; n++) {
+      const extra = photos[id + '_' + n];
+      if (!extra) continue;
+      used++;
+      const z = document.createElement('div');
+      z.className = 'photo-upload-zone';
+      const img = document.createElement('img');
+      img.src = extra;
+      img.style.cssText = 'width:100%;max-height:240px;object-fit:contain;border-radius:4px;';
+      z.appendChild(img);
+      const rm = document.createElement('div');
+      rm.style.cssText = 'margin-top:8px;font-family:Inter,sans-serif;font-size:11px;color:var(--text3);';
+      rm.innerHTML = `<span style="color:var(--teal3);cursor:pointer;text-decoration:underline;" onclick="if(!isAdminUnlocked()){openAdminModal();return;}removePersonPhotoSlot(${id},${n})">Remove photo</span>`;
+      z.appendChild(rm);
+      photoSec.appendChild(z);
+    }
+    if (used < MAX_PERSON_PHOTOS) {
+      const addZone = document.createElement('div');
+      addZone.className = 'photo-upload-zone';
+      addZone.innerHTML = `
+        <label class="photo-upload-label">
+          ${used} of ${MAX_PERSON_PHOTOS} photos — <span onclick="if(!isAdminUnlocked()){openAdminModal();return;}document.getElementById('photoExtraInput_${id}').click()">add another</span>
+        </label>`;
+      const extraInput = document.createElement('input');
+      extraInput.type = 'file'; extraInput.accept = 'image/*'; extraInput.multiple = true;
+      extraInput.id = `photoExtraInput_${id}`;
+      extraInput.onchange = (e) => {
+        if (!isAdminUnlocked()) { e.target.value=''; openAdminModal(); return; }
+        const files = Array.from(e.target.files);
+        e.target.value = '';
+        if (files.length) addExtraPersonPhotos(id, files);
+      };
+      addZone.appendChild(extraInput);
+      photoSec.appendChild(addZone);
+    }
+  }
+  body.appendChild(photoSec);
 
   // Personal details
   const detailSec = document.createElement('div');
@@ -2112,7 +1997,62 @@ function makeFLink(id, name, role) {
 }
 
 function removePhotoAndRefresh(id) {
-  removePersonPhoto(id, 0);
+  removePersonPhotoSlot(id, 1);
+}
+
+/* ── Up to 3 photographs per person ──────────────────────────────────────
+   Slot 1 is the existing main photo ('p_<id>'); slots 2 and 3 are
+   'p_<id>_2' and 'p_<id>_3' in the same cache, so cloud sync and the
+   photo map include them automatically. */
+const MAX_PERSON_PHOTOS = 3;
+function personPhotoKey(id, n) { return n === 1 ? String(id) : id + '_' + n; }
+async function writePersonPhotos(id, list) {
+  // Rewrite the slots in order so there are never gaps
+  for (let n = 1; n <= MAX_PERSON_PHOTOS; n++) {
+    const key = personPhotoKey(id, n), v = list[n - 1];
+    if (v) { _photoCache[key] = v; await idbPut('p_' + key, v); }
+    else   { delete _photoCache[key]; await idbDel('p_' + key); }
+  }
+}
+function listPersonPhotos(id) {
+  const out = [];
+  for (let n = 1; n <= MAX_PERSON_PHOTOS; n++) {
+    const v = _photoCache[personPhotoKey(id, n)];
+    if (v) out.push(v);
+  }
+  return out;
+}
+async function removePersonPhotoSlot(id, n) {
+  const key = personPhotoKey(id, n);
+  const list = [];
+  for (let k = 1; k <= MAX_PERSON_PHOTOS; k++) {
+    const v = _photoCache[personPhotoKey(id, k)];
+    if (v && k !== n) list.push(v);
+  }
+  await writePersonPhotos(id, list);
+  openProfile(id);
+  renderDirectory();
+  render(); // refresh tree
+}
+async function addExtraPersonPhotos(id, files) {
+  const list = listPersonPhotos(id);
+  const images = files.filter(f => f.type.startsWith('image/'));
+  for (const file of images) {
+    if (list.length >= MAX_PERSON_PHOTOS) break;
+    const dataUrl = await new Promise(res => {
+      const reader = new FileReader();
+      reader.onload = ev => res(ev.target.result);
+      reader.onerror = () => res(null);
+      reader.readAsDataURL(file);
+    });
+    if (!dataUrl) continue;
+    const compressed = await new Promise(res => compressImage(dataUrl, 900, 0.80, res));
+    const url = await uploadToImgBB(compressed);
+    list.push(url || compressed);
+  }
+  await writePersonPhotos(id, list);
+  openProfile(id);
+  renderDirectory();
 }
 
 function closeModal(e) {
@@ -2548,9 +2488,6 @@ function applyAdminUI() {
   if (cloudBtn) cloudBtn.style.display = unlocked ? '' : 'none';
   // Re-render album so edit controls appear/disappear immediately
   if (document.getElementById('albumGrid')) renderAlbum();
-  // Re-render an open profile so its photo controls appear/disappear immediately
-  const pm = document.getElementById('profileModal');
-  if (pm && pm.classList.contains('open') && typeof currentProfileId !== 'undefined' && currentProfileId != null) openProfile(currentProfileId);
 }
 
 function openAdminModal() {
@@ -2719,17 +2656,6 @@ async function pushPhotoMapToGitHub(silent = false) {
 
 async function applyPhotoMapFromRepo(map) {
   let count = 0;
-  // A plain reader (no upload keys on this device) mirrors the published map for
-  // member photos, so a removed photo or a newly chosen main photo shows correctly.
-  if (!getImgBBKey() && !getGHToken()) {
-    for (const key of Object.keys(_photoCache)) {
-      const cur = _photoCache[key], pub = map['p_' + key];
-      if (!cur || !cur.startsWith('https://') || cur === pub) continue;
-      if (pub && pub.startsWith('https://')) { _photoCache[key] = pub; await idbPut('p_' + key, pub); }
-      else { delete _photoCache[key]; await idbDel('p_' + key); }
-      count++;
-    }
-  }
   for (const [idbKey, url] of Object.entries(map)) {
     if (!url || !url.startsWith('https://')) continue;
     if (idbKey.startsWith('p_')) {
@@ -2743,7 +2669,7 @@ async function applyPhotoMapFromRepo(map) {
       if (!_albPhotoCache[cardId]) { _albPhotoCache[cardId] = url; await idbPut(idbKey, url); count++; }
     }
   }
-  if (count > 0) { renderDirectory(); renderAlbum(); if (typeof render === 'function') render(); }
+  if (count > 0) { renderDirectory(); renderAlbum(); }
 }
 
 async function fetchPhotoMapFromRepo() {
