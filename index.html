@@ -1672,7 +1672,12 @@ function openProfile(id) {
   }
   zone.appendChild(fileInput);
   fileInput.id = `photoFileInput_${id}`;
-  photoSec.appendChild(zone);
+  // Photos sit side by side in one row
+  const photoRow = document.createElement('div');
+  photoRow.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;';
+  zone.style.flex = '1 1 110px'; zone.style.minWidth = '0';
+  photoRow.appendChild(zone);
+  photoSec.appendChild(photoRow);
 
   // Additional photographs — up to 3 per person in total (stored as p_<id>_2, p_<id>_3)
   if (photos[id]) {
@@ -1691,7 +1696,16 @@ function openProfile(id) {
       rm.style.cssText = 'margin-top:8px;font-family:Inter,sans-serif;font-size:11px;color:var(--text3);';
       rm.innerHTML = `<span style="color:var(--teal3);cursor:pointer;text-decoration:underline;" onclick="if(!isAdminUnlocked()){openAdminModal();return;}removePersonPhotoSlot(${id},${n})">Remove photo</span>`;
       z.appendChild(rm);
-      photoSec.appendChild(z);
+      z.style.flex = '1 1 110px'; z.style.minWidth = '0';
+      photoRow.appendChild(z);
+    }
+    if (used > 1) {
+      // Several photos in the row: slimmer boxes, "Remove photo" lined up along the bottom
+      photoRow.querySelectorAll('.photo-upload-zone').forEach(el => {
+        el.style.padding = '10px';
+        el.style.display = 'flex'; el.style.flexDirection = 'column';
+        el.style.justifyContent = 'space-between'; el.style.alignItems = 'center';
+      });
     }
     if (used < MAX_PERSON_PHOTOS) {
       const addZone = document.createElement('div');
