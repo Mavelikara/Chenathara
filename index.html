@@ -2129,6 +2129,41 @@ function getSubtreeIds(root) {
   return ids;
 }
 
+// Compact tidy-tree layout. Children are placed first, the parent is centred
+// over them, and if that would collide with something already on its row the
+// whole subtree is shifted right. Returns {id:{x,y,w,h}} in world coordinates.
+const TREE_CARD_W=120, TREE_STEP=TREE_CARD_W+HGAP*3;
+function layoutTree(root){
+  const pos={}, nextX=[], kidsOf={};
+  const kids=id=>{
+    if(!kidsOf[id]){const ch=childrenOf[String(id)]||[];kidsOf[id]=viewIds?ch.filter(c=>viewIds.has(c)):ch;}
+    return kidsOf[id];
+  };
+  const shift=(id,dx)=>{pos[id].x+=dx;for(const c of kids(id))shift(c,dx);};
+  const reserve=(id,d)=>{
+    nextX[d]=Math.max(nextX[d]||0,pos[id].x+TREE_STEP);
+    for(const c of kids(id))reserve(c,d+1);
+  };
+  const place=(id,d)=>{
+    const ch=kids(id);
+    const y=d*(CARD_H+VGAP);
+    let x;
+    if(!ch.length){
+      x=nextX[d]||0;
+      pos[id]={x,y,w:TREE_CARD_W,h:CARD_H};
+    } else {
+      for(const c of ch)place(c,d+1);
+      x=(pos[ch[0]].x+pos[ch[ch.length-1]].x)/2;
+      pos[id]={x,y,w:TREE_CARD_W,h:CARD_H};
+      const need=(nextX[d]||0)-x;
+      if(need>0)shift(id,need);
+    }
+    reserve(id,d);
+  };
+  place(root,0);
+  return pos;
+}
+
 function drawRR(x,y,w,h,r){
   ctx.beginPath();
   ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
@@ -2156,21 +2191,31 @@ function render(){
   ctx.fillStyle=dark?'#0E2020':'#FDFAF6';
   ctx.fillRect(0,0,W,H);
 
+  // Tree tab hidden (zero size): don't auto-fit yet, wait until it is shown.
+  if(!W||!H) return;
+
   const gens=getGenerations(rootId);
   if(!gens.length) return;
   nodeRects=[];
 
   const drawW=W-40;
 
+  // Tree layout: every parent is centred over its own children, and each
+  // family's subtree occupies its own horizontal span, so connector lines
+  // always run straight down to the right children.
+  const cardPos=layoutTree(rootId);
+  let minX=Infinity,maxX=-Infinity;
+  for(const k in cardPos){minX=Math.min(minX,cardPos[k].x);maxX=Math.max(maxX,cardPos[k].x+cardPos[k].w);}
+  for(const k in cardPos) cardPos[k].x-=minX;
+  const treeW=maxX-minX;
+
   // Auto-fit
   if(!initialised){
-    const maxN=Math.max(...gens.map(g=>g.length));
-    const neededW=maxN*(CARD_MIN_W+HGAP);
     const neededH=gens.length*CARD_H+(gens.length-1)*VGAP;
-    const sx=drawW/Math.max(neededW,drawW);
+    const sx=drawW/Math.max(treeW,drawW);
     const sy=(H-40)/Math.max(neededH,H-40);
-    scale=Math.min(sx,sy,1);
-    pan.x=(W-(neededW*scale))/2;
+    scale=Math.max(0.15,Math.min(sx,sy,1));
+    pan.x=(W-(treeW*scale))/2;
     pan.y=20;
     initialised=true;
   }
@@ -2178,19 +2223,6 @@ function render(){
   ctx.save();
   ctx.translate(pan.x,pan.y);
   ctx.scale(scale,scale);
-
-  const cardPos={};
-  for(let gi=0;gi<gens.length;gi++){
-    const gen=gens[gi], n=gen.length;
-    const avW=drawW/scale;
-    const cw=Math.min(CARD_MAX_W,Math.max(CARD_MIN_W,(avW-HGAP*(n-1))/n));
-    const rowW=n*cw+(n-1)*HGAP;
-    const startX=(avW-rowW)/2;
-    const rowTop=gi*(CARD_H+VGAP);
-    for(let ni=0;ni<n;ni++){
-      cardPos[gen[ni]]={x:startX+ni*(cw+HGAP),y:rowTop,w:cw,h:CARD_H};
-    }
-  }
 
   // Lines
   const lineCol=dark?'#3A6060':'#B8976A';
@@ -2471,12 +2503,12 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
 <script>
 /* ═══ ADMIN AUTH ═══════════════════════════════════════════════════════════
    Two admin passwords — both give full access.
-   Primary   (#Malabar1981)    hash: 7151db8...
-   Secondary (Chenathara2024)  hash: 3a79e09... — share with family editor
+   Primary    — hash: 82cff84...
+   Secondary  — hash: c93c7bc... (family editor)
 ═══════════════════════════════════════════════════════════════════════════ */
 const ADMIN_HASHES = [
-  '7151db819d77a706586c0be02f8532bc4588943f0717fda543069b8b32dd27ef', // primary
-  '3a79e09951b7c98cc498433c5497a6d2db21811c9982f13132e6173e9ece1ff4'  // family editor
+  '82cff8452b73909a4afc430ec9f15288b99cf1a84bb8d56f5ee90d40db526203', // primary
+  'c93c7bc0934e7da221d7275df02aa2a06625724eacceb4ed70e434b59141fe21'  // family editor
 ];
 
 async function sha256(str) {
