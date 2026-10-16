@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chenathara Family</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=Inter:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=Inter:wght@300;400;500;600&family=Cinzel:wght@600;700&display=swap">
 <style>
 /* ═══ TOKENS ═══════════════════════════════════════════════════════════════ */
 :root {
@@ -1993,6 +1993,11 @@ function openProfile(id) {
   }
   famSec.appendChild(famLinks);
   body.appendChild(famSec);
+  const posterBtn = document.createElement('button');
+  posterBtn.className = 'poster-open-btn';
+  posterBtn.textContent = '🖼 Family Tree Poster';
+  posterBtn.onclick = () => openPosterModal(p.id);
+  famSec.appendChild(posterBtn);
 
   document.getElementById('profileModal').classList.add('open');
 }
@@ -2842,5 +2847,308 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeSpousePopup();
 });
 </script>
+<!-- ═══ Family Tree Poster ═══ -->
+<style>
+#posterModal{z-index:260;}
+#posterModal .modal{max-width:820px;}
+.poster-head{background:linear-gradient(135deg,#1A4A4A,#245959);padding:20px 24px 16px;border-radius:8px 8px 0 0;}
+.poster-head-title{font-family:'Cormorant Garant',serif;font-size:24px;font-weight:600;color:#F5EAD8;}
+.poster-head-sub{font-family:Inter,sans-serif;font-size:12px;color:rgba(255,255,255,.7);margin-top:4px;}
+.poster-controls{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:16px;}
+.poster-controls label{display:block;font-family:Inter,sans-serif;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.poster-controls select{font-family:Inter,sans-serif;font-size:14px;padding:9px 12px;border:1px solid var(--border2);border-radius:6px;background:var(--surface2);color:var(--text);min-width:200px;}
+.poster-btn{font-family:Inter,sans-serif;font-size:13px;font-weight:500;padding:10px 16px;border-radius:6px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;}
+.poster-btn:hover{border-color:var(--teal3);color:var(--teal);}
+.poster-btn.primary{background:var(--gold2);border-color:var(--gold2);color:#fff;font-weight:600;}
+.poster-btn.primary:hover{background:var(--gold);color:#fff;}
+#posterPreviewWrap{border:1px solid var(--border2);border-radius:8px;overflow:auto;background:#ece2cc;max-height:60vh;}
+#posterPreview svg{display:block;}
+#posterNote{display:none;font-family:Inter,sans-serif;font-size:12px;color:var(--text2);margin-bottom:10px;}
+.poster-open-btn{margin-top:14px;width:100%;font-family:Inter,sans-serif;font-size:13px;font-weight:600;padding:10px;border-radius:6px;border:1px solid var(--gold2);background:transparent;color:var(--gold);cursor:pointer;}
+.poster-open-btn:hover{background:var(--gold2);color:#fff;}
+</style>
+
+<div class="modal-backdrop" id="posterModal" onclick="if(event.target===this)closePosterModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closePosterModal()">✕</button>
+    <div class="poster-head">
+      <div class="poster-head-title">Family Tree Poster</div>
+      <div class="poster-head-sub" id="posterSubtitle">A printable chart centred on this person.</div>
+    </div>
+    <div class="modal-body">
+      <div class="poster-controls">
+        <div>
+          <label for="posterAncDepth">Ancestor generations</label>
+          <select id="posterAncDepth" onchange="renderPosterPreview()">
+            <option value="0">0 — none</option>
+            <option value="1">1 — parents</option>
+            <option value="2">2 — grandparents</option>
+            <option value="3" selected>3 — great-grandparents</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </div>
+        <div>
+          <label for="posterDescDepth">Descendant generations</label>
+          <select id="posterDescDepth" onchange="renderPosterPreview()">
+            <option value="0">0 — none</option>
+            <option value="1">1 — children</option>
+            <option value="2">2 — grandchildren</option>
+            <option value="3" selected>3 — great-grandchildren</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+        <button class="poster-btn" onclick="renderPosterPreview()">↻ Refresh Preview</button>
+      </div>
+      <div id="posterNote"></div>
+      <div id="posterPreviewWrap"><div id="posterPreview"></div></div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="poster-btn" style="flex:1" onclick="closePosterModal()">Cancel</button>
+        <button class="poster-btn primary" style="flex:2" id="posterDlBtn" onclick="downloadPosterPNG()">⬇ Download as PNG</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+const P_FONT = "'Cormorant Garant', Georgia, serif";
+const P_TITLE_FONT = "'Cinzel', 'Cormorant Garant', Georgia, serif";
+const POSTER = { focusId:null, svg:'', w:1000, h:600 };
+
+function pEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function pGender(p){return p&&(p.gender==='M'||p.gender==='F')?p.gender:null;}
+function pOpp(g){return g==='M'?'F':g==='F'?'M':null;}
+function realSpouse(n){n=(n||'').trim();return n&&!/^(unmarried|single|-|n\/a)$/i.test(n)?n:'';}
+
+// A tracked person plus their (first) spouse, ordered husband-left / wife-right
+function couple(p, isFocus){
+  const g = pGender(p);
+  const self = { name:p.name, pet:p.pet||'', gender:g, photo:(getPhotos()||{})[p.id]||'', id:p.id, isFocus:!!isFocus, tracked:true };
+  const out = [self];
+  const sn = realSpouse(p.spouse);
+  if (sn) {
+    const sp = { name:sn, pet:p.spouse_pet||'', gender:pOpp(g), photo:(getSpousePhotos()||{})[p.id+'_sp1']||'', tracked:false };
+    if (g==='F') out.unshift(sp); else out.push(sp);
+  }
+  return out;
+}
+
+function buildTiers(focusId, anc, desc){
+  const focus = personById(focusId); if(!focus) return null;
+  const tiers = [];
+  // ancestors (follow parent_id; guard against self-referencing roots)
+  const seen = new Set([String(focus.id)]);
+  let cur = focus; const up = [];
+  for (let i=0;i<anc;i++){
+    const par = cur.parent_id!=null ? personById(cur.parent_id) : null;
+    if (!par || seen.has(String(par.id))) break;
+    seen.add(String(par.id));
+    up.push({ kind:'ancestor', people:couple(par,false) });
+    cur = par;
+  }
+  up.reverse().forEach(t=>tiers.push(t));
+  tiers.push({ kind:'focus', people:couple(focus,true) });
+  // descendants
+  let frontier = [focus.id];
+  for (let d=1; d<=desc; d++){
+    const ppl=[], next=[];
+    frontier.forEach(pid=>{
+      (childrenOf[String(pid)]||[]).forEach(cid=>{
+        const c = personById(cid); if(!c || /^blank$/i.test(c.name||'')) return;
+        ppl.push({ name:c.name, pet:c.pet||'', gender:pGender(c), photo:(getPhotos()||{})[c.id]||'', id:c.id, parentId:pid, tracked:true });
+        next.push(c.id);
+      });
+    });
+    if (!ppl.length) break;
+    tiers.push({ kind:'descendant', people:ppl });
+    frontier = next;
+  }
+  return tiers;
+}
+
+function tierLabel(tiers, idx, focus){
+  const fi = tiers.findIndex(t=>t.kind==='focus');
+  const t = tiers[idx];
+  if (t.kind==='focus') return (focus.pet||focus.name).toUpperCase() + (t.people.length>1?' & SPOUSE':'');
+  const n = Math.abs(idx-fi);
+  if (t.kind==='ancestor') return n===1?'PARENTS':n===2?'GRANDPARENTS':n===3?'GREAT-GRANDPARENTS':`ANCESTORS · ${n} GENERATIONS BACK`;
+  return n===1?'CHILDREN':n===2?'GRANDCHILDREN':n===3?'GREAT-GRANDCHILDREN':`DESCENDANTS · ${n} GENERATIONS ON`;
+}
+
+function fitName(name, maxChars){return name.length>maxChars?name.slice(0,maxChars-1)+'…':name;}
+
+function personBox(p, x, y, w, h, uid){
+  const F = p.gender==='F', M = p.gender==='M';
+  const fill = F?'#FDF2F6':M?'#F4F9FD':'#F6EFDD';
+  const stroke = F?'#B06080':M?'#3A6EA8':'#8A6339';
+  const ink = F?'#6E2A45':M?'#1E466E':'#33302A';
+  const cx=x+h/2, cy=y+h/2, r=h/2-4;
+  const initial = pEsc((p.name||'?').trim().charAt(0).toUpperCase());
+  let av;
+  if (p.photo){
+    av = `<defs><clipPath id="pc${uid}"><circle cx="${cx}" cy="${cy}" r="${r}"/></clipPath></defs>`+
+      `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#EFE4C8"/>`+
+      `<text x="${cx}" y="${cy+r*0.34}" text-anchor="middle" font-family="${P_FONT}" font-size="${r*0.95}" fill="${ink}">${initial}</text>`+
+      `<image href="${pEsc(p.photo)}" x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" preserveAspectRatio="xMidYMid slice" clip-path="url(#pc${uid})" onerror="this.remove()"/>`+
+      `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#A8863E" stroke-width="1.5"/>`;
+  } else {
+    av = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#EFE4C8" stroke="#A8863E" stroke-width="1.5"/>`+
+      `<text x="${cx}" y="${cy+r*0.34}" text-anchor="middle" font-family="${P_FONT}" font-size="${r*0.95}" fill="${ink}">${initial}</text>`;
+  }
+  const fs = w<130?13:15;
+  const tx = x+h+8;
+  const maxC = Math.max(5, Math.floor((w-h-12)/(fs*0.44)));
+  const nm = pEsc(fitName(p.name||'?', maxC));
+  let txt;
+  if (p.pet && h>=46){
+    const pet = pEsc(fitName('"'+p.pet+'"', maxC+2));
+    txt = `<text x="${tx}" y="${cy-2}" font-family="${P_FONT}" font-size="${fs}" font-weight="600" fill="${ink}">${nm}</text>`+
+          `<text x="${tx}" y="${cy+fs*0.95}" font-family="${P_FONT}" font-size="${fs-2}" font-style="italic" fill="#8B6914">${pet}</text>`;
+  } else {
+    txt = `<text x="${tx}" y="${cy+fs*0.33}" font-family="${P_FONT}" font-size="${fs}" font-weight="600" fill="${ink}">${nm}</text>`;
+  }
+  return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h/2}" fill="${fill}" stroke="${stroke}" stroke-width="${p.isFocus?2.2:1}"/>${av}${txt}</g>`;
+}
+
+function banner(cx, y, w, label){
+  const x=cx-w/2;
+  return `<g><rect x="${x}" y="${y}" width="${w}" height="22" rx="3" fill="#6B7355" stroke="#B8922A" stroke-width="1"/>`+
+    `<path d="M${x} ${y+11} L${x-10} ${y} L${x-10} ${y+22} Z" fill="#6B7355" stroke="#B8922A" stroke-width="1"/>`+
+    `<path d="M${x+w} ${y+11} L${x+w+10} ${y} L${x+w+10} ${y+22} Z" fill="#6B7355" stroke="#B8922A" stroke-width="1"/>`+
+    `<text x="${cx}" y="${y+15.5}" text-anchor="middle" font-family="${P_FONT}" font-size="12" font-weight="600" letter-spacing="2" fill="#F3ECD8">${pEsc(label)}</text></g>`;
+}
+
+function renderSVG(tiers, focus){
+  const COUPLE_W=210, GAP=12, GROUP_GAP=26, TIER_GAP=78, BANNER_H=22, BANNER_GAP=14;
+  // Size each descendant tier, then let the poster grow wide enough for the widest one
+  const plan = tiers.map(t=>{
+    const n=t.people.length;
+    if (t.kind!=='descendant') return { w:COUPLE_W, h:58 };
+    return { w: n>10?150:n>5?170:190, h: n>10?44:52 };
+  });
+  let W = 1000;
+  tiers.forEach((t,i)=>{
+    if (t.kind!=='descendant') return;
+    let tot=0; t.people.forEach((p,j)=>{ tot += plan[i].w + (j===0?0:(p.parentId!==t.people[j-1].parentId?GROUP_GAP:GAP)); });
+    W = Math.max(W, tot+120);
+  });
+  let y=110; const body=[], layout=[];
+  tiers.forEach((t,i)=>{
+    const {w:bw,h:bh}=plan[i];
+    const gaps=t.people.map((p,j)=>j===0?0:(t.kind==='descendant'&&p.parentId!==t.people[j-1].parentId?GROUP_GAP:GAP));
+    const tot=t.people.length*bw+gaps.reduce((a,b)=>a+b,0);
+    let x=(W-tot)/2; const pos=[];
+    t.people.forEach((p,j)=>{ x+=gaps[j]; pos.push({x,cx:x+bw/2,y,w:bw,h:bh}); x+=bw; });
+    const label=tierLabel(tiers,i,focus);
+    body.push(banner(W/2, y-BANNER_GAP-BANNER_H, Math.max(200,label.length*9+40), label));
+    t.people.forEach((p,j)=>body.push(personBox(p,pos[j].x,pos[j].y,bw,bh,i+'_'+j)));
+    layout.push({t,pos,y,h:bh});
+    y+=bh+TIER_GAP;
+  });
+  // Connectors
+  const lines=[]; const C='stroke="#5A3D24" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.85"';
+  for (let i=0;i<layout.length-1;i++){
+    const up=layout[i], lo=layout[i+1];
+    if (up.t.kind!=='descendant' && lo.t.kind!=='descendant'){
+      const ti=Math.max(0,lo.t.people.findIndex(p=>p.tracked));
+      const tg=lo.pos[ti];
+      up.pos.forEach(p=>{const sy=p.y+p.h, my=sy+(tg.y-sy)*0.55;
+        lines.push(`<path d="M${p.cx} ${sy} V${my} H${tg.cx} V${tg.y}" stroke-width="3" ${C}/>`);});
+    } else if (up.t.kind!=='descendant'){
+      const mx=(up.pos[0].cx+up.pos[up.pos.length-1].cx)/2, sy=up.y+up.h, spine=sy+(lo.y-sy)*0.6;
+      up.pos.forEach(p=>lines.push(`<path d="M${p.cx} ${sy} V${sy+10} H${mx}" stroke-width="2.4" ${C}/>`));
+      lines.push(`<path d="M${mx} ${sy+10} V${spine}" stroke-width="3" ${C}/>`);
+      const xs=lo.pos.map(p=>p.cx).concat([mx]);
+      lines.push(`<path d="M${Math.min(...xs)} ${spine} H${Math.max(...xs)}" stroke-width="2.4" ${C}/>`);
+      lo.pos.forEach(p=>lines.push(`<path d="M${p.cx} ${spine} V${p.y}" stroke-width="2.4" ${C}/>`));
+    } else {
+      up.pos.forEach((pp,pi)=>{
+        const pid=up.t.people[pi].id;
+        const kids=lo.pos.filter((_,ci)=>String(lo.t.people[ci].parentId)===String(pid));
+        if(!kids.length) return;
+        const sy=pp.y+pp.h, spine=sy+(lo.y-sy)*0.5;
+        const xs=kids.map(k=>k.cx).concat([pp.cx]);
+        lines.push(`<path d="M${pp.cx} ${sy} V${spine} M${Math.min(...xs)} ${spine} H${Math.max(...xs)}" stroke-width="1.6" ${C}/>`);
+        kids.forEach(k=>lines.push(`<path d="M${k.cx} ${spine} V${k.y}" stroke-width="1.6" ${C}/>`));
+      });
+    }
+  }
+  const H=y-TIER_GAP+44;
+  const title=`THE ${pEsc((focus.name||'').toUpperCase())} (CHENATHARA) FAMILY`;
+  const svg=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:${Math.min(W,700)}px">`+
+    `<defs><linearGradient id="pParch" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#EDE1C4"/><stop offset="50%" stop-color="#E6D8B8"/><stop offset="100%" stop-color="#ECDFC0"/></linearGradient></defs>`+
+    `<rect width="${W}" height="${H}" rx="18" fill="url(#pParch)"/>`+
+    `<rect x="16" y="16" width="${W-32}" height="${H-32}" rx="12" fill="none" stroke="#8A6A10" stroke-width="1.5"/>`+
+    `<rect x="24" y="24" width="${W-48}" height="${H-48}" rx="8" fill="none" stroke="#8A6A10" stroke-width="0.5"/>`+
+    `<text x="${W/2}" y="62" text-anchor="middle" font-family="${P_TITLE_FONT}" font-weight="700" font-size="25" letter-spacing="1" fill="#2E2A22">${title}</text>`+
+    `<line x1="${W/2-230}" y1="74" x2="${W/2+230}" y2="74" stroke="#8A6A10" stroke-width="0.6"/>`+
+    lines.join('')+body.join('')+`</svg>`;
+  return {svg,W,H};
+}
+
+window.openPosterModal = function(id){
+  const p=personById(id); if(!p) return;
+  POSTER.focusId=id;
+  document.getElementById('posterSubtitle').textContent='A printable chart centred on '+p.name+'.';
+  document.getElementById('posterModal').classList.add('open');
+  renderPosterPreview();
+};
+window.closePosterModal = function(){ document.getElementById('posterModal').classList.remove('open'); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePosterModal(); });
+
+window.renderPosterPreview = function(){
+  const focus=personById(POSTER.focusId); if(!focus) return;
+  const anc=+document.getElementById('posterAncDepth').value, desc=+document.getElementById('posterDescDepth').value;
+  const tiers=buildTiers(focus.id,anc,desc);
+  const r=renderSVG(tiers,focus);
+  POSTER.svg=r.svg; POSTER.w=r.W; POSTER.h=r.H;
+  document.getElementById('posterPreview').innerHTML=r.svg;
+  const note=document.getElementById('posterNote');
+  const gotAnc=tiers.filter(t=>t.kind==='ancestor').length, gotDesc=tiers.filter(t=>t.kind==='descendant').length;
+  const msgs=[];
+  if (anc>gotAnc) msgs.push(gotAnc===0?'No earlier generations are recorded above this person.':`Only ${gotAnc} ancestor generation${gotAnc>1?'s are':' is'} recorded.`);
+  if (desc>gotDesc) msgs.push(gotDesc===0?'No children are recorded yet.':`Only ${gotDesc} descendant generation${gotDesc>1?'s are':' is'} recorded.`);
+  if (r.W>1600) msgs.push('This branch is wide — scroll the preview sideways; the download includes everything.');
+  note.style.display=msgs.length?'block':'none'; note.textContent=msgs.join(' ');
+};
+
+async function toDataURL(src){
+  if (!src || src.startsWith('data:')) return src;
+  const resp=await fetch(src,{mode:'cors'}); if(!resp.ok) throw new Error('fetch');
+  const blob=await resp.blob();
+  return await new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.onerror=rej;fr.readAsDataURL(blob);});
+}
+
+window.downloadPosterPNG = async function(){
+  const svgEl=document.querySelector('#posterPreview svg'); if(!svgEl) return;
+  const btn=document.getElementById('posterDlBtn'); const old=btn.textContent; btn.textContent='Preparing…'; btn.disabled=true;
+  try{
+    const clone=svgEl.cloneNode(true);
+    clone.removeAttribute('style');
+    // Photos must be inlined, or they vanish when the SVG is rasterised
+    await Promise.all([...clone.querySelectorAll('image')].map(async im=>{
+      try{ im.setAttribute('href', await toDataURL(im.getAttribute('href'))); im.removeAttribute('onerror'); }
+      catch(e){ im.remove(); }
+    }));
+    const data=new XMLSerializer().serializeToString(clone);
+    const url=URL.createObjectURL(new Blob([data],{type:'image/svg+xml;charset=utf-8'}));
+    const img=new Image();
+    await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=url;});
+    const scale=2, c=document.createElement('canvas');
+    c.width=POSTER.w*scale; c.height=POSTER.h*scale;
+    const ctx=c.getContext('2d'); ctx.scale(scale,scale); ctx.drawImage(img,0,0,POSTER.w,POSTER.h);
+    URL.revokeObjectURL(url);
+    const focus=personById(POSTER.focusId);
+    const a=document.createElement('a');
+    a.download='chenathara-tree-'+String(focus?focus.name:'poster').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase()+'.png';
+    a.href=c.toDataURL('image/png'); document.body.appendChild(a); a.click(); a.remove();
+  }catch(e){ alert('Sorry — the poster could not be exported. Please try again.'); console.error(e); }
+  finally{ btn.textContent=old; btn.disabled=false; }
+};
+})();
+</script>
+
 </body>
 </html>
