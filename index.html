@@ -2273,6 +2273,9 @@ function render(){
       const dimmed=highlighted&&!isHi;
 
       ctx.globalAlpha=dimmed?0.2:1;
+      // Gender-tinted cards are always pale, so they always get dark text
+      const genderCard=(p.gender==='F'||p.gender==='M');
+      const paleCard=genderCard||(!dark&&gi>=2);
       drawRR(x,y,w,h,4);
       ctx.fillStyle=fills[gi_c];
       if(p.gender==='F') ctx.fillStyle='#fce8f0';
@@ -2286,8 +2289,8 @@ function render(){
       // ID badge
       const bdW=18;
       drawRR(x+w-bdW-2,y+2,bdW,11,2);
-      ctx.fillStyle=bords[gi_c]; ctx.fill();
-      ctx.fillStyle=gi<=1?'rgba(255,255,255,.9)':'rgba(255,255,255,.65)';
+      ctx.fillStyle=paleCard?'rgba(0,0,0,.08)':bords[gi_c]; ctx.fill();
+      ctx.fillStyle=paleCard?'#3A3A3A':'rgba(255,255,255,.9)';
       ctx.font=`${Math.max(4,5/scale<6?5:5)}px Inter,sans-serif`;
       ctx.textAlign='center';
       if(dimmed) ctx.globalAlpha=0.2;
@@ -2300,7 +2303,7 @@ function render(){
       if(dimmed) ctx.globalAlpha=0.2;
 
       // Name
-      ctx.fillStyle=texts[gi_c];
+      ctx.fillStyle=paleCard?'#1F1A14':texts[gi_c];
       const nFont=`600 ${nSz}px Cormorant Garant,Georgia,serif`;
       const nm=fitTxt(p.name,nFont,usW);
       ctx.font=nFont; ctx.fillText(nm,x+padX,y+nSz+4);
@@ -2310,7 +2313,7 @@ function render(){
       if(p.pet&&ty<y+h-4){
         const pSz=Math.max(5,nSz-1.5);
         ctx.font=`italic ${pSz}px Cormorant Garant,Georgia,serif`;
-        ctx.fillStyle=dark?'#C49A2A':'#8B6914';
+        ctx.fillStyle=(dark&&!paleCard)?'#C49A2A':'#8B6914';
         ctx.fillText(fitTxt(`"${p.pet}"`,`italic ${pSz}px Cormorant Garant,Georgia,serif`,usW+bdW),x+padX,ty);
         ty+=pSz+1;
       }
@@ -2318,7 +2321,7 @@ function render(){
       if((p.dob||p.dod)&&ty<y+h-4){
         const dSz=Math.max(4.5,nSz-2.5);
         ctx.font=`${dSz}px Inter,sans-serif`;
-        ctx.fillStyle=dark?'#808070':'#7A6A5A';
+        ctx.fillStyle=(dark&&!paleCard)?'#808070':'#5E5044';
         const dates=[p.dob?`b.${p.dob}`:'',p.dod?`d.${p.dod}`:''].filter(Boolean).join(' ');
         ctx.fillText(fitTxt(dates,`${dSz}px Inter,sans-serif`,w-2*padX),x+padX,ty);
         ty+=dSz+1;
@@ -2327,7 +2330,7 @@ function render(){
       if(p.spouse&&ty<y+h-3){
         const sSz=Math.max(4.5,nSz-2.5);
         ctx.font=`italic ${sSz}px Cormorant Garant,Georgia,serif`;
-        ctx.fillStyle=dark?'#5A9A6A':'#3A6A4A';
+        ctx.fillStyle=(dark&&!paleCard)?'#5A9A6A':'#3A6A4A';
         const sp=`+ ${p.spouse}${p.spouse_pet?` "${p.spouse_pet}"`:''}`;
         ctx.fillText(fitTxt(sp,`italic ${sSz}px Cormorant Garant,Georgia,serif`,w-2*padX),x+padX,ty);
         ty+=sSz+1;
