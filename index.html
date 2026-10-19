@@ -794,7 +794,7 @@ body.admin-unlocked .album-zoom-hint{display:none;}
       <div class="logo-ring">C</div>
       <div class="logo-text">Chenathara <em>Family</em></div>
     </a>
-    <span class="header-stats" id="headerStats">275 members · 8 generations</span>
+    <span class="header-stats" id="headerStats">286 members · 8 generations</span>
     <div class="header-right">
       <button class="admin-lock-btn" id="imgbbSettingsBtn" onclick="openImgBBSettings()" title="Photo cloud settings" style="display:none">
         ☁️ <span>Photos</span>
@@ -886,8 +886,8 @@ body.admin-unlocked .album-zoom-hint{display:none;}
       <div class="history-hero-title">The <em>Chenathara</em><br><strong>Family History</strong></div>
       <p class="history-hero-sub">From Central Travancore to the foothills of Wayanad — a family who cleared forests and built a new life in Malabar.</p>
       <div class="history-stats">
-        <div class="hstat"><div class="hstat-num">275</div><div class="hstat-lbl">Members</div></div>
-        <div class="hstat"><div class="hstat-num">8</div><div class="hstat-lbl">Generations</div></div>
+        <div class="hstat"><div class="hstat-num" id="hstatMembers">286</div><div class="hstat-lbl">Members</div></div>
+        <div class="hstat"><div class="hstat-num" id="hstatGens">8</div><div class="hstat-lbl">Generations</div></div>
         <div class="hstat"><div class="hstat-num">7</div><div class="hstat-lbl">Main Branches</div></div>
       </div>
     </div>
@@ -990,6 +990,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const ps = Object.values(people);
   const gens = new Set(ps.map(p => p.gen).filter(g => g !== '' && g != null));
   el.textContent = ps.length + ' members · ' + gens.size + ' generations';
+  const hm = document.getElementById('hstatMembers'); if (hm) hm.textContent = ps.length;
+  const hg = document.getElementById('hstatGens'); if (hg) hg.textContent = gens.size;
 });
 const childrenOf = RAW.children; // {id_str: [child_ids]}
 
