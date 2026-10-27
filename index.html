@@ -1091,7 +1091,7 @@ function loadAllPhotos() {
 }
 function savePhoto(id, dataUrl, cb) {
   compressImage(dataUrl, 900, 0.80, compressed => {
-    uploadToImgBB(compressed).then(url => {
+    uploadPhotoToSite(compressed).then(url => {
       const val = url || compressed;
       _photoCache[id] = val;
       idbPut('p_' + id, val).then(() => { if (cb) cb(); });
@@ -1109,7 +1109,7 @@ function getSpousePhotos() { return _spPhotoCache; }
 function saveSpousePhoto(personId, slot, dataUrl, cb) {
   const key = personId + '_' + slot;
   compressImage(dataUrl, 900, 0.80, compressed => {
-    uploadToImgBB(compressed).then(url => {
+    uploadPhotoToSite(compressed).then(url => {
       const val = url || compressed;
       _spPhotoCache[key] = val;
       idbPut('sp_' + key, val).then(() => { if (cb) cb(); });
@@ -1133,18 +1133,29 @@ function getImgBBKey() {
 function setImgBBKey(key) {
   try { localStorage.setItem(IMGBB_KEY_STORE, key.trim()); } catch(e){}
 }
-function uploadToImgBB(dataUrl) {
-  const key = getImgBBKey();
-  if (!key) return Promise.resolve(null);
-  const base64 = dataUrl.split(',')[1];
+// Photos are stored in the site's own GitHub repo (photos/ folder) and served from chenathara.com.
+// Needs the GitHub token saved in Photo settings. Returns the public URL, or null on failure.
+function uploadPhotoToSite(dataUrl) {
+  const token = getGHToken();
+  if (!token) return Promise.resolve(null);
+  const base64 = (dataUrl || '').split(',')[1];
   if (!base64) return Promise.resolve(null);
-  const form = new FormData();
-  form.append('key', key);
-  form.append('image', base64);
-  return fetch('https://api.imgbb.com/1/upload', {method:'POST', body:form})
-    .then(r => r.json())
-    .then(j => (j.success && j.data && j.data.url) ? j.data.url : null)
+  const name = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
+  const apiUrl = 'https://api.github.com/repos/Mavelikara/Chenathara/contents/photos/' + name;
+  return fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Add photo ' + name + ' [skip ci]', content: base64 })
+    })
+    .then(r => r.ok ? 'https://chenathara.com/photos/' + name : null)
+    .then(url => { if (url) schedulePhotoMapPush(); return url; })
     .catch(() => null);
+}
+// After uploads, publish the photo map automatically so every visitor sees new photos
+let _photoMapPushTimer = null;
+function schedulePhotoMapPush() {
+  clearTimeout(_photoMapPushTimer);
+  _photoMapPushTimer = setTimeout(() => { pushPhotoMapToGitHub(true); }, 4000);
 }
 
 /* ── localStorage album metadata (titles, order — tiny, no photos) ──── */
@@ -1204,7 +1215,7 @@ function albumHandleFile(cardId, file) {
   const reader = new FileReader();
   reader.onload = e => {
     compressImage(e.target.result, 1200, 0.80, compressed => {
-      uploadToImgBB(compressed).then(url => {
+      uploadPhotoToSite(compressed).then(url => {
         const val = url || compressed;
         _albPhotoCache[cardId] = val;
         idbPut('alb_' + cardId, val).then(() => {
@@ -2074,7 +2085,7 @@ async function addExtraPersonPhotos(id, files) {
     });
     if (!dataUrl) continue;
     const compressed = await new Promise(res => compressImage(dataUrl, 900, 0.80, res));
-    const url = await uploadToImgBB(compressed);
+    const url = await uploadPhotoToSite(compressed);
     list.push(url || compressed);
   }
   await writePersonPhotos(id, list);
@@ -2485,19 +2496,16 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
 <div id="imgbbModal" role="dialog" aria-modal="true">
   <div class="admin-modal-box" style="max-width:380px">
     <div class="admin-modal-title">☁️ Cloud Photo Storage</div>
-    <div class="admin-modal-sub">Enter your free <a href="https://api.imgbb.com/" target="_blank" style="color:var(--teal3)">ImgBB API key</a> so photos are visible on every device.</div>
-    <input class="admin-modal-input" type="text" id="imgbbKeyInput" placeholder="Paste your ImgBB API key here" autocomplete="off">
-    <div id="imgbbStatus" style="font-size:12px;min-height:18px;margin-top:4px;"></div>
+    <div class="admin-modal-sub">Photos are saved on chenathara.com itself. Save your GitHub token below once on each device you upload from.</div>
     <div class="admin-modal-btns">
       <button class="admin-modal-cancel" onclick="closeImgBBSettings()">Close</button>
-      <button class="admin-modal-ok" onclick="saveImgBBKey()">Save Key</button>
     </div>
-    <div id="syncSection" style="margin-top:14px;border-top:1px solid var(--border2);padding-top:12px;display:none">
+    <div id="syncSection" style="margin-top:14px;border-top:1px solid var(--border2);padding-top:12px;">
       <div style="font-size:12px;color:var(--text2);margin-bottom:8px;">Run this on the <strong>device where you originally uploaded photos</strong> (usually desktop) to push them to the cloud so every device can see them.</div>
       <button class="admin-modal-ok" onclick="syncPhotosToCloud()" style="width:100%;margin-bottom:0">⬆️ Sync local photos to cloud</button>
       <div id="syncProgress" style="margin-top:8px;font-size:12px;min-height:16px;"></div>
       <div style="margin-top:12px;border-top:1px solid var(--border2);padding-top:10px;">
-        <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">🔑 <strong>GitHub Token</strong> — lets the site push the photo map automatically so <em>every visitor</em> sees photos instantly, no manual steps.</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">🔑 <strong>GitHub Token</strong> - needed to upload photos. New photos appear for every visitor within about a minute.</div>
         <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">Create a fine-grained token at <a href="https://github.com/settings/tokens?type=beta" target="_blank" style="color:var(--teal3)">github.com/settings/tokens</a> with <strong>Contents: Read &amp; write</strong> on the Chenathara repo.</div>
         <input class="admin-modal-input" type="password" id="ghTokenInput" placeholder="github_pat_…  or  ghp_…" autocomplete="off" style="margin-bottom:6px;">
         <div style="display:flex;gap:6px;">
@@ -2575,17 +2583,11 @@ function closeAdminModal() {
 function openImgBBSettings() {
   if (!isAdminUnlocked()) { openAdminModal(); return; }
   const modal = document.getElementById('imgbbModal');
-  const inp = document.getElementById('imgbbKeyInput');
-  const status = document.getElementById('imgbbStatus');
-  const sync = document.getElementById('syncSection');
   const prog = document.getElementById('syncProgress');
-  inp.value = getImgBBKey();
-  status.textContent = getImgBBKey() ? '✓ Key saved — new uploads will go to the cloud' : '';
-  status.style.color = 'var(--sage)';
+  const inp = document.getElementById('ghTokenInput');
   prog.textContent = '';
   document.getElementById('ghTokenInput').value = getGHToken() ? '••••••••••••' : '';
   document.getElementById('ghPushStatus').textContent = '';
-  sync.style.display = getImgBBKey() ? '' : 'none';
   modal.classList.add('open');
   setTimeout(() => inp.focus(), 80);
 }
@@ -2607,8 +2609,8 @@ function saveImgBBKey() {
   document.getElementById('syncSection').style.display = '';
 }
 async function syncPhotosToCloud() {
-  if (!getImgBBKey()) return;
   const prog = document.getElementById('syncProgress');
+  if (!getGHToken()) { prog.style.color = 'var(--gold)'; prog.textContent = 'Save your GitHub token first.'; return; }
   const caches = [
     {cache: _photoCache,    prefix: 'p_'},
     {cache: _spPhotoCache,  prefix: 'sp_'},
@@ -2624,7 +2626,7 @@ async function syncPhotosToCloud() {
   for (const {cache, prefix} of caches) {
     for (const [id, val] of Object.entries(cache)) {
       if (!val || !val.startsWith('data:')) continue;
-      const url = await uploadToImgBB(val);
+      const url = await uploadPhotoToSite(val);
       if (url) {
         cache[id] = url;
         await idbPut(prefix + id, url);
@@ -2722,13 +2724,13 @@ async function applyPhotoMapFromRepo(map) {
     if (!url || !url.startsWith('https://')) continue;
     if (idbKey.startsWith('p_')) {
       const id = idbKey.slice(2);
-      if (!_photoCache[id]) { _photoCache[id] = url; await idbPut(idbKey, url); count++; }
+      if (!_photoCache[id] || (_photoCache[id] !== url && String(_photoCache[id]).includes('ibb.co/'))) { _photoCache[id] = url; await idbPut(idbKey, url); count++; }
     } else if (idbKey.startsWith('sp_')) {
       const key = idbKey.slice(3);
-      if (!_spPhotoCache[key]) { _spPhotoCache[key] = url; await idbPut(idbKey, url); count++; }
+      if (!_spPhotoCache[key] || (_spPhotoCache[key] !== url && String(_spPhotoCache[key]).includes('ibb.co/'))) { _spPhotoCache[key] = url; await idbPut(idbKey, url); count++; }
     } else if (idbKey.startsWith('alb_')) {
       const cardId = idbKey.slice(4);
-      if (!_albPhotoCache[cardId]) { _albPhotoCache[cardId] = url; await idbPut(idbKey, url); count++; }
+      if (!_albPhotoCache[cardId] || (_albPhotoCache[cardId] !== url && String(_albPhotoCache[cardId]).includes('ibb.co/'))) { _albPhotoCache[cardId] = url; await idbPut(idbKey, url); count++; }
     }
   }
   if (count > 0) { renderDirectory(); renderAlbum(); }
