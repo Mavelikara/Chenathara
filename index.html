@@ -1167,7 +1167,8 @@ function uploadPhotoToSite(dataUrl) {
       headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: 'Add photo ' + name + ' [skip ci]', content: base64 })
     })
-    .then(r => r.ok ? 'https://chenathara.com/photos/' + name : null)
+    // raw.githubusercontent serves the file the moment it is saved (chenathara.com only after the site republishes, about a minute later)
+    .then(r => r.ok ? 'https://raw.githubusercontent.com/Mavelikara/Chenathara/main/photos/' + name : null)
     .then(url => { if (url) schedulePhotoMapPush(); return url; })
     .catch(() => null);
 }
