@@ -607,6 +607,20 @@ body.admin-unlocked .album-zoom-hint{display:none;}
   text-transform:uppercase; margin-top:4px;
 }
 @media(max-width:540px){.editor-note{padding:24px 20px;}}
+/* With Thanks (credits) */
+.credits{margin-top:40px;}
+.credits-label{font-family:'Inter',sans-serif; font-size:10px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;}
+.credits-intro{font-family:'Source Serif 4',serif; font-size:15px; font-weight:300; line-height:1.7; color:var(--text2); margin:0 0 20px;}
+.credits-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px;}
+.credit-card{background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:22px 20px; display:flex; flex-direction:column; align-items:center; text-align:center;}
+.credit-photo{width:104px; height:104px; border-radius:50%; object-fit:cover; border:3px solid var(--gold); background:var(--bg2); margin-bottom:14px;}
+.credit-initial{width:104px; height:104px; border-radius:50%; border:3px solid var(--gold); background:var(--bg2); color:var(--gold); display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garant',serif; font-size:40px; font-weight:600; margin-bottom:14px;}
+.credit-name{font-family:'Cormorant Garant',serif; font-size:22px; font-weight:600; color:var(--text); line-height:1.2;}
+.credit-meta{font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--text3); margin-top:4px;}
+.credit-facts{font-family:'Inter',sans-serif; font-size:13px; color:var(--text2); margin-top:10px; line-height:1.6;}
+.credit-text{font-family:'Source Serif 4',serif; font-size:15px; font-weight:300; line-height:1.75; color:var(--text2); margin:12px 0 0;}
+.credit-link{margin-top:14px; background:none; border:1px solid var(--border2); border-radius:20px; padding:6px 14px; font-family:'Inter',sans-serif; font-size:12px; color:var(--teal3); cursor:pointer;}
+.credit-link:hover{border-color:var(--teal3);}
 
 /* ═══ PROFILE MODAL ══════════════════════════════════════════════════════════ */
 .modal-backdrop{
@@ -945,6 +959,12 @@ body.admin-unlocked .album-zoom-hint{display:none;}
         <div class="editor-sig-name">Jacob Oommen (Legy)</div>
         <div class="editor-sig-role">Website Editor</div>
       </div>
+    </div>
+
+    <div class="credits" id="creditsSection">
+      <div class="credits-label">With Thanks</div>
+      <p class="credits-intro">This record is the work of many hands. These family members gave their time to help bring it together.</p>
+      <div class="credits-grid" id="creditsGrid"></div>
     </div>
   </div>
 </div>
@@ -1540,6 +1560,39 @@ function setBranchFilter(branch, btn) {
   document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
   btn.classList.add('active');
   renderDirectory();
+}
+
+/* ── With Thanks (credits on the History tab) ─────────────────────────
+   To add someone: add a line with their directory ID. Photo, ID and family
+   details come from the directory automatically. Leave lives/work blank to hide them. */
+const CREDITS = [
+  { id: 21, name: 'C N Doncy', lives: '', work: '',
+    text: 'Doncy gathered the names and details of relatives across every branch of the family, an enormous amount of information that forms the backbone of this directory. Without her patience and persistence, this work would not have reached its present stage.' },
+];
+function renderCredits() {
+  const grid = document.getElementById('creditsGrid');
+  if (!grid) return;
+  const cards = CREDITS.map(c => {
+    const p = personById(c.id);
+    if (!p) return '';
+    const name = c.name || p.name;
+    const photo = (getPhotos() || {})[String(c.id)];
+    const initial = esc((p.name || name).charAt(0));
+    const pic = photo
+      ? `<img class="credit-photo" src="${esc(photo)}" alt="${esc(name)}" loading="lazy" onerror="this.outerHTML='<div class=&quot;credit-initial&quot;>${initial}</div>'">`
+      : `<div class="credit-initial">${initial}</div>`;
+    const facts = [c.lives ? `📍 ${esc(c.lives)}` : '', c.work ? `💼 ${esc(c.work)}` : ''].filter(Boolean).join('<br>');
+    return `<div class="credit-card">${pic}
+      <div class="credit-name">${esc(name)}</div>
+      <div class="credit-meta">ID ${c.id} · Generation ${esc(String(p.gen))}</div>
+      ${facts ? `<div class="credit-facts">${facts}</div>` : ''}
+      ${c.text ? `<p class="credit-text">${esc(c.text)}</p>` : ''}
+      <button class="credit-link" onclick="openProfile(${c.id})">View in family directory</button>
+    </div>`;
+  }).join('');
+  grid.innerHTML = cards;
+  const sec = document.getElementById('creditsSection');
+  if (sec) sec.style.display = cards ? '' : 'none';
 }
 
 function renderDirectory() {
@@ -2733,7 +2786,7 @@ async function applyPhotoMapFromRepo(map) {
       if (!_albPhotoCache[cardId] || (_albPhotoCache[cardId] !== url && String(_albPhotoCache[cardId]).includes('ibb.co/'))) { _albPhotoCache[cardId] = url; await idbPut(idbKey, url); count++; }
     }
   }
-  if (count > 0) { renderDirectory(); renderAlbum(); }
+  if (count > 0) { renderDirectory(); renderAlbum(); renderCredits(); }
 }
 
 async function fetchPhotoMapFromRepo() {
@@ -2783,6 +2836,7 @@ window.addEventListener('load', () => {
   loadAllPhotos().finally(() => {
     applyAdminUI();
     renderDirectory();
+    renderCredits();
     // Fetch photo map from repo so photos appear on every device automatically
     fetchPhotoMapFromRepo();
   });
