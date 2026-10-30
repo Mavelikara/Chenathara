@@ -347,6 +347,25 @@ body.admin-unlocked .admin-only-flex{display:flex;}
   background:var(--teal-lt); color:var(--teal);
   margin-top:4px;
 }
+.bo-badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:18px; height:18px; border-radius:9px;
+  padding:0 4px;
+  background:var(--teal-lt); color:var(--teal);
+  font-family:'Inter',sans-serif; font-size:9px; font-weight:700;
+  margin-right:5px; flex-shrink:0; vertical-align:middle; line-height:1;
+}
+.bo-badge.multiples{
+  background:#FFF3CD; color:#856404;
+}
+.bo-multiples-chip{
+  display:inline-block;
+  font-family:'Inter',sans-serif; font-size:7px; font-weight:600;
+  letter-spacing:.04em; text-transform:uppercase;
+  padding:1px 4px; border-radius:2px;
+  background:#FFF3CD; color:#856404;
+  margin-left:4px; vertical-align:middle; flex-shrink:0; white-space:nowrap;
+}
 .dir-no-results{
   grid-column:1/-1; padding:60px 20px; text-align:center;
   font-family:'Cormorant Garant',serif; font-size:20px;
@@ -1014,6 +1033,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const hg = document.getElementById('hstatGens'); if (hg) hg.textContent = gens.size;
 });
 const childrenOf = RAW.children; // {id_str: [child_ids]}
+// Sort each sibling group by birth_order (stripping '+'), falling back to id
+Object.keys(childrenOf).forEach(pid => {
+  childrenOf[pid].sort((a, b) => {
+    const pa = people[String(a)], pb = people[String(b)];
+    const ba = pa && pa.birth_order ? parseInt(pa.birth_order, 10) : null;
+    const bb = pb && pb.birth_order ? parseInt(pb.birth_order, 10) : null;
+    if (ba !== null && bb !== null) return ba - bb;
+    if (ba !== null) return -1;
+    if (bb !== null) return 1;
+    return a - b;
+  });
+});
 
 /* ═══════════════════════════════════════════════════════════════════════
    PHOTO STORAGE — IndexedDB (with localStorage fallback)
@@ -1638,7 +1669,10 @@ function renderDirectory() {
     const info = document.createElement('div');
     info.className = 'dir-card-info';
 
-    const nameLine = `<div class="dir-card-name">${esc(p.name)}</div>`;
+    const bo = parseBirthOrder(p.birth_order);
+    const boBadge = bo.rank ? `<span class="bo-badge${bo.isMultiple?' multiples':''}" title="${bo.isMultiple?'Multiple birth (twins/triplets)':'Birth order'}">${bo.rank}${bo.isMultiple?'<sup style="font-size:6px;line-height:1">+</sup>':''}</span>` : '';
+    const multiChip = bo.isMultiple ? `<span class="bo-multiples-chip">twins/triplets</span>` : '';
+    const nameLine = `<div class="dir-card-name" style="display:flex;align-items:center;overflow:visible;white-space:normal;">${boBadge}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;">${esc(p.name)}</span>${multiChip}</div>`;
     const petLine = p.pet ? `<div class="dir-card-pet">"${esc(p.pet)}"</div>` : '';
     const metaParts = [];
     if (p.dob) metaParts.push(`b. ${esc(p.dob)}`);
@@ -1658,6 +1692,16 @@ function renderDirectory() {
 function esc(s) {
   if (!s) return '';
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+// Parse a birth_order string like "1", "2", "1+", "3+"
+// Returns { rank: number|null, isMultiple: boolean }
+function parseBirthOrder(bo) {
+  if (bo === null || bo === undefined || bo === '') return { rank: null, isMultiple: false };
+  const s = String(bo).trim();
+  if (!s) return { rank: null, isMultiple: false };
+  const isMultiple = s.endsWith('+');
+  const rank = parseInt(s, 10);
+  return { rank: isNaN(rank) ? null : rank, isMultiple };
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -1810,9 +1854,14 @@ function openProfile(id) {
   detailSec.innerHTML = '<div class="profile-section-title">Personal Details</div>';
   const fields = document.createElement('div');
   fields.className = 'profile-fields';
+  const boParsed = parseBirthOrder(p.birth_order);
+  const boDisplay = boParsed.rank
+    ? (boParsed.isMultiple ? `${boParsed.rank} (multiple birth — twins/triplets)` : String(boParsed.rank))
+    : null;
   const fieldDefs = [
     ['Full Name', p.name],
     ['Pet Name', p.pet],
+    ['Birth Order', boDisplay],
     ['Date of Birth', p.dob],
     ['Date of Death', p.dod],
     ['Generation', `Generation ${p.gen}`],
@@ -2366,7 +2415,7 @@ function render(){
       ctx.stroke();
       ctx.globalAlpha=1;
 
-      // ID badge
+      // ID badge (top-right)
       const bdW=18;
       drawRR(x+w-bdW-2,y+2,bdW,11,2);
       ctx.fillStyle=paleCard?'rgba(0,0,0,.08)':bords[gi_c]; ctx.fill();
@@ -2377,8 +2426,28 @@ function render(){
       ctx.fillText(`#${id}`,x+w-bdW/2-2,y+11);
       ctx.globalAlpha=1;
 
+      // Birth order badge (top-left)
+      let boOffX=0;
+      const cBo=parseBirthOrder(p.birth_order);
+      if(cBo.rank){
+        const boStr=String(cBo.rank)+(cBo.isMultiple?'+':'');
+        const boW=boStr.length>2?20:16;
+        boOffX=boW+2;
+        drawRR(x+2,y+2,boW,11,2);
+        ctx.fillStyle=cBo.isMultiple
+          ?(paleCard?'rgba(184,137,30,.25)':'rgba(184,137,30,.45)')
+          :(paleCard?'rgba(0,0,0,.08)':bords[gi_c]);
+        ctx.fill();
+        ctx.fillStyle=cBo.isMultiple?(dark?'#C49A2A':'#856404'):(paleCard?'#3A3A3A':'rgba(255,255,255,.9)');
+        ctx.font=`600 5px Inter,sans-serif`;
+        ctx.textAlign='center';
+        if(dimmed) ctx.globalAlpha=0.2;
+        ctx.fillText(boStr,x+2+boW/2,y+11);
+        ctx.globalAlpha=1;
+      }
+
       ctx.textAlign='left';
-      const padX=3, usW=w-2*padX-bdW-4;
+      const padX=3, usW=w-2*padX-bdW-4-boOffX;
       let nSz=Math.max(6,Math.min(9,w/10));
       if(dimmed) ctx.globalAlpha=0.2;
 
@@ -2386,7 +2455,7 @@ function render(){
       ctx.fillStyle=paleCard?'#1F1A14':texts[gi_c];
       const nFont=`600 ${nSz}px Cormorant Garant,Georgia,serif`;
       const nm=fitTxt(p.name,nFont,usW);
-      ctx.font=nFont; ctx.fillText(nm,x+padX,y+nSz+4);
+      ctx.font=nFont; ctx.fillText(nm,x+padX+boOffX,y+nSz+4);
       let ty=y+nSz+4+nSz*0.75;
 
       // Pet
@@ -2493,6 +2562,8 @@ function showTreeTooltip(id,cx,cy){
   if(d) html+=`<div class="tt-meta">${d}</div>`;
   if(p.spouse) html+=`<div class="tt-sp">+ ${esc(p.spouse)}${p.spouse_pet?` "${esc(p.spouse_pet)}"`:''}</div>`;
   if(p.spouse2) html+=`<div class="tt-sp">+ ${esc(p.spouse2)}${p.spouse2_pet?` "${esc(p.spouse2_pet)}"`:''}</div>`;
+  const ttBo=parseBirthOrder(p.birth_order);
+  if(ttBo.rank){const ttBoLabel=ttBo.isMultiple?`Birth order: ${ttBo.rank}+ · twins/triplets`:`Birth order: ${ttBo.rank}`;html+=`<div class="tt-meta">${ttBoLabel}</div>`;}
   html+=`<div class="tt-meta">ID #${p.id} · Gen ${p.gen} · ${esc(BRANCH_NAMES[p.branch]||'')}</div>`;
   html+=`<div class="tt-hint">Click for profile ›</div>`;
   tooltip.innerHTML=html;
