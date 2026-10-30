@@ -1115,6 +1115,19 @@ function compressImage(dataUrl, maxPx, quality, callback) {
 /* ── Person photos ───────────────────────────────────────────────────── */
 // In-memory cache so sync reads still work after first async load
 const _photoCache = {};
+const _photoImgCache = {};
+function getPhotoImg(id) {
+  const sid = String(id);
+  if (_photoImgCache[sid] instanceof HTMLImageElement) return _photoImgCache[sid];
+  const url = _photoCache[sid];
+  if (!url || _photoImgCache[sid] === 'loading') return null;
+  _photoImgCache[sid] = 'loading';
+  const img = new Image();
+  img.onload = () => { _photoImgCache[sid] = img; render(); };
+  img.onerror = () => { delete _photoImgCache[sid]; };
+  img.src = url;
+  return null;
+}
 function getPhotos() { return _photoCache; }
 function loadAllPhotos() {
   // Pre-load all person photo keys from IDB into cache at startup
@@ -1145,12 +1158,14 @@ function savePhoto(id, dataUrl, cb) {
     uploadPhotoToSite(compressed).then(url => {
       const val = url || compressed;
       _photoCache[id] = val;
+      delete _photoImgCache[id];
       idbPut('p_' + id, val).then(() => { if (cb) cb(); });
     });
   });
 }
 function removePhoto(id) {
   delete _photoCache[id];
+  delete _photoImgCache[id];
   idbDel('p_' + id);
 }
 
@@ -2236,7 +2251,7 @@ const ctx = canvas.getContext('2d');
 const wrap = document.getElementById('treeWrap');
 const tooltip = document.getElementById('treeTooltip');
 
-const CARD_H=52, HGAP=4, VGAP=26, CARD_MIN_W=88, CARD_MAX_W=200;
+const CARD_H=72, HGAP=4, VGAP=26, CARD_MIN_W=88, CARD_MAX_W=200;
 
 function getGenerations(root) {
   const levels=[]; let cur=[root];
@@ -2426,13 +2441,11 @@ function render(){
       ctx.fillText(`#${id}`,x+w-bdW/2-2,y+11);
       ctx.globalAlpha=1;
 
-      // Birth order badge (top-left)
-      let boOffX=0;
+      // Birth order badge (top-left corner)
       const cBo=parseBirthOrder(p.birth_order);
       if(cBo.rank){
         const boStr=String(cBo.rank)+(cBo.isMultiple?'+':'');
         const boW=boStr.length>2?20:16;
-        boOffX=boW+2;
         drawRR(x+2,y+2,boW,11,2);
         ctx.fillStyle=cBo.isMultiple
           ?(paleCard?'rgba(184,137,30,.25)':'rgba(184,137,30,.45)')
@@ -2446,24 +2459,48 @@ function render(){
         ctx.globalAlpha=1;
       }
 
-      ctx.textAlign='left';
-      const padX=3, usW=w-2*padX-bdW-4-boOffX;
+      // Circular photo / initials avatar (top-centre, Layout C)
+      const avR=12, avCx=x+w/2, avCy=y+4+avR;
+      ctx.save();
+      if(dimmed) ctx.globalAlpha=0.2;
+      const pImg=getPhotoImg(id);
+      if(pImg){
+        ctx.beginPath(); ctx.arc(avCx,avCy,avR,0,Math.PI*2); ctx.closePath(); ctx.clip();
+        ctx.drawImage(pImg,avCx-avR,avCy-avR,avR*2,avR*2);
+      } else {
+        const avCols=['#C4756A','#7A9C6E','#6A84C4','#C4A46A','#9A6AC4','#6AC4B4','#C46A8A'];
+        let ah=0; for(const ch of (p.name||'')) ah=(ah*31+ch.charCodeAt(0))&0xffff;
+        ctx.beginPath(); ctx.arc(avCx,avCy,avR,0,Math.PI*2); ctx.closePath(); ctx.clip();
+        ctx.fillStyle=avCols[ah%avCols.length]; ctx.fill();
+        ctx.fillStyle='rgba(255,255,255,.92)';
+        const inits=(p.name||'').trim().split(/\s+/).map(s=>s[0]).join('').toUpperCase().slice(0,2);
+        ctx.font=`700 ${Math.max(5,Math.floor(avR*0.72))}px Inter,sans-serif`;
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText(inits,avCx,avCy);
+      }
+      ctx.restore();
+      ctx.beginPath(); ctx.arc(avCx,avCy,avR,0,Math.PI*2);
+      ctx.strokeStyle=paleCard?'rgba(0,0,0,.18)':'rgba(0,0,0,.22)';
+      ctx.lineWidth=0.8/scale; ctx.stroke();
+
+      // Text — centred below avatar
+      const usW=w-8;
       let nSz=Math.max(6,Math.min(9,w/10));
       if(dimmed) ctx.globalAlpha=0.2;
+      let ty=avCy+avR+6;
 
       // Name
       ctx.fillStyle=paleCard?'#1F1A14':texts[gi_c];
       const nFont=`600 ${nSz}px Cormorant Garant,Georgia,serif`;
       const nm=fitTxt(p.name,nFont,usW);
-      ctx.font=nFont; ctx.fillText(nm,x+padX+boOffX,y+nSz+4);
-      let ty=y+nSz+4+nSz*0.75;
+      ctx.font=nFont; ctx.textAlign='center'; ctx.fillText(nm,x+w/2,ty); ty+=nSz*0.85+2;
 
       // Pet
       if(p.pet&&ty<y+h-4){
         const pSz=Math.max(5,nSz-1.5);
         ctx.font=`italic ${pSz}px Cormorant Garant,Georgia,serif`;
         ctx.fillStyle=(dark&&!paleCard)?'#C49A2A':'#8B6914';
-        ctx.fillText(fitTxt(`"${p.pet}"`,`italic ${pSz}px Cormorant Garant,Georgia,serif`,usW+bdW),x+padX,ty);
+        ctx.fillText(fitTxt(`"${p.pet}"`,`italic ${pSz}px Cormorant Garant,Georgia,serif`,usW),x+w/2,ty);
         ty+=pSz+1;
       }
       // Dates
@@ -2472,7 +2509,7 @@ function render(){
         ctx.font=`${dSz}px Inter,sans-serif`;
         ctx.fillStyle=(dark&&!paleCard)?'#808070':'#5E5044';
         const dates=[p.dob?`b.${p.dob}`:'',p.dod?`d.${p.dod}`:''].filter(Boolean).join(' ');
-        ctx.fillText(fitTxt(dates,`${dSz}px Inter,sans-serif`,w-2*padX),x+padX,ty);
+        ctx.fillText(fitTxt(dates,`${dSz}px Inter,sans-serif`,usW),x+w/2,ty);
         ty+=dSz+1;
       }
       // Spouse
@@ -2481,17 +2518,12 @@ function render(){
         ctx.font=`italic ${sSz}px Cormorant Garant,Georgia,serif`;
         ctx.fillStyle=(dark&&!paleCard)?'#5A9A6A':'#3A6A4A';
         const sp=`+ ${p.spouse}${p.spouse_pet?` "${p.spouse_pet}"`:''}`;
-        ctx.fillText(fitTxt(sp,`italic ${sSz}px Cormorant Garant,Georgia,serif`,w-2*padX),x+padX,ty);
+        ctx.fillText(fitTxt(sp,`italic ${sSz}px Cormorant Garant,Georgia,serif`,usW),x+w/2,ty);
         ty+=sSz+1;
         if(p.spouse2&&ty<y+h-3){
           const sp2=`+ ${p.spouse2}${p.spouse2_pet?` "${p.spouse2_pet}"`:''}`;
-          ctx.fillText(fitTxt(sp2,`italic ${sSz}px Cormorant Garant,Georgia,serif`,w-2*padX),x+padX,ty);
+          ctx.fillText(fitTxt(sp2,`italic ${sSz}px Cormorant Garant,Georgia,serif`,usW),x+w/2,ty);
         }
-      }
-      // Photo indicator
-      if(photos[id]){
-        ctx.fillStyle=dark?'rgba(90,154,106,.8)':'rgba(58,106,74,.7)';
-        drawRR(x+2,y+h-7,4,4,2); ctx.fill();
       }
 
       ctx.globalAlpha=1;
