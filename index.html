@@ -478,6 +478,122 @@ body.admin-unlocked .album-add-btn{display:flex;}
 @media (hover:none){ .album-zoom-hint{opacity:.85;} }
 body.admin-unlocked .album-zoom-hint{display:none;}
 
+
+/* ─── STATS VIEW ────────────────────────────────────────────────────────── */
+#statsView{display:none;}
+#statsView.active{display:block;}
+.stats-wrap{max-width:1100px;margin:0 auto;padding:40px 20px 60px;}
+.stats-section-title{
+  font-family:'Cormorant Garant',serif;font-size:28px;font-weight:300;
+  color:var(--text);margin:40px 0 20px;padding-bottom:10px;
+  border-bottom:1px solid var(--border2);
+}
+.stats-section-title em{font-style:italic;color:var(--gold);}
+/* Hero stat cards */
+.stats-hero{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:0;
+}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:10px;padding:28px 16px;text-align:center;
+  box-shadow:0 2px 8px var(--shadow);
+}
+.stat-card-num{
+  font-family:'Cormorant Garant',serif;font-size:52px;font-weight:300;
+  line-height:1;color:var(--teal);
+}
+.stat-card-lbl{
+  font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text3);margin-top:8px;
+}
+/* Gender cards */
+.gender-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.gender-card{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:10px;padding:24px;display:flex;align-items:center;gap:18px;
+  box-shadow:0 2px 8px var(--shadow);
+}
+.gender-icon{font-size:34px;line-height:1;opacity:.85;}
+.gender-info{flex:1;}
+.gender-name{
+  font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--text3);margin-bottom:4px;
+}
+.gender-num{
+  font-family:'Cormorant Garant',serif;font-size:42px;font-weight:300;
+  line-height:1;color:var(--teal);
+}
+.gender-pct{font-family:'Inter',sans-serif;font-size:13px;color:var(--text3);margin-top:3px;}
+.gender-bar-wrap{background:var(--bg2);border-radius:3px;overflow:hidden;height:5px;margin-top:10px;}
+.gender-bar{height:5px;border-radius:3px;}
+.gender-bar.male{background:var(--mb,#3a6ea8);}
+.gender-bar.female{background:var(--fb,#b06080);}
+/* Two-column chart layout */
+.stats-two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.chart-box{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:10px;padding:24px;box-shadow:0 2px 8px var(--shadow);
+}
+.chart-box-title{
+  font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text3);margin-bottom:16px;
+}
+/* Horizontal bar chart */
+.bar-chart{display:flex;flex-direction:column;gap:7px;}
+.bar-row{display:flex;align-items:center;gap:8px;}
+.bar-label{
+  font-family:'Inter',sans-serif;font-size:12px;color:var(--text2);
+  min-width:92px;text-align:right;flex-shrink:0;
+}
+.bar-track{
+  flex:1;background:var(--bg2);border-radius:3px;height:22px;
+  overflow:hidden;position:relative;
+}
+.bar-fill{
+  height:100%;background:var(--teal);border-radius:3px;
+  display:flex;align-items:center;padding:0 8px;min-width:3px;
+}
+.bar-fill.gold{background:var(--gold);}
+.bar-val{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;margin-left:auto;}
+.bar-val-out{font-family:'Inter',sans-serif;font-size:11px;color:var(--text2);margin-left:6px;flex-shrink:0;}
+/* Vertical decade bars */
+.decade-chart-wrap{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:24px;box-shadow:0 2px 8px var(--shadow);}
+.decade-chart{
+  display:flex;align-items:flex-end;gap:6px;height:120px;
+  border-bottom:1px solid var(--border2);margin-bottom:4px;
+}
+.decade-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;}
+.decade-bar{width:100%;background:var(--teal);border-radius:3px 3px 0 0;}
+.decade-cnt{font-family:'Inter',sans-serif;font-size:9px;color:var(--text3);text-align:center;line-height:1;margin-bottom:1px;}
+.decade-labels{display:flex;gap:6px;}
+.decade-lbl{flex:1;font-family:'Inter',sans-serif;font-size:9px;color:var(--text3);text-align:center;white-space:nowrap;padding-top:4px;}
+/* Data completeness */
+.completeness-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.completeness-item{
+  background:var(--surface);border:1px solid var(--border2);border-radius:10px;
+  padding:20px;display:flex;align-items:center;gap:14px;
+  box-shadow:0 2px 8px var(--shadow);
+}
+.completeness-pct{
+  font-family:'Cormorant Garant',serif;font-size:36px;font-weight:300;
+  line-height:1;color:var(--teal);flex-shrink:0;min-width:54px;text-align:center;
+}
+.completeness-lbl{
+  font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--text3);margin-bottom:3px;
+}
+.completeness-sub{font-family:'Source Serif 4',serif;font-size:13px;color:var(--text2);}
+@media(max-width:700px){
+  .stats-hero{grid-template-columns:repeat(2,1fr);}
+  .gender-row{grid-template-columns:1fr;}
+  .stats-two-col{grid-template-columns:1fr;}
+  .completeness-row{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:420px){
+  .completeness-row{grid-template-columns:1fr;}
+  .stat-card-num{font-size:40px;}
+}
+
 /* ─── PHOTO LIGHTBOX ────────────────────────────────────────────────────── */
 #photoLightbox{
   display:none; position:fixed; inset:0; z-index:400;
@@ -842,6 +958,7 @@ body.admin-unlocked .album-zoom-hint{display:none;}
     <button class="nav-tab" onclick="showView('directoryView',this)" role="tab">📋 Directory</button>
     <button class="nav-tab" onclick="showView('treeView',this)" role="tab">🌳 Family Tree</button>
     <button class="nav-tab" onclick="showView('albumView',this)" role="tab">📷 Album</button>
+    <button class="nav-tab" onclick="showView('statsView',this)" role="tab">📊 Statistics</button>
   </nav>
 </header>
 
@@ -986,6 +1103,11 @@ body.admin-unlocked .album-zoom-hint{display:none;}
       <div class="credits-grid" id="creditsGrid"></div>
     </div>
   </div>
+</div>
+
+<!-- ══ STATS VIEW ═══════════════════════════════════════════════════════════ -->
+<div id="statsView" class="view">
+  <div class="stats-wrap" id="statsWrap"></div>
 </div>
 
 <!-- ══ PHOTO LIGHTBOX ═══════════════════════════════════════════════════════ -->
@@ -1595,6 +1717,7 @@ function showView(viewId, btn) {
   if (viewId==='treeView') { setTimeout(()=>render(),50); }
   if (viewId==='directoryView') { renderDirectory(); }
   if (viewId==='albumView') { renderAlbum(); }
+  if (viewId==='statsView') { renderStats(); }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -2633,6 +2756,156 @@ function treeSearch(q){
 /* ── Resize + init ─── */
 const ro=new ResizeObserver(()=>{render();});
 ro.observe(wrap);
+
+/* ═══════════════════════════════════════════════════════════════════════
+   STATISTICS
+═══════════════════════════════════════════════════════════════════════ */
+let statsRendered = false;
+function renderStats() {
+  if (statsRendered) return;
+  statsRendered = true;
+  const wrap = document.getElementById('statsWrap');
+  if (!wrap) return;
+
+  const ps = Object.values(RAW.people).filter(p => p.name && p.name !== 'Blank');
+  const total = ps.length;
+  const males  = ps.filter(p => p.gender === 'M').length;
+  const females = ps.filter(p => p.gender === 'F').length;
+  const pct = (n, d) => Math.round(n * 100 / d);
+
+  // Generation counts
+  const genMap = {};
+  ps.forEach(p => { const g = p.gen; if (g !== '' && g !== undefined) genMap[g] = (genMap[g]||0)+1; });
+  const genEntries = Object.entries(genMap).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
+  const genMax = Math.max(...Object.values(genMap));
+  const genCount = genEntries.length;
+
+  // Branch counts (family lineages, excluding trunk gen 0)
+  const BRANCH_NAMES = {5:'C.K. Varkey',6:'C.K. George',7:'C.K. John',8:'Mary',9:'Aleyamma',10:'Annama',11:'Saramma',12:'Sociamma'};
+  const branchMap = {};
+  ps.filter(p=>p.branch!==0).forEach(p=>{ const b=p.branch; if(b) branchMap[b]=(branchMap[b]||0)+1; });
+  const branchEntries = Object.entries(branchMap).sort((a,b)=>b[1]-a[1]);
+  const branchMax = Math.max(...Object.values(branchMap));
+
+  // Birth decades
+  const decMap = {};
+  ps.forEach(p => {
+    if (!p.dob) return;
+    const m = p.dob.match(/\d{4}/);
+    if (!m) return;
+    const yr = parseInt(m[0]);
+    if (yr < 1900 || yr > 2030) return;
+    const dec = Math.floor(yr / 10) * 10;
+    decMap[dec] = (decMap[dec]||0)+1;
+  });
+  const decEntries = Object.entries(decMap).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
+  const decMax = Math.max(...Object.values(decMap));
+
+  const withSpouse   = ps.filter(p=>p.spouse&&p.spouse.trim()).length;
+  const withDob      = ps.filter(p=>p.dob&&p.dob.trim()).length;
+  const withNickname = ps.filter(p=>p.pet&&p.pet.trim()).length;
+
+  function barRow(label, val, max, colorCls) {
+    const w = Math.round(val * 100 / max);
+    const inside = w > 25;
+    return `<div class="bar-row">
+      <span class="bar-label">${label}</span>
+      <div class="bar-track">
+        <div class="bar-fill${colorCls?' '+colorCls:''}" style="width:${w}%">
+          ${inside?`<span class="bar-val">${val}</span>`:''}
+        </div>
+      </div>
+      ${!inside?`<span class="bar-val-out">${val}</span>`:''}
+    </div>`;
+  }
+
+  const decBars = decEntries.map(([dec,cnt])=>`
+    <div class="decade-col">
+      <span class="decade-cnt">${cnt}</span>
+      <div class="decade-bar" style="height:${Math.round(cnt*96/decMax)}px"></div>
+    </div>`).join('');
+  const decLabels = decEntries.map(([dec])=>`<div class="decade-lbl">${dec}s</div>`).join('');
+
+  wrap.innerHTML = `
+    <div class="stats-hero">
+      <div class="stat-card"><div class="stat-card-num">${total}</div><div class="stat-card-lbl">Family Members</div></div>
+      <div class="stat-card"><div class="stat-card-num">${genCount}</div><div class="stat-card-lbl">Generations</div></div>
+      <div class="stat-card"><div class="stat-card-num">${branchEntries.length}</div><div class="stat-card-lbl">Family Branches</div></div>
+      <div class="stat-card"><div class="stat-card-num">${withSpouse}</div><div class="stat-card-lbl">Members Married</div></div>
+    </div>
+
+    <h2 class="stats-section-title">Gender <em>Breakdown</em></h2>
+    <div class="gender-row">
+      <div class="gender-card">
+        <div class="gender-icon">♂</div>
+        <div class="gender-info">
+          <div class="gender-name">Male</div>
+          <div class="gender-num">${males}</div>
+          <div class="gender-pct">${pct(males,total)}% of family</div>
+          <div class="gender-bar-wrap"><div class="gender-bar male" style="width:${pct(males,total)}%"></div></div>
+        </div>
+      </div>
+      <div class="gender-card">
+        <div class="gender-icon">♀</div>
+        <div class="gender-info">
+          <div class="gender-name">Female</div>
+          <div class="gender-num">${females}</div>
+          <div class="gender-pct">${pct(females,total)}% of family</div>
+          <div class="gender-bar-wrap"><div class="gender-bar female" style="width:${pct(females,total)}%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="stats-section-title">Members by <em>Generation</em> &amp; <em>Branch</em></h2>
+    <div class="stats-two-col">
+      <div class="chart-box">
+        <div class="chart-box-title">Generation Distribution</div>
+        <div class="bar-chart">
+          ${genEntries.map(([g,c])=>barRow('Gen '+g,c,genMax,'')).join('')}
+        </div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-box-title">Branch / Lineage Sizes</div>
+        <div class="bar-chart">
+          ${branchEntries.map(([b,c])=>barRow(BRANCH_NAMES[b]||'Branch '+b,c,branchMax,'gold')).join('')}
+        </div>
+      </div>
+    </div>
+
+    <h2 class="stats-section-title">Birth <em>Decades</em></h2>
+    <div class="decade-chart-wrap">
+      <div class="chart-box-title">Members by birth decade &nbsp;·&nbsp; ${withDob} of ${total} members have a birth date recorded</div>
+      <div class="decade-chart">${decBars}</div>
+      <div class="decade-labels">${decLabels}</div>
+    </div>
+
+    <h2 class="stats-section-title">Data <em>Completeness</em></h2>
+    <div class="completeness-row">
+      <div class="completeness-item">
+        <div class="completeness-pct">${pct(withDob,total)}%</div>
+        <div>
+          <div class="completeness-lbl">Birth Dates</div>
+          <div class="completeness-sub">${withDob} of ${total} members</div>
+        </div>
+      </div>
+      <div class="completeness-item">
+        <div class="completeness-pct">${pct(withSpouse,total)}%</div>
+        <div>
+          <div class="completeness-lbl">Spouse Recorded</div>
+          <div class="completeness-sub">${withSpouse} of ${total} members</div>
+        </div>
+      </div>
+      <div class="completeness-item">
+        <div class="completeness-pct">${pct(withNickname,total)}%</div>
+        <div>
+          <div class="completeness-lbl">Pet Names (Nicknames)</div>
+          <div class="completeness-sub">${withNickname} of ${total} members</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 window.addEventListener('load',()=>{viewIds=getSubtreeIds(5);initialised=false;render();renderDirectory();});
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>render());
 </script>
