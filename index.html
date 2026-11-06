@@ -567,8 +567,7 @@ body.admin-unlocked .album-zoom-hint{display:none;}
 .decade-cnt{font-family:'Inter',sans-serif;font-size:9px;color:var(--text3);text-align:center;line-height:1;margin-bottom:1px;}
 .decade-labels{display:flex;gap:6px;}
 .decade-lbl{flex:1;font-family:'Inter',sans-serif;font-size:9px;color:var(--text3);text-align:center;white-space:nowrap;padding-top:4px;}
-/* Data completeness */
-.completeness-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+/* Data completeness (removed) */
 .completeness-item{
   background:var(--surface);border:1px solid var(--border2);border-radius:10px;
   padding:20px;display:flex;align-items:center;gap:14px;
@@ -1348,6 +1347,21 @@ function schedulePhotoMapPush() {
 }
 
 /* ── localStorage album metadata (titles, order — tiny, no photos) ──── */
+
+/* ── Location data ────────────────────────────────────────────────────────
+   Maps person ID (string) → current location label.
+   Populated from column O (Location) of the Chenathara Google Sheet.
+   Export steps:  Sheet → column A (ID) + column O (Location)
+                  Format each row as  "ID": "Country / City"
+   ───────────────────────────────────────────────────────────────────────── */
+const LOCATION_DATA = {
+  /* example entries — replace with real data from the spreadsheet:
+  "17": "India",
+  "19": "USA",
+  "90": "Kuwait",
+  */
+};
+
 const ALBUM_STORE = 'chAlbumCards';
 const ALBUM_DEFAULT = [
   {id:'a1', title:'Family Portrait',    sub:'circa 1950s · Central Kerala', photo:null},
@@ -2879,30 +2893,30 @@ function renderStats() {
       <div class="decade-labels">${decLabels}</div>
     </div>
 
-    <h2 class="stats-section-title">Data <em>Completeness</em></h2>
-    <div class="completeness-row">
-      <div class="completeness-item">
-        <div class="completeness-pct">${pct(withDob,total)}%</div>
-        <div>
-          <div class="completeness-lbl">Birth Dates</div>
-          <div class="completeness-sub">${withDob} of ${total} members</div>
-        </div>
-      </div>
-      <div class="completeness-item">
-        <div class="completeness-pct">${pct(withSpouse,total)}%</div>
-        <div>
-          <div class="completeness-lbl">Spouse Recorded</div>
-          <div class="completeness-sub">${withSpouse} of ${total} members</div>
-        </div>
-      </div>
-      <div class="completeness-item">
-        <div class="completeness-pct">${pct(withNickname,total)}%</div>
-        <div>
-          <div class="completeness-lbl">Pet Names (Nicknames)</div>
-          <div class="completeness-sub">${withNickname} of ${total} members</div>
-        </div>
-      </div>
-    </div>
+    ${(()=>{
+      const entries = Object.entries(LOCATION_DATA).filter(([,v])=>v&&v.trim());
+      if (!entries.length) return `
+        <h2 class="stats-section-title">Member <em>Locations</em></h2>
+        <div class="chart-box" style="padding:28px 24px;">
+          <div class="chart-box-title">Where family members live</div>
+          <p style="font-family:'Source Serif 4',serif;font-size:15px;color:var(--text3);margin:0;font-style:italic;">
+            Location data not yet available — populate the Location column (column O) in the Chenathara spreadsheet, then export to <code>LOCATION_DATA</code> in this file.
+          </p>
+        </div>`;
+      // Count by location label
+      const counts = {};
+      entries.forEach(([,loc])=>{ const l=loc.trim(); counts[l]=(counts[l]||0)+1; });
+      const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+      const max = sorted[0][1];
+      const total_with_loc = entries.length;
+      const rows = sorted.map(([loc,cnt])=>barRow(loc,cnt,max,'')).join('');
+      return `
+        <h2 class="stats-section-title">Member <em>Locations</em></h2>
+        <div class="chart-box">
+          <div class="chart-box-title">Where family members live &nbsp;·&nbsp; ${total_with_loc} of ${total} members have location recorded</div>
+          <div class="bar-chart" style="margin-top:4px;">${rows}</div>
+        </div>`;
+    })()}
   `;
 }
 
