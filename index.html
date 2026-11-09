@@ -1153,7 +1153,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const hm = document.getElementById('hstatMembers'); if (hm) hm.textContent = ps.length;
   const hg = document.getElementById('hstatGens'); if (hg) hg.textContent = gens.size;
 });
-const childrenOf = RAW.children; // {id_str: [child_ids]}
+// Rebuild childrenOf from parent_id (authoritative) so layout and
+// connector lines are always consistent, even if RAW.children drifts.
+const childrenOf = {};
+for (const [id, p] of Object.entries(people)) {
+  if (p.parent_id) {
+    const pid = String(p.parent_id);
+    if (!childrenOf[pid]) childrenOf[pid] = [];
+    childrenOf[pid].push(Number(id));
+  }
+}
 // Sort each sibling group by birth_order (stripping '+'), falling back to id
 Object.keys(childrenOf).forEach(pid => {
   childrenOf[pid].sort((a, b) => {
