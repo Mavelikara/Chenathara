@@ -2420,8 +2420,11 @@ function getSubtreeIds(root) {
 
 // Compact tidy-tree layout. Children are placed first, the parent is centred
 // over them, and if that would collide with something already on its row the
-// whole subtree is shifted right. Returns {id:{x,y,w,h}} in world coordinates.
-const TREE_CARD_W=120, TREE_STEP=TREE_CARD_W+HGAP*3;
+// whole subtree is shifted right. An extra GROUP_GAP is added before each
+// non-leaf sibling (one that has its own children) so that distinct family
+// groups are visually separated at every generation level.
+// Returns {id:{x,y,w,h}} in world coordinates.
+const TREE_CARD_W=120, TREE_STEP=TREE_CARD_W+HGAP*3, TREE_GROUP_GAP=24;
 function layoutTree(root){
   const pos={}, nextX=[], kidsOf={};
   const kids=id=>{
@@ -2441,7 +2444,13 @@ function layoutTree(root){
       x=nextX[d]||0;
       pos[id]={x,y,w:TREE_CARD_W,h:CARD_H};
     } else {
-      for(const c of ch)place(c,d+1);
+      for(let i=0;i<ch.length;i++){
+        // Add extra gap before each non-leaf sibling (except the first) so
+        // that the children of sibling[i-1] and sibling[i] are visually
+        // separated as distinct family groups.
+        if(i>0 && kids(ch[i]).length>0) nextX[d+1]=(nextX[d+1]||0)+TREE_GROUP_GAP;
+        place(ch[i],d+1);
+      }
       x=(pos[ch[0]].x+pos[ch[ch.length-1]].x)/2;
       pos[id]={x,y,w:TREE_CARD_W,h:CARD_H};
       const need=(nextX[d]||0)-x;
