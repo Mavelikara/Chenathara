@@ -3542,13 +3542,28 @@ function renderSVG(tiers, focus){
         const pid=up.t.people[pi].id;
         const kids=lo.pos.filter((_,ci)=>String(lo.t.people[ci].parentId)===String(pid));
         if(!kids.length) return;
-        const sy=pp.y+pp.h, spine=sy+(lo.y-sy)*0.5;
-        const kxs=kids.map(k=>k.cx), barL=Math.min(...kxs), barR=Math.max(...kxs);
-        // Drop from parent to spine, then connect to bar edge only if parent is outside children range
-        let dp=`M${pp.cx} ${sy} V${spine}`;
-        if(pp.cx<barL) dp+=` H${barL}`; else if(pp.cx>barR) dp+=` H${barR}`;
-        lines.push(`<path d="${dp} M${barL} ${spine} H${barR}" stroke-width="1.6" ${C}/>`);
-        kids.forEach(k=>lines.push(`<path d="M${k.cx} ${spine} V${k.y}" stroke-width="1.6" ${C}/>`));
+        const sy=pp.y+pp.h;
+        if(kids.length===1){
+          // Single child: elbow connector at a lower Y (0.7) so it never visually merges
+          // with the bracket spine (0.5) drawn for multi-child siblings in the same tier.
+          const k=kids[0];
+          const my=sy+(k.y-sy)*0.7;
+          if(Math.abs(pp.cx-k.cx)<3){
+            lines.push(`<path d="M${pp.cx} ${sy} V${k.y}" stroke-width="1.6" ${C}/>`);
+          } else {
+            lines.push(`<path d="M${pp.cx} ${sy} V${my} H${k.cx} V${k.y}" stroke-width="1.6" ${C}/>`);
+          }
+        } else {
+          // Multiple children: bracket at the shared spine (0.5).
+          // Bar spans only the children range so it cannot visually bleed into
+          // an adjacent sibling's connector region.
+          const kxs=kids.map(k=>k.cx), barL=Math.min(...kxs), barR=Math.max(...kxs);
+          const spine=sy+(lo.y-sy)*0.5;
+          let dp=`M${pp.cx} ${sy} V${spine}`;
+          if(pp.cx<barL) dp+=` H${barL}`; else if(pp.cx>barR) dp+=` H${barR}`;
+          lines.push(`<path d="${dp} M${barL} ${spine} H${barR}" stroke-width="1.6" ${C}/>`);
+          kids.forEach(k=>lines.push(`<path d="M${k.cx} ${spine} V${k.y}" stroke-width="1.6" ${C}/>`));
+        }
       });
     }
   }
