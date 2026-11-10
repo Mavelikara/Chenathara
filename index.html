@@ -197,6 +197,13 @@ body.admin-unlocked .admin-only-flex{display:flex;}
   flex-direction:column;
 }
 #treeView.active{display:flex;}
+.patriarch-label{
+  width:100%; text-align:center;
+  font-family:'Cormorant Garant',serif; font-size:13px; font-weight:500;
+  letter-spacing:.12em; color:var(--teal);
+  text-transform:uppercase; opacity:.85;
+  margin-bottom:2px;
+}
 .tree-toolbar{
   background:var(--surface);
   border-bottom:1px solid var(--border2);
@@ -964,6 +971,7 @@ body.admin-unlocked .album-zoom-hint{display:none;}
 <!-- ══ TREE VIEW ════════════════════════════════════════════════════════════ -->
 <div id="treeView" class="view">
   <div class="tree-toolbar">
+    <div class="patriarch-label">C. K. Varghese</div>
     <button class="tbtn active" onclick="focusBranch(5,this)">C. K. Varkey</button>
     <button class="tbtn" onclick="focusBranch(6,this)">C. K. George</button>
     <button class="tbtn" onclick="focusBranch(7,this)">C. K. John</button>
@@ -995,6 +1003,7 @@ body.admin-unlocked .album-zoom-hint{display:none;}
 <!-- ══ DIRECTORY VIEW ══════════════════════════════════════════════════════ -->
 <div id="directoryView" class="view">
   <div class="dir-toolbar">
+    <div class="patriarch-label">C. K. Varghese</div>
     <div class="dir-search">
       <span class="dir-search-icon">⌕</span>
       <input id="dirSearch" type="text" placeholder="Search name, pet name, spouse…" oninput="renderDirectory()">
