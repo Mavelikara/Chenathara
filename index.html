@@ -206,12 +206,20 @@ body.admin-unlocked .admin-only-flex{display:flex;}
 }
 .branch-group-label{
   display:inline-flex; align-items:center;
-  font-family:'Inter',sans-serif; font-size:9.5px; font-weight:600;
-  letter-spacing:.08em; text-transform:uppercase;
-  color:var(--text3); opacity:.75;
-  padding:0 4px 0 10px;
-  border-left:1px solid var(--border2);
-  margin-left:4px; align-self:center;
+  font-family:'Inter',sans-serif; font-size:10px; font-weight:700;
+  letter-spacing:.05em; text-transform:uppercase; white-space:nowrap;
+  padding:3px 9px; border-radius:20px;
+  margin:0 2px 0 8px; align-self:center;
+}
+.branch-group-label.loc-k{
+  background:rgba(160,90,20,.13);
+  color:#a06012;
+  border:1px solid rgba(160,90,20,.30);
+}
+.branch-group-label.loc-m{
+  background:rgba(26,90,90,.11);
+  color:var(--teal);
+  border:1px solid rgba(26,90,90,.28);
 }
 .tree-toolbar{
   background:var(--surface);
@@ -981,10 +989,10 @@ body.admin-unlocked .album-zoom-hint{display:none;}
 <div id="treeView" class="view">
   <div class="tree-toolbar">
     <div class="patriarch-label">C. K. Varghese</div>
-    <span class="branch-group-label">Kodukulanji</span>
+    <span class="branch-group-label loc-k">Kodukulanji</span>
     <button class="tbtn" onclick="focusBranch(2,this)">George</button>
     <button class="tbtn" onclick="focusBranch(4,this)">Varghese</button>
-    <span class="branch-group-label">Malabar</span>
+    <span class="branch-group-label loc-m">Malabar</span>
     <button class="tbtn active" onclick="focusBranch(5,this)">C. K. Varkey</button>
     <button class="tbtn" onclick="focusBranch(6,this)">C. K. George</button>
     <button class="tbtn" onclick="focusBranch(7,this)">C. K. John</button>
@@ -1024,10 +1032,10 @@ body.admin-unlocked .album-zoom-hint{display:none;}
     <div class="dir-filter-group" id="branchFilters">
       <button class="filter-chip active" data-branch="all" onclick="setBranchFilter('all',this)">All Branches</button>
       <button class="filter-chip" data-branch="0" onclick="setBranchFilter('0',this)">Trunk</button>
-      <span class="branch-group-label">Kodukulanji</span>
+      <span class="branch-group-label loc-k">Kodukulanji</span>
       <button class="filter-chip" data-branch="2" onclick="setBranchFilter('2',this)">George</button>
       <button class="filter-chip" data-branch="4" onclick="setBranchFilter('4',this)">Varghese</button>
-      <span class="branch-group-label">Malabar</span>
+      <span class="branch-group-label loc-m">Malabar</span>
       <button class="filter-chip" data-branch="5" onclick="setBranchFilter('5',this)">C.K. Varkey</button>
       <button class="filter-chip" data-branch="6" onclick="setBranchFilter('6',this)">C.K. George</button>
       <button class="filter-chip" data-branch="7" onclick="setBranchFilter('7',this)">C.K. John</button>
